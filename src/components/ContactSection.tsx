@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, HelpCircle, ChevronDown, ChevronUp, CheckCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, HelpCircle, ChevronDown, ChevronUp, CheckCircle, Instagram } from 'lucide-react';
 import { FAQS, EXPERIENCES } from '../data';
 
 export default function ContactSection() {
@@ -66,9 +66,14 @@ export default function ContactSection() {
                   <Phone className="text-gold-400 mt-1 flex-shrink-0" size={18} />
                   <div>
                     <h4 className="font-mono text-xs uppercase tracking-widest text-gold-300 font-bold">WhatsApp Hotline & Concierge</h4>
-                    <p className="text-gold-200/60 text-xs md:text-sm leading-relaxed mt-1">
+                    <a
+                      href="https://wa.me/6281225657382"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gold-200 hover:text-gold-400 text-xs md:text-sm leading-relaxed mt-1 block font-mono"
+                    >
                       +62 812-2565-7382 (Tersedia 24/7)
-                    </p>
+                    </a>
                   </div>
                 </div>
 
@@ -76,9 +81,46 @@ export default function ContactSection() {
                   <Mail className="text-gold-400 mt-1 flex-shrink-0" size={18} />
                   <div>
                     <h4 className="font-mono text-xs uppercase tracking-widest text-gold-300 font-bold">VIP Email Desk</h4>
-                    <p className="text-gold-200/60 text-xs md:text-sm leading-relaxed mt-1">
-                      concierge@andhikabalitour.com
-                    </p>
+                    <a
+                      href="mailto:Dewakanto587@gmail.com"
+                      className="text-gold-200 hover:text-gold-400 text-xs md:text-sm leading-relaxed mt-1 block font-mono"
+                    >
+                      Dewakanto587@gmail.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4 pt-2 border-t border-gold-900/10">
+                  <Instagram className="text-gold-400 mt-1 flex-shrink-0" size={18} />
+                  <div>
+                    <h4 className="font-mono text-xs uppercase tracking-widest text-gold-300 font-bold">Official Instagram</h4>
+                    <a
+                      href="https://www.instagram.com/andhika_balidriver?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gold-200 hover:text-gold-400 text-xs md:text-sm leading-relaxed mt-1 block font-mono"
+                    >
+                      @andhika_balidriver
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="text-gold-400 mt-1 flex-shrink-0">
+                    <svg className="w-4 h-4 fill-gold-400" viewBox="0 0 24 24">
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 1 1-2.89-2.89c.28 0 .54.04.8.1v-3.5a6.37 6.37 0 1 0 5.54 6.29V9a8.21 8.21 0 0 0 4.77 1.51v-3.5a4.84 4.84 0 0 1-1-.32z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="font-mono text-xs uppercase tracking-widest text-gold-300 font-bold">Official TikTok</h4>
+                    <a
+                      href="https://www.tiktok.com/@andhika803?_t=8ch0FI0DRlR&_r=1"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gold-200 hover:text-gold-400 text-xs md:text-sm leading-relaxed mt-1 block font-mono"
+                    >
+                      @andhika803
+                    </a>
                   </div>
                 </div>
               </div>

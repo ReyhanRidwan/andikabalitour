@@ -18,13 +18,13 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
   // Helper to categorize items dynamically
   const getCategoryOfExp = (exp: Experience): CategoryFilter => {
     const id = exp.id;
-    if (id === 'jeep-adventure' || id === 'atv-quad' || id === 'river-tubing' || id === 'nusa-penida' || id === 'bali-jungle-swing') {
+    if (id === 'atv-ride' || id === 'atv-king' || id === 'water-sport') {
       return 'adventure';
     }
-    if (id === 'ocean-escape' || id === 'nusa-dua' || id === 'uluwatu' || id === 'snorkeling') {
+    if (id === 'horse-riding' || id === 'snorkeling' || id === 'nusa-penida-west') {
       return 'beach';
     }
-    return 'culture'; // bedugul-danau, lempuyang, jungle-retreat (wellness/culture)
+    return 'culture'; // rafting-bmw, rafting-ubud
   };
 
   const filteredExperiences = EXPERIENCES.filter((exp) => {
@@ -94,7 +94,7 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
 
         {/* Results Info */}
         <div className="text-left mb-6 text-xs text-gold-300/40 font-mono">
-          MENAMPILKAN {filteredExperiences.length} DARI 10 PAKET LAYANAN PRIVAT
+          MENAMPILKAN {filteredExperiences.length} DARI {EXPERIENCES.length} PAKET AKTIVITAS BALI
         </div>
 
         {/* Catalog Grid */}
@@ -122,10 +122,21 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent" />
                   
                   {/* Floating Price Tag */}
-                  <div className="absolute top-4 right-4 bg-black/75 border border-gold-400/20 rounded-sm px-3.5 py-2 backdrop-blur-sm">
-                    <span className="block text-[9px] font-mono text-gold-400 tracking-widest uppercase font-semibold">Mulai</span>
-                    <span className="font-mono text-lg font-bold text-gold-200">${exp.pricePerPerson}</span>
-                    <span className="text-[9px] text-gold-100/40 font-light block -mt-1">/ orang</span>
+                  <div className="absolute top-4 right-4 bg-black/85 border border-gold-400/20 rounded-sm px-3.5 py-2 backdrop-blur-sm text-right">
+                    <span className="block text-[9px] font-mono text-gold-400 tracking-widest uppercase font-semibold">
+                      {exp.pricingOptions ? 'Opsi Tarif' : 'Mulai'}
+                    </span>
+                    {exp.pricingOptions ? (
+                      <div className="font-mono text-xs font-bold text-gold-200">
+                        <div>Single: Rp {exp.pricingOptions[0].price.toLocaleString('id-ID')}</div>
+                        <div>Tandem: Rp {exp.pricingOptions[1]?.price.toLocaleString('id-ID')}</div>
+                      </div>
+                    ) : (
+                      <>
+                        <span className="font-mono text-base font-bold text-gold-200">Rp {exp.pricePerPerson.toLocaleString('id-ID')}</span>
+                        <span className="text-[9px] text-gold-100/40 font-light block -mt-1">/ pax</span>
+                      </>
+                    )}
                   </div>
 
                   {/* Tagline / Category */}

@@ -16,17 +16,19 @@ import WhyUsSection from './components/WhyUsSection';
 import ContactSection from './components/ContactSection';
 import RentalSection from './components/RentalSection';
 import RentalPage from './components/RentalPage';
+import PackageDetailPage from './components/PackageDetailPage';
 
-import { Experience, BookingDetails } from './types';
+import { BookingDetails } from './types';
 import { EXPERIENCES } from './data';
 
-type Page = 'home' | 'tours' | 'rental' | 'about' | 'gallery' | 'whyus' | 'contact';
+type Page = 'home' | 'tours' | 'rental' | 'about' | 'gallery' | 'whyus' | 'contact' | 'package-detail';
 
 export default function App() {
   const [activePage, setActivePage] = useState<Page>('home');
   const [heroActiveIndex, setHeroActiveIndex] = useState<number>(0);
   const [isBookingOpen, setIsBookingOpen] = useState<boolean>(false);
-  const [preSelectedExperienceId, setPreSelectedExperienceId] = useState<string>('jeep-adventure');
+  const [preSelectedExperienceId, setPreSelectedExperienceId] = useState<string>('water-sport');
+  const [selectedDetailExperienceId, setSelectedDetailExperienceId] = useState<string>('water-sport');
   const [preSelectedVehicleId, setPreSelectedVehicleId] = useState<string>('toyota-avanza');
 
   // Open booking modal preselected with a specific experience
@@ -38,11 +40,11 @@ export default function App() {
   // General booking click (pre-select current active experience in hero)
   const handleGeneralBookNow = () => {
     if (activePage === 'home') {
-      const currentId = EXPERIENCES[heroActiveIndex]?.id || 'nusa-penida';
+      const currentId = EXPERIENCES[heroActiveIndex]?.id || 'water-sport';
       handleOpenBooking(currentId);
     } else {
       // Default to first experience on other pages
-      handleOpenBooking(EXPERIENCES[0]?.id || 'nusa-penida');
+      handleOpenBooking(EXPERIENCES[0]?.id || 'water-sport');
     }
   };
 
@@ -51,8 +53,9 @@ export default function App() {
   };
 
   const handleViewDetails = (expId: string) => {
-    // When clicking "Detail Rute", scroll up and open booking as primary action
-    handleOpenBooking(expId);
+    setSelectedDetailExperienceId(expId);
+    setActivePage('package-detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSelectVehicle = (vehicleId: string) => {
@@ -66,7 +69,7 @@ export default function App() {
       
       {/* 1. Universal Luxury Navbar */}
       <Navbar
-        activePage={activePage}
+        activePage={activePage === 'package-detail' ? 'tours' : activePage}
         setActivePage={setActivePage}
         onBookNow={handleGeneralBookNow}
       />
@@ -81,16 +84,17 @@ export default function App() {
               setActiveIndex={setHeroActiveIndex}
               onExploreClick={(exp) => handleOpenBooking(exp.id)}
               onBookNowClick={handleGeneralBookNow}
+              onViewDetails={handleViewDetails}
             />
 
             {/* Bento Grid "Our Elite Expeditions" Quick Showcase */}
-            <DestinationGrid onBookNow={handleOpenBooking} />
+            <DestinationGrid onBookNow={handleOpenBooking} onViewDetails={handleViewDetails} />
 
             {/* Premium Outdoor Adventure & Wilderness Activities */}
-            <ActivitySection onBookNow={handleOpenBooking} />
+            <ActivitySection onBookNow={handleOpenBooking} onViewDetails={handleViewDetails} />
 
             {/* Signature 3-Column Experience Spec Sheets */}
-            <ExperienceDetails onBookNow={handleOpenBooking} />
+            <ExperienceDetails onBookNow={handleOpenBooking} onViewDetails={handleViewDetails} />
 
             {/* Premium Car & Motorbike Rental Section */}
             <RentalSection
@@ -112,6 +116,21 @@ export default function App() {
             <TourCatalog
               onBookNow={handleOpenBooking}
               onViewDetails={handleViewDetails}
+            />
+          </div>
+        )}
+
+        {activePage === 'package-detail' && (
+          <div className="animate-fade-in">
+            <PackageDetailPage
+              experience={
+                EXPERIENCES.find((e) => e.id === selectedDetailExperienceId) || EXPERIENCES[0]
+              }
+              onBack={() => {
+                setActivePage('home');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onBookNow={handleOpenBooking}
             />
           </div>
         )}

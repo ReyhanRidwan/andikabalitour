@@ -17,67 +17,80 @@ interface DestinationCard {
 
 interface DestinationGridProps {
   onBookNow: (experienceId: string) => void;
+  onViewDetails?: (experienceId: string) => void;
 }
 
-export default function DestinationGrid({ onBookNow }: DestinationGridProps) {
+export default function DestinationGrid({ onBookNow, onViewDetails }: DestinationGridProps) {
   const destinations: DestinationCard[] = [
     {
-      id: 'jeep-adventure', // matches ocean-escape or jeep-adventure to map booking modal pre-selection
-      title: 'Nusa Penida Golden Beach',
-      tagline: 'EXPLORASI PREMIUM',
+      id: 'water-sport',
+      title: 'WATER SPORT PACKAGE',
+      tagline: 'WATER SPORTS ADVENTURE',
       rating: 4.9,
       reviews: 340,
-      description: 'Petualangan eksklusif menyusuri tebing purba Kelingking Beach yang dramatis, berenang di antara penyu liar, dan menatap laut safir yang membentang luas.',
-      image: '/nusa_penida_golden_beach_1783579187768.jpg',
+      description: 'Termasuk Banana Boat, Donut Boat, Jet Ski, dan Parasailing di Tanjung Benoa. Include Insurance, Lunch, Guide, dan Rescue Team.',
+      image: '/water_sport_banner_1786161929728.jpg',
       cols: 'lg:col-span-2',
       rows: 'lg:row-span-2',
       heightClass: 'h-[420px] lg:h-[520px]',
     },
     {
-      id: 'ocean-escape',
-      title: 'Nusa Dua Exclusive Beach',
-      tagline: 'ELITE RESORTS',
-      rating: 4.8,
-      reviews: 180,
-      description: 'Kawasan pantai pasir putih nan tenang yang dikelilingi oleh jajaran resort mewah bertaraf internasional.',
-      image: '/nusa_dua_beach_1783579200979.jpg',
+      id: 'nusa-penida-west',
+      title: 'NUSA PENIDA WEST TRIP',
+      tagline: 'ISLAND WEST EXPLORATION',
+      rating: 4.9,
+      reviews: 320,
+      description: 'Eksplorasi Kelingking, Broken Beach, Angel Billabong, Paluang Hills & Crystal Bay. IDR 850K / pax (Min. 2 Person). Include Private Car, Fastboat PP, Lunch & Guide.',
+      image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
       cols: 'lg:col-span-1',
       rows: 'lg:row-span-1',
       heightClass: 'h-[240px]',
     },
     {
-      id: 'jungle-retreat',
-      title: 'Bedugul Danau Beratan',
-      tagline: 'SACRED TEMPLES',
-      rating: 4.7,
+      id: 'atv-king',
+      title: 'ATV – KING ATV',
+      tagline: 'KING ATV EXPERIENCE',
+      rating: 4.9,
       reviews: 220,
-      description: 'Pura terapung legendaris berselimut kabut lembut di antara pegunungan sejuk yang asri.',
-      image: '/bedugul_danau_beratan_1783579216449.jpg',
+      description: 'Performa King ATV di lintasan terjal dan menantang (Rp850.000 / pax). Includes Insurance, Lunch & Guide.',
+      image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
       cols: 'lg:col-span-1',
       rows: 'lg:row-span-1',
-      heightClass: 'h-[264px] lg:h-[256px]', // offsets perfectly to match double row on left
+      heightClass: 'h-[264px] lg:h-[256px]',
     },
     {
-      id: 'jeep-adventure',
-      title: 'Lempuyang Luhur Temple',
-      tagline: 'PHOTO INSPIRED',
-      rating: 4.9,
-      reviews: 410,
-      description: 'Abadikan momen magis di Gerbang Surga berlatar megahnya Gunung Agung yang sakral.',
-      image: '/lempuyang_temple_1783579255281.jpg',
+      id: 'horse-riding',
+      title: 'HORSE RIDING – LEMBONGAN ½',
+      tagline: 'LEMBONGAN HORSE RIDING',
+      rating: 4.8,
+      reviews: 190,
+      description: 'Menunggang kuda menyusuri pantai eksotis Lembongan ½ dengan suasana tropis menenangkan.',
+      image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
       cols: 'lg:col-span-1',
       rows: 'lg:row-span-1',
       heightClass: 'h-[256px]',
     },
     {
-      id: 'ocean-escape',
-      title: 'Uluwatu Sunset Horizon',
-      tagline: 'ROMANTIC OCEAN CLIFF',
-      rating: 4.8,
+      id: 'rafting-bmw',
+      title: 'RAFTING – BMW',
+      tagline: 'BMW RAFTING THRILL',
+      rating: 4.9,
       reviews: 290,
-      description: 'Saksikan pertunjukan tari Kecak legendaris di atas tebing karang terjal setinggi 70 meter di atas Samudra Hindia.',
-      image: '/uluwatu_cliff_1783579271777.jpg',
-      cols: 'lg:col-span-2',
+      description: 'Arung jeram mendebarkan menyusuri tebing sungai purba Bali. Includes Insurance, Lunch, Guide, & Rescue Team.',
+      image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
+      cols: 'lg:col-span-1',
+      rows: 'lg:row-span-1',
+      heightClass: 'h-[256px]',
+    },
+    {
+      id: 'nusa-penida-west',
+      title: 'BROKEN BEACH - NUSA PENIDA',
+      tagline: 'PASIH UUG EXPLORATION',
+      rating: 4.9,
+      reviews: 315,
+      description: 'Tebing melingkar alami spektakuler dengan laut biru jernih di Nusa Penida Barat. Include Fastboat PP, Mobil Privat AC, Lunch & Guide.',
+      image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+      cols: 'lg:col-span-1',
       rows: 'lg:row-span-1',
       heightClass: 'h-[256px]',
     }
@@ -162,10 +175,27 @@ export default function DestinationGrid({ onBookNow }: DestinationGridProps) {
                 </p>
 
                 {/* Action CTA */}
-                <div className="flex items-center gap-1.5 text-gold-400 text-xs font-mono uppercase tracking-wider group-hover:text-gold-300 transition-colors duration-300 mt-1">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>Amankan Kursi Sekarang</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 transform transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <div className="flex items-center justify-between gap-3 mt-1 pt-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (onViewDetails) onViewDetails(dest.id);
+                      else onBookNow(dest.id);
+                    }}
+                    className="border border-gold-400/40 hover:border-gold-400 text-gold-300 hover:text-gold-100 bg-neutral-950/70 text-[10px] font-mono uppercase tracking-widest px-3 py-2 rounded-sm transition-all"
+                  >
+                    Detail Paket
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onBookNow(dest.id);
+                    }}
+                    className="bg-gold-400 hover:bg-gold-500 text-neutral-950 text-[10px] font-mono uppercase tracking-widest font-extrabold px-3 py-2 rounded-sm transition-all flex items-center gap-1 shadow-md"
+                  >
+                    <span>Pesan</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
 

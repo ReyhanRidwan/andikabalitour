@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Compass, Globe, Send, Sun, CloudRain, HelpCircle, Check, MapPin, Phone } from 'lucide-react';
+import { Mail, Compass, Globe, Send, Sun, CloudRain, HelpCircle, Check, MapPin, Phone, Instagram } from 'lucide-react';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -79,13 +79,44 @@ export default function Footer() {
             </li>
             <li className="flex items-center space-x-2.5">
               <Phone size={14} className="text-gold-400 flex-shrink-0" />
-              <span>+62 812-2565-7382</span>
+              <a href="https://wa.me/6281225657382" target="_blank" rel="noopener noreferrer" className="hover:text-gold-300 transition-colors">
+                +62 812-2565-7382
+              </a>
             </li>
             <li className="flex items-center space-x-2.5">
               <Mail size={14} className="text-gold-400 flex-shrink-0" />
-              <span>concierge@andhikabalitour.com</span>
+              <a href="mailto:Dewakanto587@gmail.com" className="hover:text-gold-300 transition-colors">
+                Dewakanto587@gmail.com
+              </a>
             </li>
           </ul>
+
+          {/* Social Media Links */}
+          <div className="pt-2 space-y-2">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-gold-300/50 font-bold">Follow Us</p>
+            <div className="flex flex-col space-y-2 text-xs text-gold-100/70">
+              <a
+                href="https://www.instagram.com/andhika_balidriver?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 hover:text-gold-300 transition-colors"
+              >
+                <Instagram size={14} className="text-gold-400" />
+                <span>Instagram @andhika_balidriver</span>
+              </a>
+              <a
+                href="https://www.tiktok.com/@andhika803?_t=8ch0FI0DRlR&_r=1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 hover:text-gold-300 transition-colors"
+              >
+                <svg className="w-3.5 h-3.5 fill-gold-400" viewBox="0 0 24 24">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 1 1-2.89-2.89c.28 0 .54.04.8.1v-3.5a6.37 6.37 0 1 0 5.54 6.29V9a8.21 8.21 0 0 0 4.77 1.51v-3.5a4.84 4.84 0 0 1-1-.32z" />
+                </svg>
+                <span>TikTok @andhika803</span>
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* Real-time Simulated Bali Weather Microclimate Widget */}

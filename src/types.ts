@@ -4,6 +4,18 @@ export interface ItineraryItem {
   desc: string;
 }
 
+export interface RidePhoto {
+  name: string;
+  image: string;
+  description: string;
+}
+
+export interface PricingOption {
+  name: string;
+  price: number;
+  desc?: string;
+}
+
 export interface Experience {
   id: string;
   title: string;
@@ -12,6 +24,8 @@ export interface Experience {
   longDesc: string;
   bgImage: string;
   cardImage: string;
+  galleryImages?: RidePhoto[];
+  pricingOptions?: PricingOption[];
   pricePerPerson: number;
   duration: string;
   location: string;

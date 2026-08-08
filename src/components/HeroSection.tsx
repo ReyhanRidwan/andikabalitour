@@ -9,15 +9,19 @@ interface HeroSectionProps {
   setActiveIndex: (index: number) => void;
   onExploreClick: (experience: Experience) => void;
   onBookNowClick: () => void;
+  onViewDetails?: (experienceId: string) => void;
 }
+
+const HERO_EXPERIENCES = EXPERIENCES.filter((e) => e.id !== 'rafting-bmw');
 
 export default function HeroSection({
   activeIndex,
   setActiveIndex,
   onExploreClick,
   onBookNowClick,
+  onViewDetails,
 }: HeroSectionProps) {
-  const currentExp = EXPERIENCES[activeIndex];
+  const currentExp = HERO_EXPERIENCES[activeIndex] || HERO_EXPERIENCES[0];
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [dragOffset, setDragOffset] = useState(0);
@@ -32,7 +36,7 @@ export default function HeroSection({
   const startAutoplay = () => {
     stopAutoplay();
     autoplayTimerRef.current = setInterval(() => {
-      setActiveIndex((activeIndex + 1) % EXPERIENCES.length);
+      setActiveIndex((activeIndex + 1) % HERO_EXPERIENCES.length);
     }, 5000);
   };
 
@@ -49,23 +53,10 @@ export default function HeroSection({
   }, [activeIndex, setActiveIndex]);
 
   const getCardTag = (exp: Experience) => {
-    if (exp.id === 'jeep-adventure') return 'Rental';
-    if (exp.id === 'ocean-escape') return 'Ocean';
-    if (exp.id === 'jungle-retreat') return 'Jungle';
-    if (exp.id === 'nusa-penida') return 'Ocean';
-    if (exp.id === 'nusa-dua') return 'Beach';
-    if (exp.id === 'bedugul-danau') return 'Lake';
-    if (exp.id === 'lempuyang') return 'Temple';
-    if (exp.id === 'uluwatu') return 'Cliff';
-    if (exp.id === 'atv-quad') return 'Adventure';
-    if (exp.id === 'river-tubing') return 'Wilderness';
     return exp.tagline;
   };
 
   const getCardTitle = (exp: Experience) => {
-    if (exp.id === 'jeep-adventure') return 'Sewa Mobil Kijang Innova';
-    if (exp.id === 'ocean-escape') return 'Ocean Luxury Escape';
-    if (exp.id === 'jungle-retreat') return 'Serene Jungle Retreat';
     return exp.title;
   };
 
@@ -122,7 +113,7 @@ export default function HeroSection({
     let finalDelta = deltaX;
     if (activeIndex === 0 && deltaX > 0) {
       finalDelta = deltaX * 0.4;
-    } else if (activeIndex === EXPERIENCES.length - 1 && deltaX < 0) {
+    } else if (activeIndex === HERO_EXPERIENCES.length - 1 && deltaX < 0) {
       finalDelta = deltaX * 0.4;
     }
     
@@ -136,7 +127,7 @@ export default function HeroSection({
 
     const swipeThreshold = 50;
     if (dragOffset < -swipeThreshold) {
-      if (activeIndex < EXPERIENCES.length - 1) {
+      if (activeIndex < HERO_EXPERIENCES.length - 1) {
         setActiveIndex(activeIndex + 1);
       }
     } else if (dragOffset > swipeThreshold) {
@@ -303,9 +294,15 @@ export default function HeroSection({
                 {/* Buttons container */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-3">
                   <button
+                    onClick={() => onViewDetails ? onViewDetails(currentExp.id) : onExploreClick(currentExp)}
+                    className="border border-gold-400/40 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm cursor-pointer text-center hover:bg-gold-500/10"
+                  >
+                    Detail Paket
+                  </button>
+                  <button
                     onClick={() => onExploreClick(currentExp)}
                     id="btn-start-adventure"
-                    className="bg-gold-400 hover:bg-gold-500 text-luxury-dark font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-8 transition-all duration-300 rounded-sm active:scale-95 hover:shadow-lg hover:shadow-gold-500/10 text-center cursor-pointer"
+                    className="bg-gold-400 hover:bg-gold-500 text-luxury-dark font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm active:scale-95 hover:shadow-lg hover:shadow-gold-500/10 text-center cursor-pointer"
                   >
                     Booking Sekarang
                   </button>
@@ -344,7 +341,7 @@ export default function HeroSection({
                   isDragging ? 'cursor-grabbing' : 'cursor-grab'
                 }`}
               >
-                {EXPERIENCES.map((exp, index) => {
+                {HERO_EXPERIENCES.map((exp, index) => {
                   const isActive = index === activeIndex;
 
                   return (

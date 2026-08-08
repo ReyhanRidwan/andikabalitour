@@ -4,9 +4,10 @@ import { EXPERIENCES } from '../data';
 
 interface ExperienceDetailsProps {
   onBookNow: (experienceId: string) => void;
+  onViewDetails?: (experienceId: string) => void;
 }
 
-export default function ExperienceDetails({ onBookNow }: ExperienceDetailsProps) {
+export default function ExperienceDetails({ onBookNow, onViewDetails }: ExperienceDetailsProps) {
   // Only showcase the 3 core signature packages on the landing page
   const signatureExperiences = EXPERIENCES.slice(0, 3);
 
@@ -97,20 +98,39 @@ export default function ExperienceDetails({ onBookNow }: ExperienceDetailsProps)
                 </div>
 
                 {/* Footer Section: Pricing and Book Now */}
-                <div className="pt-6 mt-8 border-t border-gold-900/15 flex items-center justify-between gap-4">
+                <div className="pt-6 mt-8 border-t border-gold-900/15 flex items-center justify-between gap-3">
                   <div className="text-left">
-                    <span className="block text-[9px] font-mono text-gold-300/40 tracking-widest uppercase font-semibold">Mulai</span>
-                    <span className="font-mono text-xl font-bold text-gold-300">${exp.pricePerPerson}</span>
-                    <span className="text-[10px] text-gold-200/40 font-light"> / orang</span>
+                    <span className="block text-[9px] font-mono text-gold-300/40 tracking-widest uppercase font-semibold">
+                      {exp.pricingOptions ? 'Opsi Tarif' : 'Mulai'}
+                    </span>
+                    {exp.pricingOptions ? (
+                      <div className="font-mono text-xs font-bold text-gold-300">
+                        <div>Single: Rp {exp.pricingOptions[0].price.toLocaleString('id-ID')}</div>
+                        <div>Tandem: Rp {exp.pricingOptions[1]?.price.toLocaleString('id-ID')}</div>
+                      </div>
+                    ) : (
+                      <>
+                        <span className="font-mono text-base font-bold text-gold-300">Rp {exp.pricePerPerson.toLocaleString('id-ID')}</span>
+                        <span className="text-[10px] text-gold-200/40 font-light"> / pax</span>
+                      </>
+                    )}
                   </div>
 
-                  <button
-                    onClick={() => onBookNow(exp.id)}
-                    className="bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-widest font-extrabold px-6 py-3.5 rounded-sm transition-all shadow-md cursor-pointer hover:shadow-gold-500/10 flex items-center gap-1.5 active:scale-95"
-                  >
-                    <span>Book Now</span>
-                    <ArrowRight size={12} className="stroke-[2.5]" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => onViewDetails ? onViewDetails(exp.id) : onBookNow(exp.id)}
+                      className="border border-gold-400/30 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-mono text-xs uppercase tracking-wider font-semibold px-3 py-3 rounded-sm transition-all cursor-pointer"
+                    >
+                      Detail
+                    </button>
+                    <button
+                      onClick={() => onBookNow(exp.id)}
+                      className="bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-widest font-extrabold px-4 py-3 rounded-sm transition-all shadow-md cursor-pointer hover:shadow-gold-500/10 flex items-center gap-1.5 active:scale-95"
+                    >
+                      <span>Book</span>
+                      <ArrowRight size={12} className="stroke-[2.5]" />
+                    </button>
+                  </div>
                 </div>
               </div>
 

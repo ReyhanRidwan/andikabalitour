@@ -30,6 +30,7 @@ export default function BookingModal({
 
   // Booking fields state
   const [selectedExpId, setSelectedExpId] = useState(initialExperienceId || EXPERIENCES[0].id);
+  const [selectedPricingOptionIndex, setSelectedPricingOptionIndex] = useState<number>(0);
   const [date, setDate] = useState('');
   const [guests, setGuests] = useState(2);
   const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
@@ -64,6 +65,7 @@ export default function BookingModal({
   useEffect(() => {
     if (initialExperienceId) {
       setSelectedExpId(initialExperienceId);
+      setSelectedPricingOptionIndex(0);
     }
   }, [initialExperienceId, isOpen]);
 
@@ -115,9 +117,14 @@ export default function BookingModal({
   if (!isOpen) return null;
 
   const currentExp = EXPERIENCES.find((e) => e.id === selectedExpId) || EXPERIENCES[0];
+  const selectedPricingOption = currentExp.pricingOptions
+    ? currentExp.pricingOptions[selectedPricingOptionIndex] || currentExp.pricingOptions[0]
+    : null;
 
   // Price calculations
-  const basePrice = currentExp.pricePerPerson * guests;
+  const basePrice = selectedPricingOption
+    ? (selectedPricingOption.name === 'Tandem' ? selectedPricingOption.price * Math.max(1, Math.ceil(guests / 2)) : selectedPricingOption.price * guests)
+    : currentExp.pricePerPerson * guests;
   const addonsPrice = BOOKING_ADDONS.filter((addon) => selectedAddons.includes(addon.id)).reduce(
     (total, addon) => total + addon.price,
     0
@@ -315,6 +322,7 @@ export default function BookingModal({
                     value={selectedExpId}
                     onChange={(e) => {
                       setSelectedExpId(e.target.value);
+                      setSelectedPricingOptionIndex(0);
                       setSelectedAddons([]); // reset upgrades
                     }}
                     id="booking-select-experience"
@@ -322,11 +330,42 @@ export default function BookingModal({
                   >
                     {EXPERIENCES.map((exp) => (
                       <option key={exp.id} value={exp.id}>
-                        {exp.title} — ${exp.pricePerPerson} per orang
+                        {exp.title} — {exp.pricingOptions ? `Single Rp ${exp.pricingOptions[0].price.toLocaleString('id-ID')} / Tandem Rp ${exp.pricingOptions[1]?.price.toLocaleString('id-ID')}` : `Rp ${exp.pricePerPerson.toLocaleString('id-ID')} / pax`}
                       </option>
                     ))}
                   </select>
                 </div>
+
+                {/* Optional Ride Option Selector (e.g. Single vs Tandem) */}
+                {currentExp.pricingOptions && (
+                  <div className="space-y-2 text-left">
+                    <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono">
+                      <span>Pilih Opsi Tipe Ride ATV</span>
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      {currentExp.pricingOptions.map((opt, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setSelectedPricingOptionIndex(idx)}
+                          className={`p-3 rounded-sm border text-left cursor-pointer transition-all ${
+                            selectedPricingOptionIndex === idx
+                              ? 'border-gold-400 bg-gold-400/10 text-gold-100 shadow-md'
+                              : 'border-gold-400/20 bg-neutral-900/60 text-gold-100/60 hover:border-gold-400/40'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between font-mono font-bold text-xs">
+                            <span>{opt.name}</span>
+                            <span className="text-gold-300">Rp {opt.price.toLocaleString('id-ID')}</span>
+                          </div>
+                          {opt.desc && (
+                            <p className="text-[10px] text-gold-100/50 mt-1 font-sans leading-tight">{opt.desc}</p>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Date & Guest Selectors */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
@@ -349,7 +388,7 @@ export default function BookingModal({
                   <div className="space-y-1.5">
                     <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono flex items-center gap-1.5">
                       <Users size={13} className="text-gold-400" />
-                      <span>Jumlah Peserta</span>
+                      <span>Jumlah Peserta (Maks. 2)</span>
                     </label>
                     <div className="flex items-center border border-gold-400/20 rounded-sm bg-neutral-900">
                       <button
@@ -364,7 +403,7 @@ export default function BookingModal({
                       </span>
                       <button
                         type="button"
-                        onClick={() => setGuests(Math.min(10, guests + 1))}
+                        onClick={() => setGuests(Math.min(2, guests + 1))}
                         className="px-4 py-3 text-gold-300 hover:text-gold-400 font-bold cursor-pointer"
                       >
                         +
@@ -569,7 +608,7 @@ export default function BookingModal({
                   <div className="space-y-4 text-sm">
                     <div className="flex justify-between items-center text-gold-100/60">
                       <span>Tarif Dasar ({guests} Orang)</span>
-                      <span className="font-mono text-gold-100">${basePrice}</span>
+                      <span className="font-mono text-gold-100">Rp {basePrice.toLocaleString('id-ID')}</span>
                     </div>
 
                     {selectedAddons.length > 0 && (
@@ -583,7 +622,7 @@ export default function BookingModal({
                                addon.name === 'Veuve Clicquot Champagne & Caviar' ? 'Champagne & Kaviar' :
                                'Transfer Helikopter'}
                             </span>
-                            <span className="font-mono text-gold-300">+${addon.price}</span>
+                            <span className="font-mono text-gold-300">+Rp {addon.price.toLocaleString('id-ID')}</span>
                           </div>
                         ))}
                       </div>
@@ -591,7 +630,7 @@ export default function BookingModal({
 
                     <div className="flex justify-between items-center text-gold-100/60 pt-4 border-t border-gold-900/10">
                       <span>Subtotal</span>
-                      <span className="font-mono text-gold-100">${subtotal}</span>
+                      <span className="font-mono text-gold-100">Rp {subtotal.toLocaleString('id-ID')}</span>
                     </div>
 
                     <div className="flex justify-between items-center text-gold-100/60">
@@ -599,7 +638,7 @@ export default function BookingModal({
                         <span>Pajak Pariwisata & Layanan VIP</span>
                         <span className="bg-gold-500/10 text-gold-300 font-mono text-[9px] px-1.5 py-0.5 rounded">10%</span>
                       </span>
-                      <span className="font-mono text-gold-100">${tax}</span>
+                      <span className="font-mono text-gold-100">Rp {tax.toLocaleString('id-ID')}</span>
                     </div>
                   </div>
                 </div>
@@ -607,7 +646,7 @@ export default function BookingModal({
                 <div className="pt-6 mt-8 border-t border-gold-400/20">
                   <div className="flex justify-between items-baseline mb-6">
                     <span className="font-serif text-base text-gold-200">Total Pembayaran</span>
-                    <span className="font-mono text-2xl md:text-3xl text-gold-400 font-bold">${grandTotal}</span>
+                    <span className="font-mono text-xl md:text-2xl text-gold-400 font-bold">Rp {grandTotal.toLocaleString('id-ID')}</span>
                   </div>
 
                   <button
@@ -871,15 +910,15 @@ export default function BookingModal({
                     </div>
                     <div className="flex justify-between border-t border-gold-900/10 pt-4">
                       <span>Subtotal:</span>
-                      <span className="text-gold-200 font-bold">${subtotal}</span>
+                      <span className="text-gold-200 font-bold">Rp {subtotal.toLocaleString('id-ID')}</span>
                     </div>
                     <div className="flex justify-between">
                       <span>Levy & PPN (10%):</span>
-                      <span className="text-gold-200 font-bold">${tax}</span>
+                      <span className="text-gold-200 font-bold">Rp {tax.toLocaleString('id-ID')}</span>
                     </div>
                     <div className="flex justify-between border-t border-gold-400/20 pt-4 text-sm font-sans">
                       <span className="font-serif text-gold-200">Grand Total:</span>
-                      <span className="font-mono text-lg text-gold-400 font-extrabold">${grandTotal}</span>
+                      <span className="font-mono text-lg text-gold-400 font-extrabold">Rp {grandTotal.toLocaleString('id-ID')}</span>
                     </div>
                   </div>
                 </div>
@@ -1027,7 +1066,7 @@ export default function BookingModal({
                   {/* Price Summary footer on voucher */}
                   <div className="flex justify-between items-baseline pt-4 border-t border-gold-900/15">
                     <span className="font-mono text-[9px] text-gold-400/50 uppercase">Total Invoice Lunas</span>
-                    <span className="font-mono text-xl font-bold text-gold-400">${confirmedBooking.totalPrice}</span>
+                    <span className="font-mono text-xl font-bold text-gold-400">Rp {typeof confirmedBooking.totalPrice === 'number' ? confirmedBooking.totalPrice.toLocaleString('id-ID') : confirmedBooking.totalPrice}</span>
                   </div>
 
                 </div>

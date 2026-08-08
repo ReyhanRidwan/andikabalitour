@@ -3,586 +3,549 @@ import { Experience, BookingAddon, Review, Vehicle } from './types';
 // Let's use the exact generated image paths
 export const EXPERIENCES: Experience[] = [
   {
-    id: 'nusa-penida',
-    title: 'Nusa Penida Golden Beach',
-    tagline: 'Premium Exploration',
-    shortDesc: 'Embark on a private speed boat to Nusa Penida. Witness the dramatic Kelingking beach cliffs and swim with beautiful ocean life.',
-    longDesc: 'Experience the rugged coastal majesty of Nusa Penida in style. Board a high-speed private tender to the island’s most iconic geological formations. Walk along the dramatic, dinosaur-shaped Kelingking Cliff, dip into the crystal waters of Angel’s Billabong, and walk on the soft white sands of Crystal Bay. A completely curated, luxury island escape.',
-    bgImage: '/nusa_penida_golden_beach_1783579187768.jpg',
-    cardImage: '/nusa_penida_golden_beach_1783579187768.jpg',
-    pricePerPerson: 195,
-    duration: 'Full-Day (10 Hours)',
-    location: 'Nusa Penida Island',
-    difficulty: 'Active Adventure',
-    rating: 4.9,
-    reviewCount: 340,
-    highlights: [
-      'Private speedboat transfer to the island with VIP seating',
-      'Exclusive guided trek down to the famous Kelingking Beach viewpoint',
-      'VIP access to high-end beach clubs on the island',
-      'Snorkeling with marine life at the coral-rich Toyapakeh reef',
-      'Scenic photography at Angel’s Billabong and Broken Beach'
-    ],
-    inclusions: [
-      'Private resort round-trip pick up in premium luxury car',
-      'Private round-trip VIP speed boat charter',
-      'Professional local guide and driver on Nusa Penida island',
-      'Gourmet lunch at an elite ocean-view organic restaurant',
-      'All island entrance tickets, retribution fees, and taxes',
-      'Premium snorkeling gear and safety equipment'
-    ],
-    exclusions: [
-      'Personal beach club tab (cocktails/cabana rentals)',
-      'Guide tips'
-    ],
-    itinerary: [
-      { time: '06:30 AM', title: 'Hotel VIP Pickup', desc: 'Private transfer from your resort directly to Sanur Harbour.' },
-      { time: '07:30 AM', title: 'Private Speedboat Cruise', desc: 'Set sail across the ocean in a premium speed boat to Nusa Penida.' },
-      { time: '08:30 AM', title: 'Kelingking Cliff Viewpoint', desc: 'Arrive and gaze upon the majestic prehistoric dinosaur cliff. Enjoy optional trekking.' },
-      { time: '11:00 AM', title: 'Angel’s Billabong & Broken Beach', desc: 'Marvel at the stunning emerald natural infinity pool and the dramatic rock archway.' },
-      { time: '01:00 PM', title: 'Luxury Ocean-View Lunch', desc: 'Relish a delicious 3-course organic meal overlooking the azure Penida coastline.' },
-      { time: '03:00 PM', title: 'Toyapakeh Reef Snorkeling', desc: 'Swim among colorful sea turtles and live coral gardens in crystal waters.' },
-      { time: '05:30 PM', title: 'Return Sunset Sail', desc: 'Cruise back to Sanur while watching a glorious Bali ocean sunset.' }
-    ]
-  },
-  {
-    id: 'ocean-escape',
-    title: 'Ocean Luxury Escape',
-    tagline: 'Private Yacht Cruise',
-    shortDesc: 'Sail the pristine blue waters of Bali in a premium yacht. Dive into coral reefs and dine under the sunset.',
-    longDesc: 'Charter your private sanctuary on the sparkling Indian Ocean. Our customized 60-foot luxury yacht glides through Nusa Penida and Lembongan waters. Sunbathe on expansive teak decks, snorkel among vibrant coral gardens, and enjoy premium services provided by a dedicated captain and five-star onboard crew.',
-    bgImage: '/bali_ocean_bg_1783528769356.jpg',
-    cardImage: '/ocean_luxury_escape_1783528733687.jpg',
-    pricePerPerson: 290,
-    duration: 'Full-Day (10 Hours)',
-    location: 'Nusa Penida & Lembongan',
-    difficulty: 'Relaxed / Easy',
-    rating: 5.0,
-    reviewCount: 98,
-    highlights: [
-      'Exclusively chartered 60ft luxury yacht with private crew',
-      'Snorkeling with majestic Manta Rays in crystal-clear bays',
-      'Gourmet seafood lunch freshly grilled onboard by our chef',
-      'Stand-up paddleboarding and sea-kayaking in secluded coves',
-      'Breathtaking open-ocean sunset toast with premium champagne'
-    ],
-    inclusions: [
-      'Private luxury harbor transfers',
-      'Exclusive yacht charter with Captain and hospitality crew',
-      'Full premium snorkeling and water sports equipment',
-      'Fresh gourmet seafood BBQ lunch and tropical fruit platters',
-      'Unlimited soft drinks, premium tea, coffee, and juices',
-      'Complimentary bottle of premium French Champagne'
-    ],
-    exclusions: [
-      'Scuba diving certification courses',
-      'Nusa Penida land tours (available as premium add-on)',
-      'Crew gratuities'
-    ],
-    itinerary: [
+    id: 'nusa-penida-west',
+    title: 'NUSA PENIDA - KELINGKING BEACH',
+    tagline: 'Nusa Penida West Trip',
+    shortDesc: 'Jelajahi keajaiban Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills & Crystal Bay.',
+    longDesc: 'Nikmati petualangan eksklusif seharian menjelajahi pesona bahari Nusa Penida bagian Barat. Mengunjungi spot ikonik dunia seperti Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, dan bersantai di Crystal Bay. Paket sudah termasuk tiket fastboat PP, mobil privat AC, makan siang, dan pemandu lokal.',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+    galleryImages: [
       {
-        time: '08:00 AM',
-        title: 'Harbor Welcome',
-        desc: 'Arrive at Serangan Private Marina with VIP welcome drinks and immediate boarding.'
+        name: 'Kelingking Beach',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        description: 'Tebing T-Rex spektakuler dengan pemandangan pantai pasir putih dan laut biru bening.'
       },
       {
-        time: '09:00 AM',
-        title: 'Sailing to Nusa Penida',
-        desc: 'Cruise across the Badung Strait. Spot flying fish and enjoy panoramic views of Bali’s southern cliffs.'
+        name: 'Broken Beach',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        description: 'Tebing melingkar alami dengan terowongan tebing ikonik tempat laut masuk.'
       },
       {
-        time: '10:30 AM',
-        title: 'Swim with Manta Rays',
-        desc: 'Drop anchor at Manta Bay. Snorkel alongside the majestic manta rays under the supervision of our marine guides.'
+        name: 'Angel’s Billabong',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        description: 'Kolam pasang surut alami dengan air jernih bak kristal di tebing batu karang.'
       },
       {
-        time: '12:30 PM',
-        title: 'Onboard Gourmet Feast',
-        desc: 'Relish a fresh, multi-course seafood barbecue prepared on deck, served with premium wines and local delicacies.'
+        name: 'Paluang Hills',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        description: 'Spot foto terbaik dengan latar belakang tebing Kelingking dari sudut pandang berbeda.'
       },
       {
-        time: '02:30 PM',
-        title: 'Lembongan Lagoon Cruise',
-        desc: 'Explore the scenic mangrove forests and limestone caves of Nusa Lembongan via stand-up paddleboard or kayak.'
-      },
-      {
-        time: '04:30 PM',
-        title: 'Sunset Sailing & Toast',
-        desc: 'Unwind on the front deck as the yacht cruises home. Raise a glass of chilled champagne as the sky burns in orange and pink.'
-      },
-      {
-        time: '06:30 PM',
-        title: 'Resort Return',
-        desc: 'Disembark at the marina where your private driver is waiting to escort you back to your hotel.'
+        name: 'Crystal Bay',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        description: 'Pantai indah berpasir putih tempat yang sempurna untuk bersantai dan menikmati perairan jernih.'
       }
-    ]
-  },
-  {
-    id: 'jungle-retreat',
-    title: 'Serene Jungle Retreat',
-    tagline: 'Ubud Wellness Sanctuary',
-    shortDesc: 'Unwind in the heart of tropical rainforests. Luxuriate in cascading infinity pools and holistic wellness therapies.',
-    longDesc: 'Disconnect from the mundane and submerge yourself in Ubud’s dense, emerald-green jungle canopy. This wellness sanctuary experience features private multi-tiered infinity pools, a bespoke volcanic-stone massage, personalized meditation sessions with a Balinese healer, and a customized fine-dining vegan or organic culinary menu.',
-    bgImage: '/bali_jungle_bg_1783528784335.jpg',
-    cardImage: '/serene_jungle_retreat_1783528749017.jpg',
-    pricePerPerson: 185,
-    duration: 'Full-Day (7 Hours)',
-    location: 'Tegallalang, Ubud',
-    difficulty: 'Centering / Peace',
-    rating: 4.8,
-    reviewCount: 142,
-    highlights: [
-      'Private wellness sanctuary cabana overlooking Ayung river',
-      'Traditional Balinese cleansing ritual (Melukat) with a holy priest',
-      '90-minute volcanic basalt hot stone massage session',
-      'Private organic cooking masterclass with our executive chef',
-      'Premium herbal tea pairing tasting session'
     ],
-    inclusions: [
-      'Bespoke resort-to-sanctuary round-trip private transport',
-      'Private wellness host and certified yoga instructor',
-      'Access to exclusive multi-tiered jungle infinity pool suite',
-      '90-minute hot stone therapy or custom herbal massage',
-      'Traditional Melukat ceremonial materials and sarongs',
-      'Four-course organic vegan or wellness gourmet degustation lunch'
-    ],
-    exclusions: [
-      'Additional retail purchases at the holistic spa boutique',
-      'Acupuncture or specialized medical therapies',
-      'Host tips'
-    ],
-    itinerary: [
-      {
-        time: '07:30 AM',
-        title: 'Morning Forest Drive',
-        desc: 'Enjoy a scenic, misty morning drive through the highland hills and traditional villages toward Ubud.'
-      },
-      {
-        time: '08:30 AM',
-        title: 'Yoga & River Sound Meditation',
-        desc: 'Begin with a gentle Hatha yoga session on an open-air bamboo deck, sound-tracked by the roaring Ayung River.'
-      },
-      {
-        time: '10:00 AM',
-        title: 'Holy Water Purifying Ritual',
-        desc: 'Settle in a private waterfall alcove. Partake in a traditional cleansing ceremony (Melukat) to refresh the spirit and mind.'
-      },
-      {
-        time: '11:30 AM',
-        title: 'The Spa Masterclass & Treatment',
-        desc: 'Receive our signature 90-minute volcanic basalt hot stone massage, promoting deep cellular renewal.'
-      },
-      {
-        time: '01:30 PM',
-        title: 'Gourmet Wellness Degustation',
-        desc: 'Savor a handcrafted 4-course organic lunch made entirely from local volcanic-soil crops and superfoods.'
-      },
-      {
-        time: '03:00 PM',
-        title: 'Rice Field Walk & Tea Pairing',
-        desc: 'Take a meditative stroll through the emerald Tegallalang terraces, concluding with a tasting of rare organic Balinese herbal teas.'
-      },
-      {
-        time: '04:30 PM',
-        title: 'Sunset Departure',
-        desc: 'Bid farewell to the sanctuary as you are driven back to your hotel, feeling profoundly renewed.'
-      }
-    ]
-  },
-  {
-    id: 'jeep-adventure',
-    title: 'Sewa Mobil Kijang Innova',
-    tagline: 'Premium Rental',
-    shortDesc: 'Nikmati perjalanan keliling Bali dengan kenyamanan ekstra bersama armada Toyota Kijang Innova premium kami.',
-    longDesc: 'Sewa mobil Toyota Kijang Innova premium untuk kenyamanan maksimal Anda di Bali. Dilengkapi dengan kabin yang luas, pendingin udara ganda, sistem suara premium, serta kursi kapten yang mewah. Sangat cocok untuk perjalanan bisnis, liburan keluarga, maupun acara VIP di Pulau Dewata.',
-    bgImage: '/car_innova_1783582975292.jpg',
-    cardImage: '/car_innova_1783582975292.jpg',
-    pricePerPerson: 50,
-    duration: 'Harian (12 Jam)',
-    location: 'Seluruh Bali',
-    difficulty: 'Luxury Ride',
+    pricePerPerson: 850000,
+    duration: '07:00 - 17:00 (Min. 2 Person)',
+    location: 'Nusa Penida, Bali',
+    difficulty: 'Eksplorasi Pulau',
     rating: 4.9,
-    reviewCount: 124,
+    reviewCount: 320,
     highlights: [
-      'Armada Toyota Kijang Innova tipe terbaru berstandar VIP',
-      'AC double blower super dingin untuk iklim tropis',
-      'Kabin super luas dan senyap untuk kenyamanan maksimal',
-      'Layanan penjemputan dan pengantaran bandara gratis',
-      'Sopir profesional ramah dan berpengalaman'
+      'Mengunjungi 5 destinasi ikonik: Kelingking, Broken Beach, Angel’s Billabong, Paluang Hills & Crystal Bay',
+      'Termasuk Fastboat Ticket Return (PP Sanur - Nusa Penida)',
+      'Private Car (Mobil Privat AC) & Driver selama di Nusa Penida',
+      'Sudah termasuk Lunch (Makan Siang) & Local Guide',
+      'Minimal pemesanan 2 orang (Durasi 07:00 - 17:00)'
     ],
     inclusions: [
-      'Sewa mobil Kijang Innova ber-AC bersih & prima',
-      'Bahan bakar minyak (BBM) penuh untuk hari pertama',
-      'Sopir pribadi pariwisata berlisensi resmi',
-      'Peralatan kenyamanan penumpang (tisu, air mineral dingin)',
-      'Asuransi kendaraan menyeluruh (all-risk)'
+      'Private Car (Mobil Privat AC)',
+      'Lunch (Makan Siang)',
+      'Guide (Pemandu Lokal)',
+      'Fastboat Ticket Return (Sanur - Nusa Penida PP)',
+      'Tiket Masuk Destinasi'
     ],
     exclusions: [
-      'Biaya parkir destinasi dan biaya tol',
-      'Makan sopir harian',
-      'Tip sukarela untuk sopir harian'
+      'Penjemputan hotel Bali ke Sanur (opsional)',
+      'Pengeluaran pribadi & tip'
     ],
     itinerary: [
+      { time: '07:00 AM', title: 'Meeting Point Pelabuhan Sanur', desc: 'Registrasi tiket fastboat dan persiapan penyeberangan ke Nusa Penida.' },
+      { time: '07:30 AM', title: 'Fastboat ke Nusa Penida', desc: 'Menyeberang laut menuju Nusa Penida (durasi perjalanan ±45 menit).' },
+      { time: '08:30 AM', title: 'Start West Trip', desc: 'Disambut driver privat, langsung menuju Kelingking Beach & Paluang Hills.' },
+      { time: '11:00 AM', title: 'Broken Beach & Angel’s Billabong', desc: 'Eksplorasi keajaiban tebing tebing karang dan kolam alami menakjubkan.' },
+      { time: '12:30 PM', title: 'Makan Siang', desc: 'Santap makan siang di restoran lokal pilihan.' },
+      { time: '02:00 PM', title: 'Bersantai di Crystal Bay', desc: 'Menikmati keasrian pantai Crystal Bay untuk santai atau berenang.' },
+      { time: '04:00 PM', title: 'Kembali ke Pelabuhan & Fastboat Sanur', desc: 'Kembali naik fastboat menuju Pelabuhan Sanur Bali (tiba ±17:00).' }
+    ]
+  },
+  {
+    id: 'nusa-penida-broken',
+    title: 'NUSA PENIDA - BROKEN BEACH',
+    tagline: 'Nusa Penida West Trip',
+    shortDesc: 'Tebing melingkar alami unik dengan teluk laut biru tempat air laut membiru masuk.',
+    longDesc: 'Nikmati pesona spektakuler Broken Beach (Pasih Uug) di Nusa Penida Barat. Bagian dari paket Nusa Penida Island West Trip yang mencakup 5 destinasi ikonik: Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, dan Crystal Bay. IDR 850K/pax (Min. 2 Person) include Mobil Privat AC, Fastboat PP, Lunch & Guide.',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+    galleryImages: [
       {
-        time: '08:00 AM',
-        title: 'Penjemputan Hotel/Bandara',
-        desc: 'Sopir VIP kami akan menjemput Anda di lobi hotel atau terminal kedatangan bandara tepat waktu.'
+        name: 'Broken Beach',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        description: 'Tebing melingkar alami dengan terowongan tebing ikonik tempat laut masuk.'
       },
       {
-        time: '09:00 AM',
-        title: 'Eksplorasi Rute Kustom Anda',
-        desc: 'Mulai perjalanan wisata Anda. Sopir kami siap merekomendasikan destinasi terbaik sesuai minat Anda.'
+        name: 'Kelingking Beach',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        description: 'Tebing T-Rex spektakuler dengan pemandangan pantai pasir putih dan laut biru bening.'
       },
       {
-        time: '12:00 PM',
-        title: 'Saran Tempat Makan Siang Terbaik',
-        desc: 'Nikmati kuliner Bali terpopuler sesuai rekomendasi sopir kami yang memahami selera kuliner khas.'
+        name: 'Angel’s Billabong',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        description: 'Kolam pasang surut alami dengan air jernih bak kristal di tebing batu karang.'
       },
       {
-        time: '02:00 PM',
-        title: 'Lanjutkan Perjalanan Wisata',
-        desc: 'Kunjungi pantai tersembunyi, pusat seni Ubud, pura suci, atau pusat perbelanjaan oleh-oleh.'
+        name: 'Paluang Hills',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        description: 'Spot foto terbaik dengan latar belakang tebing Kelingking dari sudut pandang berbeda.'
       },
       {
-        time: '06:00 PM',
-        title: 'Sunset Gaze & Santai Sore',
-        desc: 'Menuju lokasi sunset favorit seperti Uluwatu atau Canggu untuk menikmati senja Bali yang indah.'
-      },
-      {
-        time: '08:00 PM',
-        title: 'Kembali ke Hotel / Airport Drop',
-        desc: 'Pengantaran kembali dengan selamat ke hotel atau bandara sesuai jadwal yang Anda tentukan.'
+        name: 'Crystal Bay',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        description: 'Pantai indah berpasir putih tempat yang sempurna untuk bersantai dan menikmati perairan jernih.'
       }
-    ]
-  },
-  {
-    id: 'nusa-dua',
-    title: 'Nusa Dua Exclusive Beach',
-    tagline: 'Elite Beach Leisure',
-    shortDesc: 'Rejuvenate on pristine white sands. Relax in premium private cabanas with five-star butler services.',
-    longDesc: 'Treat yourself to the pinnacle of relaxation in Bali’s most exclusive gated resort enclave. Nusa Dua Exclusive Beach offers quiet, untouched white sands, private oceanfront cabanas, tailored beachside massages, and fine dining under swaying palms. Experience the serene security and luxury of world-class beach club leisure.',
-    bgImage: '/nusa_dua_beach_1783579200979.jpg',
-    cardImage: '/nusa_dua_beach_1783579200979.jpg',
-    pricePerPerson: 210,
-    duration: 'Full-Day (8 Hours)',
-    location: 'Nusa Dua Gated Enclave',
-    difficulty: 'Very Easy / Relaxed',
-    rating: 4.8,
-    reviewCount: 180,
-    highlights: [
-      'Private sea-view double sunbed cabana in an elite resort partner club',
-      'Personal premium butler service throughout the entire day',
-      'Exclusive 60-minute therapeutic beachfront massage',
-      'Gourmet beachside BBQ lunch featuring fresh lobster and wagyu beef',
-      'Complimentary access to watersports (Stand-up Paddleboard & Kayak)'
     ],
-    inclusions: [
-      'Private air-conditioned hotel transfers in luxury Alphard van',
-      'Premium daybed reservation with high-end towels and amenities',
-      'Butler services and dedicated hospitality host',
-      '3-course gourmet beachside lunch and cold press juices',
-      '60-minute relaxing body massage by certified spa therapist'
-    ],
-    exclusions: [
-      'Alcoholic spirits (premium cocktails list available at bar)',
-      'Jet ski or banana boat rentals'
-    ],
-    itinerary: [
-      { time: '09:00 AM', title: 'Luxury Hotel Pickup', desc: 'Depart your villa in a premium multi-purpose vehicle.' },
-      { time: '10:00 AM', title: 'Cabana Welcome & Sunrise Lounge', desc: 'VIP welcome with fresh coconut drinks and settling into your private sunbed.' },
-      { time: '11:00 AM', title: 'Aqua Sports & Swim', desc: 'Gentle paddleboarding or swimming in the calm, coral-protected Nusa Dua lagoon.' },
-      { time: '01:00 PM', title: 'Lobster & Wagyu Beachside Feast', desc: 'Savor a freshly grilled chef’s platter brought straight to your private cabana.' },
-      { time: '03:00 PM', title: 'Beachfront Therapeutic Massage', desc: 'Unwind completely with the sound of waves during a luxurious 60-minute therapy.' },
-      { time: '05:00 PM', title: 'High Tea Sunset Mocktails', desc: 'Gaze at the pristine horizon while enjoying premium afternoon tea and sweets.' },
-      { time: '06:00 PM', title: 'Return Transfer', desc: 'Scenic drive back to your resort feeling fully pampered.' }
-    ]
-  },
-  {
-    id: 'bedugul-danau',
-    title: 'Bedugul Danau Beratan',
-    tagline: 'Sacred Temples & Highlands',
-    shortDesc: 'A misty cultural escape to the floating temple on Lake Beratan, coupled with botanical gardens and scenic highlands.',
-    longDesc: 'Escape the tropical heat and journey into Bali’s misty mountain highlands. Bedugul is home to the magical Ulun Danu Beratan Temple, which appears to float on the calm, reflective waters of a volcanic lake. Breathe the fresh pine-scented air, walk through towering bamboo forests, and explore local strawberry fields and standard Balinese shrines.',
-    bgImage: '/bedugul_danau_beratan_1783579216449.jpg',
-    cardImage: '/bedugul_danau_beratan_1783579216449.jpg',
-    pricePerPerson: 125,
-    duration: 'Full-Day (9 Hours)',
-    location: 'Bedugul Highlands',
-    difficulty: 'Easy Cultural',
-    rating: 4.7,
-    reviewCount: 220,
-    highlights: [
-      'Private traditional boat charter on Lake Beratan for close-up temple photos',
-      'VIP guided tour of Ulun Danu temple complex with certified historian',
-      'Scenic drive through the scenic botanical garden in a golf cart',
-      'Gourmet highland cuisine lunch inside an exclusive lakefront gazebo',
-      'Exotic organic strawberry picking and tasting session'
-    ],
-    inclusions: [
-      'Full private transport in luxury SUV with experienced driver-guide',
-      'All temple entry passes and historical guide fees',
-      'Private boat charter on Lake Beratan',
-      'Golf cart rental inside Bali Botanical Gardens',
-      'Premium highland buffet or ala carte lunch with organic ingredients'
-    ],
-    exclusions: [
-      'Personal shopping at traditional Candi Kuning market',
-      'Tips'
-    ],
-    itinerary: [
-      { time: '08:00 AM', title: 'Misty Highlands Drive', desc: 'Drive through beautiful winding roads into the cool northern mountains.' },
-      { time: '09:45 AM', title: 'Ulun Danu Beratan Exploration', desc: 'Walk around the iconic sacred temple and discover its rich spiritual heritage.' },
-      { time: '11:00 AM', title: 'Reflective Lake Boat Charter', desc: 'Board a traditional wooden boat to cruise the volcanic lake for panoramic views.' },
-      { time: '12:30 PM', title: 'Highland Garden Gazebo Lunch', desc: 'Feast on organic farm-fresh food surrounded by quiet lakes and pine forests.' },
-      { time: '02:00 PM', title: 'Botanical Gardens Golf Tour', desc: 'Ride a private golf cart through towering giant trees, orchids, and fern collections.' },
-      { time: '03:30 PM', title: 'Strawberry Farm & Local Market', desc: 'Pick sweet highland strawberries and explore local spice markets.' },
-      { time: '05:00 PM', title: 'Return Road Journey', desc: 'Descend back down to the southern coast as twilight settles.' }
-    ]
-  },
-  {
-    id: 'lempuyang',
-    title: 'Lempuyang Luhur Temple',
-    tagline: 'Heaven Gates Photography',
-    shortDesc: 'Witness the iconic Gates of Heaven with Mt. Agung in the background, with a private photographer and VIP queue pass.',
-    longDesc: 'Stand between the sacred stone gates of Pura Lempuyang, framing the towering volcanic cone of Mount Agung in the clouds. With a dedicated private photographer on hand and our exclusive VIP booking system that minimizes wait times, this journey delivers stunning visual memories and a deep connection to East Bali’s ancient Hindu spirituality.',
-    bgImage: '/lempuyang_temple_1783579255281.jpg',
-    cardImage: '/lempuyang_temple_1783579255281.jpg',
-    pricePerPerson: 130,
-    duration: 'Full-Day (11 Hours)',
-    location: 'Karangasem, East Bali',
-    difficulty: 'Easy / Walking stairs',
+    pricePerPerson: 850000,
+    duration: '07:00 - 17:00 (Min. 2 Person)',
+    location: 'Nusa Penida, Bali',
+    difficulty: 'Eksplorasi Pulau',
     rating: 4.9,
-    reviewCount: 410,
+    reviewCount: 315,
     highlights: [
-      'VIP priority booking at the famous Lempuyang Gates of Heaven',
-      'Bespoke private travel photographer with pro camera equipment',
-      'Guided walkthrough of Tirta Gangga Royal Water Palace',
-      'Scenic lunch overlooking the lush terraced valley of Karangasem',
-      'Visit to the hidden mountain sanctuary of Pura Penataran'
+      'Mengunjungi 5 destinasi ikonik: Kelingking, Broken Beach, Angel’s Billabong, Paluang Hills & Crystal Bay',
+      'Termasuk Fastboat Ticket Return (PP Sanur - Nusa Penida)',
+      'Private Car (Mobil Privat AC) & Driver selama di Nusa Penida',
+      'Sudah termasuk Lunch (Makan Siang) & Local Guide',
+      'Minimal pemesanan 2 orang (Durasi 07:00 - 17:00)'
     ],
     inclusions: [
-      'Private luxury transportation in high-end SUV',
-      'All entrance fees, sarong rentals, and local shuttle tickets',
-      'Professional private photographer with high-res digital delivery',
-      'Sumptuous 3-course Balinese heritage lunch',
-      'Refreshments, mineral water, and luxury towels'
+      'Private Car (Mobil Privat AC)',
+      'Lunch (Makan Siang)',
+      'Guide (Pemandu Lokal)',
+      'Fastboat Ticket Return (Sanur - Nusa Penida PP)',
+      'Tiket Masuk Destinasi'
     ],
     exclusions: [
-      'Prints of photographs (all digital files provided instead)',
-      'Personal offerings'
+      'Penjemputan hotel Bali ke Sanur (opsional)',
+      'Pengeluaran pribadi & tip'
     ],
     itinerary: [
-      { time: '05:00 AM', title: 'Early Sunrise Departure', desc: 'Depart early to secure the best lighting conditions at the temple.' },
-      { time: '07:30 AM', title: 'Gates of Heaven Portrait', desc: 'Behold the incredible Gateway to Mt. Agung. Capture world-famous mirrored photos.' },
-      { time: '10:00 AM', title: 'Tirta Gangga Water Palace', desc: 'Stroll across the stone steps of the royal fish pond surrounded by fountains.' },
-      { time: '12:30 PM', title: 'Karangasem Heritage Lunch', desc: 'Enjoy local organic delicacies in a luxury restaurant with sweeping valley views.' },
-      { time: '02:30 PM', title: 'Taman Ujung Water Palace', desc: 'Explore the majestic historic European-Balinese royal architecture by the sea.' },
-      { time: '04:30 PM', title: 'Scenic Coastline Drive', desc: 'Wind down with a beautiful ocean view drive back to your resort.' }
+      { time: '07:00 AM', title: 'Meeting Point Pelabuhan Sanur', desc: 'Registrasi tiket fastboat dan persiapan penyeberangan ke Nusa Penida.' },
+      { time: '07:30 AM', title: 'Fastboat ke Nusa Penida', desc: 'Menyeberang laut menuju Nusa Penida (durasi perjalanan ±45 menit).' },
+      { time: '08:30 AM', title: 'Start West Trip', desc: 'Disambut driver privat, langsung menuju Kelingking Beach & Paluang Hills.' },
+      { time: '11:00 AM', title: 'Broken Beach & Angel’s Billabong', desc: 'Eksplorasi keajaiban tebing tebing karang dan kolam alami menakjubkan.' },
+      { time: '12:30 PM', title: 'Makan Siang', desc: 'Santap makan siang di restoran lokal pilihan.' },
+      { time: '02:00 PM', title: 'Bersantai di Crystal Bay', desc: 'Menikmati keasrian pantai Crystal Bay untuk santai atau berenang.' },
+      { time: '04:00 PM', title: 'Kembali ke Pelabuhan & Fastboat Sanur', desc: 'Kembali naik fastboat menuju Pelabuhan Sanur Bali (tiba ±17:00).' }
     ]
   },
   {
-    id: 'uluwatu',
-    title: 'Uluwatu Sunset Horizon',
-    tagline: 'Romantic Sunset Cliff',
-    shortDesc: 'A spectacular ocean cliff journey. Watch the historic Kecak Dance, visit Uluwatu Temple, and dine at Jimbaran bay.',
-    longDesc: 'Dramatically perched 70 meters above the roaring waves of the Indian Ocean, Uluwatu Temple is a timeless wonder. Our curated private experience grants you prime amphitheater seats for the legendary sunset Kecak Fire Dance, private guides to navigate the cliff paths, and concludes with an elite candlelight seafood dinner directly on the beach at Jimbaran Bay.',
-    bgImage: '/uluwatu_cliff_1783579271777.jpg',
-    cardImage: '/uluwatu_cliff_1783579271777.jpg',
-    pricePerPerson: 155,
-    duration: 'Half-Day (7 Hours)',
-    location: 'Uluwatu Cliff, Jimbaran',
-    difficulty: 'Easy / Walking',
-    rating: 4.8,
-    reviewCount: 290,
+    id: 'nusa-penida-billabong',
+    title: 'NUSA PENIDA - ANGEL’S BILLABONG',
+    tagline: 'Nusa Penida West Trip',
+    shortDesc: 'Kolam pasang surut alami dengan air bening mengilap di tebing batu karang.',
+    longDesc: 'Kolam alami yang memukau karya alam Angel’s Billabong di Nusa Penida Barat. Bagian dari paket Nusa Penida Island West Trip yang mencakup 5 destinasi ikonik: Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, dan Crystal Bay. IDR 850K/pax (Min. 2 Person) include Mobil Privat AC, Fastboat PP, Lunch & Guide.',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+    galleryImages: [
+      {
+        name: 'Angel’s Billabong',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        description: 'Kolam pasang surut alami dengan air jernih bak kristal di tebing batu karang.'
+      },
+      {
+        name: 'Kelingking Beach',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        description: 'Tebing T-Rex spektakuler dengan pemandangan pantai pasir putih dan laut biru bening.'
+      },
+      {
+        name: 'Broken Beach',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        description: 'Tebing melingkar alami dengan terowongan tebing ikonik tempat laut masuk.'
+      },
+      {
+        name: 'Paluang Hills',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        description: 'Spot foto terbaik dengan latar belakang tebing Kelingking dari sudut pandang berbeda.'
+      },
+      {
+        name: 'Crystal Bay',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        description: 'Pantai indah berpasir putih tempat yang sempurna untuk bersantai dan menikmati perairan jernih.'
+      }
+    ],
+    pricePerPerson: 850000,
+    duration: '07:00 - 17:00 (Min. 2 Person)',
+    location: 'Nusa Penida, Bali',
+    difficulty: 'Eksplorasi Pulau',
+    rating: 4.9,
+    reviewCount: 298,
     highlights: [
-      'VIP front-row seating at the world-famous Kecak Cliffside Dance',
-      'Private guided walkthrough of the ancient 11th-century Uluwatu Temple',
-      'Scenic walk along the secure, cliffside botanical stone paths',
-      'Private candlelight seafood lobster dinner on the sands of Jimbaran Beach',
-      'Stunning sunset viewing from the island’s absolute southern tip'
+      'Mengunjungi 5 destinasi ikonik: Kelingking, Broken Beach, Angel’s Billabong, Paluang Hills & Crystal Bay',
+      'Termasuk Fastboat Ticket Return (PP Sanur - Nusa Penida)',
+      'Private Car (Mobil Privat AC) & Driver selama di Nusa Penida',
+      'Sudah termasuk Lunch (Makan Siang) & Local Guide',
+      'Minimal pemesanan 2 orang (Durasi 07:00 - 17:00)'
     ],
     inclusions: [
-      'Private premium vehicle roundtrip pick up',
-      'All temple entrance fees, sarong rentals, and private guide services',
-      'VIP tickets to the sunset Kecak Fire Dance',
-      'Luxury beachfront seafood BBQ dinner (includes lobster, prawns, fish, clams)',
-      'Chilled water and luxury passenger comfort kit'
+      'Private Car (Mobil Privat AC)',
+      'Lunch (Makan Siang)',
+      'Guide (Pemandu Lokal)',
+      'Fastboat Ticket Return (Sanur - Nusa Penida PP)',
+      'Tiket Masuk Destinasi'
     ],
     exclusions: [
-      'Alcoholic drinks at Jimbaran beach (available to purchase)',
-      'Gratuities'
+      'Penjemputan hotel Bali ke Sanur (opsional)',
+      'Pengeluaran pribadi & tip'
     ],
     itinerary: [
-      { time: '02:30 PM', title: 'Resort Departure', desc: 'Settle into your private car and head south to the Bukit Peninsula.' },
-      { time: '03:45 PM', title: 'Uluwatu Cliffside Walk', desc: 'Witness ancient clifftop shrines and spot friendly wild temple monkeys.' },
-      { time: '05:30 PM', title: 'Kecak Fire & Sunset Dance', desc: 'Take your VIP seats as the sun sinks into the sea and the fiery dance begins.' },
-      { time: '07:30 PM', title: 'Jimbaran Bay Candlelight Dinner', desc: 'Sink your toes in the sand as you relish a freshly grilled seafood basket under the stars.' },
-      { time: '09:30 PM', title: 'Return Transfer', desc: 'Smooth drive back to your resort to end a beautiful romantic evening.' }
+      { time: '07:00 AM', title: 'Meeting Point Pelabuhan Sanur', desc: 'Registrasi tiket fastboat dan persiapan penyeberangan ke Nusa Penida.' },
+      { time: '07:30 AM', title: 'Fastboat ke Nusa Penida', desc: 'Menyeberang laut menuju Nusa Penida (durasi perjalanan ±45 menit).' },
+      { time: '08:30 AM', title: 'Start West Trip', desc: 'Disambut driver privat, langsung menuju Kelingking Beach & Paluang Hills.' },
+      { time: '11:00 AM', title: 'Broken Beach & Angel’s Billabong', desc: 'Eksplorasi keajaiban tebing tebing karang dan kolam alami menakjubkan.' },
+      { time: '12:30 PM', title: 'Makan Siang', desc: 'Santap makan siang di restoran lokal pilihan.' },
+      { time: '02:00 PM', title: 'Bersantai di Crystal Bay', desc: 'Menikmati keasrian pantai Crystal Bay untuk santai atau berenang.' },
+      { time: '04:00 PM', title: 'Kembali ke Pelabuhan & Fastboat Sanur', desc: 'Kembali naik fastboat menuju Pelabuhan Sanur Bali (tiba ±17:00).' }
     ]
   },
   {
-    id: 'atv-quad',
-    title: 'ATV Quad Bikes Jungle & Mud Ride',
-    tagline: 'Adrenaline Rush',
-    shortDesc: 'Conquer the rugged Ubud terrain in an elite, powerful quad bike. Drive through mud, waterfalls, and tunnels.',
-    longDesc: 'Unleash your inner adventurer on a private quad biking safari through Bali’s most dramatic landscapes. Navigate through dense bamboo forests, deep muddy riverbeds, dark natural stone tunnels, and splash right through rushing waterfalls. Equipped with high-power Japanese quad bikes and led by expert private guides, this tour is high on adrenaline and high on luxury.',
+    id: 'nusa-penida-paluang',
+    title: 'NUSA PENIDA - PALUANG HILLS & CRYSTAL BAY',
+    tagline: 'Nusa Penida West Trip',
+    shortDesc: 'Spot bukit panorama indah dan teluk pantai bening berpasir putih.',
+    longDesc: 'Pemandangan spektakuler Paluang Hills dan ketenangan pantai Crystal Bay di Nusa Penida Barat. Bagian dari paket Nusa Penida Island West Trip yang mencakup 5 destinasi ikonik: Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, dan Crystal Bay. IDR 850K/pax (Min. 2 Person) include Mobil Privat AC, Fastboat PP, Lunch & Guide.',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+    galleryImages: [
+      {
+        name: 'Paluang Hills',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        description: 'Spot foto terbaik dengan latar belakang tebing Kelingking dari sudut pandang berbeda.'
+      },
+      {
+        name: 'Crystal Bay',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        description: 'Pantai indah berpasir putih tempat yang sempurna untuk bersantai dan menikmati perairan jernih.'
+      },
+      {
+        name: 'Kelingking Beach',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        description: 'Tebing T-Rex spektakuler dengan pemandangan pantai pasir putih dan laut biru bening.'
+      },
+      {
+        name: 'Broken Beach',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        description: 'Tebing melingkar alami dengan terowongan tebing ikonik tempat laut masuk.'
+      },
+      {
+        name: 'Angel’s Billabong',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        description: 'Kolam pasang surut alami dengan air jernih bak kristal di tebing batu karang.'
+      }
+    ],
+    pricePerPerson: 850000,
+    duration: '07:00 - 17:00 (Min. 2 Person)',
+    location: 'Nusa Penida, Bali',
+    difficulty: 'Eksplorasi Pulau',
+    rating: 4.9,
+    reviewCount: 305,
+    highlights: [
+      'Mengunjungi 5 destinasi ikonik: Kelingking, Broken Beach, Angel’s Billabong, Paluang Hills & Crystal Bay',
+      'Termasuk Fastboat Ticket Return (PP Sanur - Nusa Penida)',
+      'Private Car (Mobil Privat AC) & Driver selama di Nusa Penida',
+      'Sudah termasuk Lunch (Makan Siang) & Local Guide',
+      'Minimal pemesanan 2 orang (Durasi 07:00 - 17:00)'
+    ],
+    inclusions: [
+      'Private Car (Mobil Privat AC)',
+      'Lunch (Makan Siang)',
+      'Guide (Pemandu Lokal)',
+      'Fastboat Ticket Return (Sanur - Nusa Penida PP)',
+      'Tiket Masuk Destinasi'
+    ],
+    exclusions: [
+      'Penjemputan hotel Bali ke Sanur (opsional)',
+      'Pengeluaran pribadi & tip'
+    ],
+    itinerary: [
+      { time: '07:00 AM', title: 'Meeting Point Pelabuhan Sanur', desc: 'Registrasi tiket fastboat dan persiapan penyeberangan ke Nusa Penida.' },
+      { time: '07:30 AM', title: 'Fastboat ke Nusa Penida', desc: 'Menyeberang laut menuju Nusa Penida (durasi perjalanan ±45 menit).' },
+      { time: '08:30 AM', title: 'Start West Trip', desc: 'Disambut driver privat, langsung menuju Kelingking Beach & Paluang Hills.' },
+      { time: '11:00 AM', title: 'Broken Beach & Angel’s Billabong', desc: 'Eksplorasi keajaiban tebing tebing karang dan kolam alami menakjubkan.' },
+      { time: '12:30 PM', title: 'Makan Siang', desc: 'Santap makan siang di restoran lokal pilihan.' },
+      { time: '02:00 PM', title: 'Bersantai di Crystal Bay', desc: 'Menikmati keasrian pantai Crystal Bay untuk santai atau berenang.' },
+      { time: '04:00 PM', title: 'Kembali ke Pelabuhan & Fastboat Sanur', desc: 'Kembali naik fastboat menuju Pelabuhan Sanur Bali (tiba ±17:00).' }
+    ]
+  },
+  {
+    id: 'water-sport',
+    title: 'WATER SPORT PACKAGE',
+    tagline: 'Water Sports Adventure',
+    shortDesc: 'Nikmati keseruan olahraga air Bali paling seru: Banana Boat, Donut Boat, Jet Ski, dan Parasailing.',
+    longDesc: 'Nikmati keseruan olahraga air terlengkap di Tanjung Benoa, Bali. Paket ini dirancang khusus untuk memberikan pengalaman akuatik paling mendebarkan dengan 4 wahana utama: Banana Boat, Donut Boat, Jet Ski, dan Parasailing. Dilengkapi dengan instruktur berpengalaman dan tim rescue profesional.',
+    bgImage: '/water_sport_banner_1786161929728.jpg',
+    cardImage: '/water_sport_banner_1786161929728.jpg',
+    galleryImages: [
+      {
+        name: 'Banana Boat',
+        image: '/banana_boat_photo_1786161944354.jpg',
+        description: 'Sensasi meluncur deras di atas gelombang laut Tanjung Benoa bersama rekan atau keluarga.'
+      },
+      {
+        name: 'Donut Boat',
+        image: '/donut_boat_photo_1786161957677.jpg',
+        description: 'Perahu karet unik berbentuk donat yang ditarik speedboat untuk sensasi putaran seru.'
+      },
+      {
+        name: 'Jet Ski',
+        image: '/jetski_photo_1786161972580.jpg',
+        description: 'Kendarai Jet Ski bertenaga tinggi membelah lautan biru jernih dengan kecepatan penuh.'
+      },
+      {
+        name: 'Parasailing',
+        image: '/parasailing_photo_1786161983951.jpg',
+        description: 'Terbang tinggi parasailing menikmati keindahan panoramik pantai dan pesisir Bali.'
+      }
+    ],
+    pricePerPerson: 1200000,
+    duration: 'Maksimal 2 Orang',
+    location: 'Tanjung Benoa, Bali',
+    difficulty: 'Seru & Berenergi',
+    rating: 4.9,
+    reviewCount: 280,
+    highlights: [
+      'Termasuk 4 wahana utama: Banana Boat, Donut Boat, Jet Ski, dan Parasailing',
+      'Sudah termasuk Insurance, Lunch, Guide, dan Rescue Team',
+      'Maksimal 2 orang per paket aktivitas',
+      'Peralatan keselamatan lengkap berstandar internasional',
+      'Instruktur profesional siap mendampingi selama wahana'
+    ],
+    inclusions: [
+      'Insurance (Asuransi)',
+      'Lunch (Makan Siang)',
+      'Guide (Pemandu)',
+      'Rescue Team (Tim Penyelamat)',
+      'Wahana Banana Boat',
+      'Wahana Donut Boat',
+      'Wahana Jet Ski',
+      'Wahana Parasailing'
+    ],
+    exclusions: [
+      'Dokumentasi foto/video pribadi',
+      'Pengeluaran pribadi di luar paket',
+      'Tip sukarela'
+    ],
+    itinerary: [
+      { time: '09:00 AM', title: 'Tiba di Lokasi & Penyiapan APD', desc: 'Registrasi, pemasangan pelampung, dan pengarahan keselamatan dari tim rescue.' },
+      { time: '09:30 AM', title: 'Sesi Banana Boat & Donut Boat', desc: 'Nikmati sensasi meluncur deras di atas gelombang laut dengan Banana & Donut Boat.' },
+      { time: '10:30 AM', title: 'Sesi Jet Ski & Parasailing', desc: 'Kendarai Jet Ski dengan kecepatan tinggi dan terbang menikmati pemandangan laut Bali dari ketinggian.' },
+      { time: '12:00 PM', title: 'Makan Siang & Istirahat', desc: 'Selesai beraktivitas, bilas diri di shower dan nikmati santapan makan siang lezat.' }
+    ]
+  },
+  {
+    id: 'atv-ride',
+    title: 'ATV – KUBER ATV',
+    tagline: 'Kuber ATV Off-Road',
+    shortDesc: 'Petualangan Kuber ATV di Ubud: Single Rp750.000 & Tandem Rp1.200.000.',
+    longDesc: 'Pacu adrenalin Anda menembus rute pedesaan, gua alami, terowongan air, dan lintasan berlumpur Ubud dengan Kuber ATV. Tersedia pilihan ride Single (Rp 750.000) dan Tandem (Rp 1.200.000). Dilengkapi asuransi, pemandu profesional, dan tim penyelamat.',
     bgImage: '/activity_atv_jungle_1783677762979.jpg',
     cardImage: '/activity_atv_jungle_1783677762979.jpg',
-    pricePerPerson: 115,
-    duration: 'Half-Day (6 Hours)',
-    location: 'Ubud Jungle Ridges',
-    difficulty: 'Exciting Adventure',
-    rating: 4.9,
-    reviewCount: 154,
-    highlights: [
-      'Ride top-of-the-line, high-performance Japanese 250cc ATV quad bikes',
-      'Private specialized guide ensuring safety and action-filled routing',
-      'Unique course featuring a 50m dark historic cave tunnel and river canyon',
-      'Private luxury hot shower suites with fresh towels and premium soaps',
-      'Delicious organic dynamic buffet lunch overlooking lush green hills'
+    pricePerPerson: 750000,
+    pricingOptions: [
+      { name: 'Single', price: 750000, desc: '1 Orang per unit Kuber ATV' },
+      { name: 'Tandem', price: 1200000, desc: '2 Orang berboncengan per unit Kuber ATV' }
     ],
-    inclusions: [
-      'Private air-conditioned resort transfers in premium class car',
-      'Private professional ATV trail guide and safety orientation',
-      'Modern quad bike use (Single or Tandem options) with boots and helmets',
-      'All safety equipment, locker, and luxury hot shower facilities',
-      'Post-adventure multi-course organic buffet and mocktails'
-    ],
-    exclusions: [
-      'Optional purchase of GoPro trail video recordings',
-      'Personal trail clothing'
-    ],
-    itinerary: [
-      { time: '08:00 AM', title: 'Morning Resort Departure', desc: 'Depart your hotel in a private comfortable SUV toward central Ubud.' },
-      { time: '09:15 AM', title: 'VIP Trail briefing', desc: 'Gear up, receive safety guidelines, and complete a trial track test.' },
-      { time: '09:45 AM', title: 'The Great Jungle & Mud Expedition', desc: 'Ride through rice fields, plunge into mud pools, drive behind waterfalls, and traverse ancient tunnels.' },
-      { time: '11:45 AM', title: 'Luxury Shower & Refresh', desc: 'Wash off the mud in spacious private hot shower cabins.' },
-      { time: '12:30 PM', title: 'Scenic Hillside Feast', desc: 'Savor organic local dishes at a modern restaurant with lush rainforest views.' },
-      { time: '02:00 PM', title: 'Resort Safe Return', desc: 'Relax in your private vehicle back to your hotel.' }
-    ]
-  },
-  {
-    id: 'river-tubing',
-    title: 'Bali Wild River Tubing Adventure',
-    tagline: 'River Wilderness',
-    shortDesc: 'Float down a beautiful river canyon in central Bali. Experience mild rapids, gorgeous scenery, and pure jungle wilderness.',
-    longDesc: 'Immerse yourself directly in Bali’s hidden river ecosystems. Guided by a certified swiftwater rescue professional, float in your own personal, high-durability inflatable tube down a crystal-clear canyon river. Glide through ancient mossy volcanic cliffs, feel the splash of pristine natural streams, and swim in calm mountain pools.',
-    bgImage: '/activity_river_tubing_1783677780719.jpg',
-    cardImage: '/activity_river_tubing_1783677780719.jpg',
-    pricePerPerson: 120,
-    duration: 'Half-Day (6 Hours)',
-    location: 'Payangan Hidden River',
-    difficulty: 'Moderate Thrill',
+    duration: 'Maksimal 2 Orang',
+    location: 'Ubud, Bali',
+    difficulty: 'Adrenalin & Menantang',
     rating: 4.8,
-    reviewCount: 96,
+    reviewCount: 195,
     highlights: [
-      'Private swiftwater expert escorting you down a pristine mountain stream',
-      'Float on professional-grade solo tubes with comfortable seat backs',
-      'Explore hidden deep-canyon gorges and beautiful dripping waterfalls',
-      'Encounter exotic wild birds, monkeys, and butterflies in their natural habitat',
-      'Bespoke hot river-view picnic served right at the finish line'
+      'Pilihan tipe ride: Single (Rp750.000) & Tandem (Rp1.200.000)',
+      'Sudah termasuk Insurance, Lunch, Guide, dan Rescue Team',
+      'Menelusuri terowongan air dan air terjun tersembunyi',
+      'Perlengkapan helm dan sepatu boots disediakan lengkap',
+      'Fasilitas bilas dan kamar mandi yang bersih'
     ],
     inclusions: [
-      'Private pickup and drop-off in premium SUV with driver',
-      'High-quality solo inflatable tube, life jacket, and safety helmet',
-      'Two highly experienced private river instructors',
-      'Private lockers, hot showers, luxury body towels, and toiletries',
-      'Chef-prepared hot riverside gourmet lunch'
+      'Insurance (Asuransi)',
+      'Lunch (Makan Siang)',
+      'Guide (Pemandu)',
+      'Rescue Team (Tim Penyelamat)',
+      'Wahana Kuber ATV (Single / Tandem)'
     ],
     exclusions: [
-      'Personal waterproof camera rental',
-      'Tips'
-    ],
-    itinerary: [
-      { time: '08:30 AM', title: 'Hotel Pickup', desc: 'Private transfer from your hotel into the beautiful Payangan hills.' },
-      { time: '09:30 AM', title: 'Safety Briefing & Outfitting', desc: 'Receive state-of-the-art river safety gear and professional guidelines.' },
-      { time: '10:00 AM', title: 'Wild River Tubing Launch', desc: 'Float down the crystalline river. Ride class I & II rapids and explore spectacular canyons.' },
-      { time: '12:00 PM', title: 'Riverside Hot Shower', desc: 'Refresh in private luxury forest shower suites.' },
-      { time: '12:45 PM', title: 'Gourmet Valley Lunch', desc: 'Enjoy a delicious lunch on a wooden deck suspended over the rushing river waters.' },
-      { time: '02:00 PM', title: 'Return Transfer', desc: 'Drive back to your resort in absolute comfort.' }
-    ]
-  },
-  {
-    id: 'bali-jungle-swing',
-    title: 'Bali Jungle Swing',
-    tagline: 'Adrenaline Swing',
-    shortDesc: 'Rasakan sensasi berayun di atas ketinggian dengan pemandangan lembah dan hutan tropis Ubud yang menakjubkan.',
-    longDesc: 'Nikmati pengalaman ikonik Bali Jungle Swing yang mendebarkan di atas lembah hijau Ubud yang asri. Dengan sistem pengaman berstandar internasional dan fotografer profesional, abadikan momen spektakuler Anda melayang di udara dengan latar belakang pohon kelapa, tebing, dan air terjun tersembunyi.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783755074/fe5b3012-c2bd-4937-9dae-588ef1aa56b7.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783755074/fe5b3012-c2bd-4937-9dae-588ef1aa56b7.png',
-    pricePerPerson: 45,
-    duration: 'Setengah Hari (4 Jam)',
-    location: 'Ubud Valley, Gianyar',
-    difficulty: 'Mudah / Mendebarkan',
-    rating: 4.8,
-    reviewCount: 95,
-    highlights: [
-      'Berayun di ketinggian hingga 30 meter di atas lembah rimbun',
-      'Spot foto premium & sarang burung raksasa yang estetik',
-      'Sistem tali pengaman ganda berstandar internasional (safety first)',
-      'Fotografer profesional gratis dengan kamera berspesifikasi tinggi',
-      'Sajian kopi luwak dan teh herbal lokal gratis di lokasi'
-    ],
-    inclusions: [
-      'Transportasi privat antar-jemput ber-AC nyaman',
-      'Tiket masuk area Bali Jungle Swing VIP',
-      'Semua akses ke ayunan ekstrem, ayunan tunggal, dan ayunan ganda',
-      'Peralatan keselamatan lengkap berstandar internasional',
-      'Minuman selamat datang dan sesi mencicipi kopi/teh tradisional'
-    ],
-    exclusions: [
-      'Sewa gaun terbang panjang (tersedia di lokasi)',
-      'Makan siang (tersedia opsi restoran di lokasi)',
+      'Dokumentasi pribadi',
+      'Pakaian ganti pribadi',
       'Tip sukarela'
     ],
     itinerary: [
-      { time: '09:00 AM', title: 'Penjemputan Privat', desc: 'Penjemputan nyaman dari hotel Anda dengan armada VIP DDTourbali.' },
-      { time: '10:00 AM', title: 'Brifing Keselamatan & Mulai Berayun', desc: 'Tiba di lokasi, tim profesional kami akan memasang alat pengaman dan memandu Anda di ayunan pertama.' },
-      { time: '11:00 AM', title: 'Sesi Foto Estetik & Sarang Burung', desc: 'Ambil foto menakjubkan di sarang burung gantung, spot helipad, dan ayunan romantis bersama pasangan.' },
-      { time: '12:00 PM', title: 'Mencicipi Kopi Tradisional Bali', desc: 'Nikmati suasana santai sembari menikmati teh jahe hangat, kopi Bali, dan kopi Luwak otentik.' },
-      { time: '01:00 PM', title: 'Kembali Ke Hotel', desc: 'Kembali ke hotel dengan kenangan foto-foto indah siap dibagikan di media sosial.' }
+      { time: '09:00 AM', title: 'Registrasi & Perlengkapan Safety', desc: 'Gunakan helm, boots, dan ikuti brifing keselamatan dari pemandu profesional.' },
+      { time: '09:30 AM', title: 'Petualangan Kuber ATV', desc: 'Mengendarai Kuber ATV menelusuri persawahan, terowongan air, sungai, dan kubangan lumpur.' },
+      { time: '11:30 AM', title: 'Mandi Bersih & Istirahat', desc: 'Bersihkan sisa lumpur di fasilitas shower air hangat yang telah disediakan.' },
+      { time: '12:00 PM', title: 'Makan Siang Bersama', desc: 'Santap makan siang lezat khas Bali sambil menikmati pemandangan alam.' }
     ]
   },
   {
-    id: 'snorkeling',
-    title: 'Snorkeling Adventure',
-    tagline: 'Marine Life Exploration',
-    shortDesc: 'Jelajahi keindahan bawah laut Bali yang memukau. Berenang bersama penyu dan terumbu karang warna-warni.',
-    longDesc: 'Bergabunglah dalam petualangan Snorkeling privat terbaik di Bali. Kunjungi spot snorkeling kelas dunia seperti Blue Lagoon Padangbai, Tanjung Jepun, atau Manta Point di Nusa Penida. Nikmati air laut sejernih kristal, terumbu karang alami yang sehat, serta kawanan ikan tropis yang memanjakan mata Anda.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783755234/2d174dac-5419-4d43-9a22-b8bfc736b6e6.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783755234/2d174dac-5419-4d43-9a22-b8bfc736b6e6.png',
-    pricePerPerson: 65,
-    duration: 'Setengah Hari (5 Jam)',
-    location: 'Blue Lagoon & Nusa Penida',
-    difficulty: 'Mudah / Menyenangkan',
+    id: 'atv-king',
+    title: 'ATV – KING ATV',
+    tagline: 'King ATV Extreme',
+    shortDesc: 'Rasakan performa maksimal mengendarai King ATV di trek ekstrem Bali (Rp 850.000 / pax).',
+    longDesc: 'Nikmati kenyamanan dan ketangguhan kelas atas dari King ATV. Dirancang untuk menaklukan trek terjal, gua alami, serta jeram lumpur dengan tenaga mesin luar biasa. Pilihan utama bagi penggemar tantangan sejati dengan tarif Rp 850.000 / pax.',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
+    pricePerPerson: 850000,
+    duration: 'Maksimal 2 Orang',
+    location: 'Ubud, Bali',
+    difficulty: 'Sangat Menantang',
     rating: 4.9,
-    reviewCount: 112,
+    reviewCount: 210,
     highlights: [
-      'Snorkeling privat di 2 spot bawah laut terbaik pilihan di Bali',
-      'Berenang bersama kawanan penyu laut dan Nemo (ikan badut)',
-      'Didampingi instruktur selam privat bersertifikasi internasional',
-      'Menggunakan perahu tradisional (Jukung) privat yang bersih',
-      'Makan siang lezat di tepi pantai setelah berenang'
+      'Mengendarai unit King ATV berdaya tinggi (Rp 850.000 / pax)',
+      'Sudah termasuk Insurance, Lunch, Guide, dan Rescue Team',
+      'Maksimal 2 orang per paket aktivitas',
+      'Pemandu profesional dan tim rescue yang berpengalaman',
+      'Sudah termasuk makan siang dan asuransi keselamatan'
     ],
     inclusions: [
-      'Transportasi privat pulang-pergi dari hotel Anda',
-      'Sewa peralatan snorkeling lengkap (masker, snorkel, fin, pelampung)',
-      'Perahu privat dan kapten berpengalaman',
-      'Pemandu snorkeling lokal yang ramah',
-      'Makan siang khas Bali & air mineral dingin'
+      'Insurance (Asuransi)',
+      'Lunch (Makan Siang)',
+      'Guide (Pemandu)',
+      'Rescue Team (Tim Penyelamat)',
+      'Wahana King ATV'
     ],
     exclusions: [
-      'Sewa kamera bawah laut GoPro (tersedia opsional)',
-      'Keperluan pribadi lainnya',
+      'Foto & video profesional',
+      'Layanan antar-jemput pribadi',
       'Tip sukarela'
     ],
     itinerary: [
-      { time: '07:30 AM', title: 'Penjemputan Hotel Privat', desc: 'Penjemputan pagi hari dari hotel Anda untuk mendapatkan ombak tenang dan air jernih.' },
-      { time: '09:00 AM', title: 'Menaiki Perahu Privat', desc: 'Tiba di pesisir pantai, pasang alat selam Anda, lalu naik perahu tradisional menuju spot pertama.' },
-      { time: '09:30 AM', title: 'Snorkeling Spot Pertama', desc: 'Berenang di air jernih dengan terumbu karang indah. Cari kawanan penyu dan ikan hias.' },
-      { time: '10:30 AM', title: 'Snorkeling Spot Kedua', desc: 'Menuju lokasi kedua yang memiliki karakteristik terumbu karang yang berbeda dan lebih dalam.' },
-      { time: '11:30 AM', title: 'Makan Siang Tepi Pantai', desc: 'Kembali ke darat, bersihkan diri dengan shower air hangat, lalu nikmati makan siang hangat di pinggir pantai.' },
-      { time: '01:00 PM', title: 'Kembali Ke Resort', desc: 'Kembali diantar dengan nyaman menuju resort Anda.' }
+      { time: '09:00 AM', title: 'Fitting Helm & Safety Check', desc: 'Menerima peralatan keselamatan kelas satu dan penjelasan rute terjal.' },
+      { time: '09:30 AM', title: 'King ATV Extreme Trek', desc: 'Menjelajahi trek ekstrem, terowongan batu alami, dan turunan sungai dengan King ATV.' },
+      { time: '11:30 AM', title: 'Bilas & Bersihkan Diri', desc: 'Kamar mandi dan handuk bersih disediakan untuk kenyamanan Anda.' },
+      { time: '12:00 PM', title: 'Makan Siang', desc: 'Nikmati sajian makan siang yang segar dan lezat di area restoran.' }
+    ]
+  },
+  {
+    id: 'horse-riding',
+    title: 'HORSE RIDING – LEMBONGAN ½',
+    tagline: 'Coastal Horse Riding',
+    shortDesc: 'Pengalaman menunggang kuda menyusuri pesisir pantai dan lanskap indah Lembongan.',
+    longDesc: 'Rasakan suasana romantis dan tenang menunggang kuda terlatih di sepanjang pesisir pulau dan lanskap indah Lembongan ½. Pengalaman ini dipandu oleh instruktur berpengalaman dan didampingi tim penolong profesional.',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
+    pricePerPerson: 450000,
+    duration: 'Maksimal 2 Orang',
+    location: 'Lembongan, Bali',
+    difficulty: 'Santai & Indah',
+    rating: 4.8,
+    reviewCount: 160,
+    highlights: [
+      'Pengalaman Horse Riding di rute eksotis Lembongan ½',
+      'Sudah termasuk Insurance, Lunch, Guide, dan Rescue Team',
+      'Maksimal 2 orang per paket aktivitas',
+      'Kuda yang jinak dan terlatih dengan pemandu profesional',
+      'Sangat cocok untuk foto estetik di pinggir pantai'
+    ],
+    inclusions: [
+      'Insurance (Asuransi)',
+      'Lunch (Makan Siang)',
+      'Guide (Pemandu)',
+      'Rescue Team (Tim Penyelamat)',
+      'Horse Riding',
+      'Lembongan ½ Route'
+    ],
+    exclusions: [
+      'Transportasi kapal penyeberangan ke Lembongan',
+      'Pengeluaran pribadi',
+      'Tip sukarela'
+    ],
+    itinerary: [
+      { time: '09:00 AM', title: 'Pengenalan Kuda & Peralatan', desc: 'Instruktur memberikan perlengkapan keselamatan dan memperkenalkan kuda yang akan Anda tunggangi.' },
+      { time: '09:30 AM', title: 'Sesi Horse Riding Lembongan ½', desc: 'Menyusuri pantai berpasir putih dan jalanan pulau yang tenang sambil menunggang kuda.' },
+      { time: '11:00 AM', title: 'Selesai Berekspedisi', desc: 'Kembali ke basecamp dan bersantai sejenak.' },
+      { time: '11:30 AM', title: 'Makan Siang', desc: 'Menikmati hidangan makan siang yang nikmat.' }
+    ]
+  },
+  {
+    id: 'rafting-bmw',
+    title: 'RAFTING – BMW',
+    tagline: 'BMW Rafting Thrill',
+    shortDesc: 'Arung jeram seru di sungai alami Bali dengan paket BMW Rafting.',
+    longDesc: 'Taklukkan arus sungai alami Bali bersama BMW Rafting. Nikmati keindahan air terjun tersembunyi, ukiran batu di dinding tebing sungai, dan rimbunnya pemandangan alam. Lengkap dengan panduan pemandu berpengalaman serta asuransi.',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
+    pricePerPerson: 650000,
+    duration: 'Maksimal 2 Orang',
+    location: 'Karangasem / Telaga Waja, Bali',
+    difficulty: 'Petualangan Air',
+    rating: 4.9,
+    reviewCount: 230,
+    highlights: [
+      'Sensasi arung jeram BMW Rafting menyusuri tebing indah',
+      'Sudah termasuk Insurance, Lunch, Guide, dan Rescue Team',
+      'Maksimal 2 orang per paket aktivitas',
+      'Perahu karet dan alat keselamatan berstandar internasional',
+      'Makan siang lezat dengan pemandangan alam'
+    ],
+    inclusions: [
+      'Insurance (Asuransi)',
+      'Lunch (Makan Siang)',
+      'Guide (Pemandu)',
+      'Rescue Team (Tim Penyelamat)',
+      'BMW Rafting'
+    ],
+    exclusions: [
+      'Sewa kamera underwater',
+      'Minuman keras / alkohol',
+      'Tip sukarela'
+    ],
+    itinerary: [
+      { time: '09:00 AM', title: 'Persiapan & Pengarahan', desc: 'Pemakaian jaket pelampung, helm, dan brifing cara mendayung dari pemandu.' },
+      { time: '09:30 AM', title: 'Pengarungan BMW Rafting', desc: 'Mengarungi jeram sungai, melewati air terjun, dan tebing alam nan megah.' },
+      { time: '11:30 AM', title: 'Bilas & Ganti Pakaian', desc: 'Shower air bersih dan tempat ganti pakaian yang nyaman.' },
+      { time: '12:00 PM', title: 'Makan Siang Prasmanan', desc: 'Santap makan siang lezat yang telah disiapkan di restoran tepi sungai.' }
+    ]
+  },
+  {
+    id: 'rafting-ubud',
+    title: 'RAFTING – UBUD',
+    tagline: 'Ubud Ayung Rafting',
+    shortDesc: 'Arung jeram menyusuri sungai Ayung Ubud yang indah dan penuh pesona alam.',
+    longDesc: 'Satu dari aktivitas paling populer di Bali! Arung jeram di Sungai Ayung Ubud menawarkan arus yang bersahabat, relief batu ukir khas Ubud di dinding tebing, serta pemandangan hutan tropis hijau yang memanjakan mata.',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
+    pricePerPerson: 550000,
+    duration: 'Maksimal 2 Orang',
+    location: 'Sungai Ayung, Ubud, Bali',
+    difficulty: 'Menyenangkan & Asri',
+    rating: 4.8,
+    reviewCount: 310,
+    highlights: [
+      'Ubud Rafting di Sungai Ayung dengan lanskap relief ukir tebing',
+      'Sudah termasuk Insurance, Lunch, Guide, dan Rescue Team',
+      'Maksimal 2 orang per paket aktivitas',
+      'Didampingi instruktur rafting bersertifikasi dan tim rescue',
+      'Fasilitas shower dan makan siang gratis di restoran'
+    ],
+    inclusions: [
+      'Insurance (Asuransi)',
+      'Lunch (Makan Siang)',
+      'Guide (Pemandu)',
+      'Rescue Team (Tim Penyelamat)',
+      'Ubud Rafting'
+    ],
+    exclusions: [
+      'Foto/video saat arung jeram',
+      'Pengeluaran pribadi',
+      'Tip sukarela'
+    ],
+    itinerary: [
+      { time: '09:00 AM', title: 'Pemasangan Equipment Safety', desc: 'Fitting helm, pelampung, dan pengarahan teknik arung jeram.' },
+      { time: '09:30 AM', title: 'Mulai Ubud Rafting', desc: 'Mengarungi Sungai Ayung sejauh 10-12 KM melintasi relief dinding dan air terjun.' },
+      { time: '11:30 AM', title: 'Shower & Handuk', desc: 'Membersihkan diri di fasilitas shower air bersih.' },
+      { time: '12:00 PM', title: 'Makan Siang', desc: 'Menikmati sajian makan siang lezat di restoran lembah Ubud.' }
     ]
   }
 ];
