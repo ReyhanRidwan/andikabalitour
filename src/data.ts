@@ -11,32 +11,32 @@ export const EXPERIENCES_ID: Experience[] = [
     tagline: 'Nusa Penida West Trip',
     shortDesc: 'Jelajahi keajaiban Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills & Crystal Bay.',
     longDesc: 'Nikmati petualangan eksklusif seharian menjelajahi pesona bahari Nusa Penida bagian Barat. Mengunjungi spot ikonik dunia seperti Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, dan bersantai di Crystal Bay. Paket sudah termasuk tiket fastboat PP, mobil privat AC, makan siang, dan pemandu lokal.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
     galleryImages: [
       {
         name: 'Kelingking Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
         description: 'Tebing T-Rex spektakuler dengan pemandangan pantai pasir putih dan laut biru bening.'
       },
       {
         name: 'Broken Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
         description: 'Tebing melingkar alami dengan terowongan tebing ikonik tempat laut masuk.'
       },
       {
         name: 'Angel’s Billabong',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
         description: 'Kolam pasang surut alami dengan air jernih bak kristal di tebing batu karang.'
       },
       {
         name: 'Paluang Hills',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
         description: 'Spot foto terbaik dengan latar belakang tebing Kelingking dari sudut pandang berbeda.'
       },
       {
         name: 'Crystal Bay',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
         description: 'Pantai indah berpasir putih tempat yang sempurna untuk bersantai dan menikmati perairan jernih.'
       }
     ],
@@ -80,32 +80,32 @@ export const EXPERIENCES_ID: Experience[] = [
     tagline: 'Nusa Penida West Trip',
     shortDesc: 'Tebing melingkar alami unik dengan teluk laut biru tempat air laut membiru masuk.',
     longDesc: 'Nikmati pesona spektakuler Broken Beach (Pasih Uug) di Nusa Penida Barat. Bagian dari paket Nusa Penida Island West Trip yang mencakup 5 destinasi ikonik: Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, dan Crystal Bay. Termasuk Mobil Privat AC, Fastboat PP, Lunch & Guide.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
     galleryImages: [
       {
         name: 'Broken Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
         description: 'Tebing melingkar alami dengan terowongan tebing ikonik tempat laut masuk.'
       },
       {
         name: 'Kelingking Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
         description: 'Tebing T-Rex spektakuler dengan pemandangan pantai pasir putih dan laut biru bening.'
       },
       {
         name: 'Angel’s Billabong',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
         description: 'Kolam pasang surut alami dengan air jernih bak kristal di tebing batu karang.'
       },
       {
         name: 'Paluang Hills',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
         description: 'Spot foto terbaik dengan latar belakang tebing Kelingking dari sudut pandang berbeda.'
       },
       {
         name: 'Crystal Bay',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
         description: 'Pantai indah berpasir putih tempat yang sempurna untuk bersantai dan menikmati perairan jernih.'
       }
     ],
@@ -149,32 +149,32 @@ export const EXPERIENCES_ID: Experience[] = [
     tagline: 'Nusa Penida West Trip',
     shortDesc: 'Kolam pasang surut alami dengan air bening mengilap di tebing batu karang.',
     longDesc: 'Kolam alami yang memukau karya alam Angel’s Billabong di Nusa Penida Barat. Bagian dari paket Nusa Penida Island West Trip yang mencakup 5 destinasi ikonik: Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, dan Crystal Bay. Termasuk Mobil Privat AC, Fastboat PP, Lunch & Guide.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
     galleryImages: [
       {
         name: 'Angel’s Billabong',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
         description: 'Kolam pasang surut alami dengan air jernih bak kristal di tebing batu karang.'
       },
       {
         name: 'Kelingking Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
         description: 'Tebing T-Rex spektakuler dengan pemandangan pantai pasir putih dan laut biru bening.'
       },
       {
         name: 'Broken Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
         description: 'Tebing melingkar alami dengan terowongan tebing ikonik tempat laut masuk.'
       },
       {
         name: 'Paluang Hills',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
         description: 'Spot foto terbaik dengan latar belakang tebing Kelingking dari sudut pandang berbeda.'
       },
       {
         name: 'Crystal Bay',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
         description: 'Pantai indah berpasir putih tempat yang sempurna untuk bersantai dan menikmati perairan jernih.'
       }
     ],
@@ -218,32 +218,32 @@ export const EXPERIENCES_ID: Experience[] = [
     tagline: 'Nusa Penida West Trip',
     shortDesc: 'Spot bukit panorama indah dan teluk pantai bening berpasir putih.',
     longDesc: 'Pemandangan spektakuler Paluang Hills dan ketenangan pantai Crystal Bay di Nusa Penida Barat. Bagian dari paket Nusa Penida Island West Trip yang mencakup 5 destinasi ikonik: Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, dan Crystal Bay. Termasuk Mobil Privat AC, Fastboat PP, Lunch & Guide.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
     galleryImages: [
       {
         name: 'Paluang Hills',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
         description: 'Spot foto terbaik dengan latar belakang tebing Kelingking dari sudut pandang berbeda.'
       },
       {
         name: 'Crystal Bay',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
         description: 'Pantai indah berpasir putih tempat yang sempurna untuk bersantai dan menikmati perairan jernih.'
       },
       {
         name: 'Kelingking Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
         description: 'Tebing T-Rex spektakuler dengan pemandangan pantai pasir putih dan laut biru bening.'
       },
       {
         name: 'Broken Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
         description: 'Tebing melingkar alami dengan terowongan tebing ikonik tempat laut masuk.'
       },
       {
         name: 'Angel’s Billabong',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
         description: 'Kolam pasang surut alami dengan air jernih bak kristal di tebing batu karang.'
       }
     ],
@@ -396,8 +396,8 @@ export const EXPERIENCES_ID: Experience[] = [
     tagline: 'King ATV Extreme',
     shortDesc: 'Rasakan performa maksimal mengendarai King ATV di trek ekstrem Bali (Rp 850.000 / pax).',
     longDesc: 'Nikmati kenyamanan dan ketangguhan kelas atas dari King ATV. Dirancang untuk menaklukan trek terjal, gua alami, serta jeram lumpur dengan tenaga mesin luar biasa. Pilihan utama bagi penggemar tantangan sejati dengan tarif Rp 850.000 / pax.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
     pricePerPerson: 850000,
     duration: 'Maksimal 2 Orang',
     location: 'Ubud, Bali',
@@ -436,8 +436,8 @@ export const EXPERIENCES_ID: Experience[] = [
     tagline: 'Coastal Horse Riding',
     shortDesc: 'Pengalaman menunggang kuda menyusuri pesisir pantai dan lanskap indah Lembongan.',
     longDesc: 'Rasakan suasana romantis dan tenang menunggang kuda terlatih di sepanjang pesisir pulau dan lanskap indah Lembongan ½. Pengalaman ini dipandu oleh instruktur berpengalaman dan didampingi tim penolong profesional.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
     pricePerPerson: 450000,
     duration: 'Maksimal 2 Orang',
     location: 'Lembongan, Bali',
@@ -477,8 +477,8 @@ export const EXPERIENCES_ID: Experience[] = [
     tagline: 'BMW Rafting Thrill',
     shortDesc: 'Arung jeram seru di sungai alami Bali dengan paket BMW Rafting.',
     longDesc: 'Taklukkan arus sungai alami Bali bersama BMW Rafting. Nikmati keindahan air terjun tersembunyi, ukiran batu di dinding tebing sungai, dan rimbunnya pemandangan alam. Lengkap dengan panduan pemandu berpengalaman serta asuransi.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
     pricePerPerson: 650000,
     duration: 'Maksimal 2 Orang',
     location: 'Karangasem / Telaga Waja, Bali',
@@ -517,8 +517,8 @@ export const EXPERIENCES_ID: Experience[] = [
     tagline: 'Ubud Ayung Rafting',
     shortDesc: 'Arung jeram menyusuri sungai Ayung Ubud yang indah dan penuh pesona alam.',
     longDesc: 'Satu dari aktivitas paling populer di Bali! Arung jeram di Sungai Ayung Ubud menawarkan arus yang bersahabat, relief batu ukir khas Ubud di dinding tebing, serta pemandangan hutan tropis hijau yang memanjakan mata.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
     pricePerPerson: 550000,
     duration: 'Maksimal 2 Orang',
     location: 'Sungai Ayung, Ubud, Bali',
@@ -561,32 +561,32 @@ export const EXPERIENCES_EN: Experience[] = [
     tagline: 'Nusa Penida West Trip',
     shortDesc: 'Explore the wonders of Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills & Crystal Bay.',
     longDesc: 'Enjoy an exclusive full-day island adventure discovering the marine charms of West Nusa Penida. Visit world-famous iconic landmarks including Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, and relax at Crystal Bay. The package includes return fastboat tickets, private AC car, lunch, and a certified local guide.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
     galleryImages: [
       {
         name: 'Kelingking Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
         description: 'Spectacular T-Rex limestone cliff with panoramic views of white sandy beach and turquoise waters.'
       },
       {
         name: 'Broken Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
         description: 'Unique circular natural rock cove with an iconic tunnel bridge where the open sea surges in.'
       },
       {
         name: 'Angel’s Billabong',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
         description: 'Natural infinity tidal pool with crystal clear emerald waters framed by dramatic coastal rock.'
       },
       {
         name: 'Paluang Hills',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
         description: 'Premier photo spot offering an elevated reverse vantage point over the famous Kelingking cliff.'
       },
       {
         name: 'Crystal Bay',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
         description: 'Pristine white sand palm beach—the perfect coastal haven to unwind and swim in clear waters.'
       }
     ],
@@ -630,32 +630,32 @@ export const EXPERIENCES_EN: Experience[] = [
     tagline: 'Nusa Penida West Trip',
     shortDesc: 'Dramatic natural limestone arch forming a secluded turquoise ocean cove.',
     longDesc: 'Experience the breathtaking spectacle of Broken Beach (Pasih Uug) in West Nusa Penida. Part of the Nusa Penida Island West Trip which covers 5 iconic highlights: Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, and Crystal Bay. Includes Private AC Car, Return Fastboat, Lunch & Guide.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
     galleryImages: [
       {
         name: 'Broken Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
         description: 'Unique circular natural rock cove with an iconic tunnel bridge where the open sea surges in.'
       },
       {
         name: 'Kelingking Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
         description: 'Spectacular T-Rex limestone cliff with panoramic views of white sandy beach and turquoise waters.'
       },
       {
         name: 'Angel’s Billabong',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
         description: 'Natural infinity tidal pool with crystal clear emerald waters framed by dramatic coastal rock.'
       },
       {
         name: 'Paluang Hills',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
         description: 'Premier photo spot offering an elevated reverse vantage point over the famous Kelingking cliff.'
       },
       {
         name: 'Crystal Bay',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
         description: 'Pristine white sand palm beach—the perfect coastal haven to unwind and swim in clear waters.'
       }
     ],
@@ -699,32 +699,32 @@ export const EXPERIENCES_EN: Experience[] = [
     tagline: 'Nusa Penida West Trip',
     shortDesc: 'Natural infinity tidal lagoon with crystal-clear emerald water on volcanic rocks.',
     longDesc: 'Stunning natural masterwork Angel’s Billabong in West Nusa Penida. Part of the Nusa Penida Island West Trip package covering 5 iconic spots: Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, and Crystal Bay. Includes Private AC Car, Return Fastboat, Lunch & Guide.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
     galleryImages: [
       {
         name: 'Angel’s Billabong',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
         description: 'Natural infinity tidal pool with crystal clear emerald waters framed by dramatic coastal rock.'
       },
       {
         name: 'Kelingking Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
         description: 'Spectacular T-Rex limestone cliff with panoramic views of white sandy beach and turquoise waters.'
       },
       {
         name: 'Broken Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
         description: 'Unique circular natural rock cove with an iconic tunnel bridge where the open sea surges in.'
       },
       {
         name: 'Paluang Hills',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
         description: 'Premier photo spot offering an elevated reverse vantage point over the famous Kelingking cliff.'
       },
       {
         name: 'Crystal Bay',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
         description: 'Pristine white sand palm beach—the perfect coastal haven to unwind and swim in clear waters.'
       }
     ],
@@ -768,32 +768,32 @@ export const EXPERIENCES_EN: Experience[] = [
     tagline: 'Nusa Penida West Trip',
     shortDesc: 'Breathtaking panoramic cliff viewpoint and tranquil white-sand tropical bay.',
     longDesc: 'Spectacular vistas from Paluang Hills and the soothing coastal serenity of Crystal Bay in West Nusa Penida. Part of the Nusa Penida Island West Trip which encompasses 5 iconic highlights: Kelingking Beach, Broken Beach, Angel’s Billabong, Paluang Hills, and Crystal Bay. Includes Private AC Car, Return Fastboat, Lunch & Guide.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
     galleryImages: [
       {
         name: 'Paluang Hills',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
         description: 'Premier photo spot offering an elevated reverse vantage point over the famous Kelingking cliff.'
       },
       {
         name: 'Crystal Bay',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
         description: 'Pristine white sand palm beach—the perfect coastal haven to unwind and swim in clear waters.'
       },
       {
         name: 'Kelingking Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
         description: 'Spectacular T-Rex limestone cliff with panoramic views of white sandy beach and turquoise waters.'
       },
       {
         name: 'Broken Beach',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
         description: 'Unique circular natural rock cove with an iconic tunnel bridge where the open sea surges in.'
       },
       {
         name: 'Angel’s Billabong',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
         description: 'Natural infinity tidal pool with crystal clear emerald waters framed by dramatic coastal rock.'
       }
     ],
@@ -946,8 +946,8 @@ export const EXPERIENCES_EN: Experience[] = [
     tagline: 'King ATV Extreme',
     shortDesc: 'Unleash supreme power and raw torque on Bali’s most demanding extreme tracks (Rp 850,000 / pax).',
     longDesc: 'Experience the pinnacle of off-road prowess with King ATV. Built to conquer steep gradients, rocky ravines, and wild mud trails with massive engine torque. The ultimate choice for true thrill-seekers at Rp 850,000 / pax.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
     pricePerPerson: 850000,
     duration: 'Maximum 2 Persons',
     location: 'Ubud, Bali',
@@ -986,8 +986,8 @@ export const EXPERIENCES_EN: Experience[] = [
     tagline: 'Coastal Horse Riding',
     shortDesc: 'A serene and romantic equestrian journey along the picturesque shores of Lembongan.',
     longDesc: 'Embrace a timeless, tranquil atmosphere riding gentle, well-trained horses along the pristine coastal trails and serene landscapes of Lembongan ½. Guided by seasoned instructors and safety support teams.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
     pricePerPerson: 450000,
     duration: 'Maximum 2 Persons',
     location: 'Lembongan, Bali',
@@ -1027,8 +1027,8 @@ export const EXPERIENCES_EN: Experience[] = [
     tagline: 'BMW Rafting Thrill',
     shortDesc: 'Thrilling whitewater rafting through Bali’s wild river valleys with BMW Rafting.',
     longDesc: 'Conquer Bali’s natural river rapids with BMW Rafting. Marvel at hidden waterfalls, stone-carved canyon walls, and lush jungle scenery under the guidance of seasoned whitewater river captains.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
     pricePerPerson: 650000,
     duration: 'Maximum 2 Persons',
     location: 'Karangasem / Telaga Waja, Bali',
@@ -1067,8 +1067,8 @@ export const EXPERIENCES_EN: Experience[] = [
     tagline: 'Ubud Ayung Rafting',
     shortDesc: 'Whitewater rafting along the scenic and culturally rich Ayung River in Ubud.',
     longDesc: 'One of Bali’s most iconic adventures! Whitewater rafting down the Ayung River in Ubud offers friendly class II-III rapids, magnificent Ramayana stone carvings along canyon walls, and emerald tropical rainforest panoramas.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
     pricePerPerson: 550000,
     duration: 'Maximum 2 Persons',
     location: 'Ayung River, Ubud, Bali',
@@ -1109,7 +1109,7 @@ export const VEHICLES_ID: Vehicle[] = [
     id: 'toyota-avanza',
     name: 'New Avanza',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783761973/24693abb-f732-49b4-ba68-28c882af0c16.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783761973/24693abb-f732-49b4-ba68-28c882af0c16.png',
     passengers: 6,
     transmission: 'Manual / Automatic',
     engine: '1,500 cc',
@@ -1122,7 +1122,7 @@ export const VEHICLES_ID: Vehicle[] = [
     id: 'toyota-innova',
     name: 'Innova Reborn',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762018/64feebd4-e9e7-4ffe-ac80-801b1ab26fd0.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762018/64feebd4-e9e7-4ffe-ac80-801b1ab26fd0.png',
     passengers: 6,
     transmission: 'Automatic',
     engine: '2,400 cc Diesel',
@@ -1135,7 +1135,7 @@ export const VEHICLES_ID: Vehicle[] = [
     id: 'innova-zenix',
     name: 'Innova Zenix Type Q',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762059/56d3602a-cd36-437e-9a76-eab2be375ce3.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762059/56d3602a-cd36-437e-9a76-eab2be375ce3.png',
     passengers: 5,
     transmission: 'Automatic',
     engine: '2,000 cc Hybrid',
@@ -1148,7 +1148,7 @@ export const VEHICLES_ID: Vehicle[] = [
     id: 'toyota-alphard',
     name: 'Toyota Alphard',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762106/74503d32-3371-4191-a619-7b1cd976e1d2.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762106/74503d32-3371-4191-a619-7b1cd976e1d2.png',
     passengers: 5,
     transmission: 'Automatic',
     engine: '2,500 cc',
@@ -1161,7 +1161,7 @@ export const VEHICLES_ID: Vehicle[] = [
     id: 'hiace-commuter',
     name: 'Hiace Commuter',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762136/882d66e6-45b8-429b-a17f-6769179a7221.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762136/882d66e6-45b8-429b-a17f-6769179a7221.png',
     passengers: 15,
     transmission: 'Manual',
     engine: '2,500 cc Diesel',
@@ -1174,7 +1174,7 @@ export const VEHICLES_ID: Vehicle[] = [
     id: 'bus-29',
     name: 'Bus 29 Seat',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762175/1dcdb7c6-c3ac-4b4a-b509-fa0697eb985f.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762175/1dcdb7c6-c3ac-4b4a-b509-fa0697eb985f.png',
     passengers: 29,
     transmission: 'Manual',
     engine: 'Diesel Multi',
@@ -1191,7 +1191,7 @@ export const VEHICLES_EN: Vehicle[] = [
     id: 'toyota-avanza',
     name: 'New Avanza',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783761973/24693abb-f732-49b4-ba68-28c882af0c16.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783761973/24693abb-f732-49b4-ba68-28c882af0c16.png',
     passengers: 6,
     transmission: 'Manual / Automatic',
     engine: '1,500 cc',
@@ -1204,7 +1204,7 @@ export const VEHICLES_EN: Vehicle[] = [
     id: 'toyota-innova',
     name: 'Innova Reborn',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762018/64feebd4-e9e7-4ffe-ac80-801b1ab26fd0.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762018/64feebd4-e9e7-4ffe-ac80-801b1ab26fd0.png',
     passengers: 6,
     transmission: 'Automatic',
     engine: '2,400 cc Diesel',
@@ -1217,7 +1217,7 @@ export const VEHICLES_EN: Vehicle[] = [
     id: 'innova-zenix',
     name: 'Innova Zenix Type Q',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762059/56d3602a-cd36-437e-9a76-eab2be375ce3.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762059/56d3602a-cd36-437e-9a76-eab2be375ce3.png',
     passengers: 5,
     transmission: 'Automatic',
     engine: '2,000 cc Hybrid',
@@ -1230,7 +1230,7 @@ export const VEHICLES_EN: Vehicle[] = [
     id: 'toyota-alphard',
     name: 'Toyota Alphard',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762106/74503d32-3371-4191-a619-7b1cd976e1d2.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762106/74503d32-3371-4191-a619-7b1cd976e1d2.png',
     passengers: 5,
     transmission: 'Automatic',
     engine: '2,500 cc',
@@ -1243,7 +1243,7 @@ export const VEHICLES_EN: Vehicle[] = [
     id: 'hiace-commuter',
     name: 'Hiace Commuter',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762136/882d66e6-45b8-429b-a17f-6769179a7221.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762136/882d66e6-45b8-429b-a17f-6769179a7221.png',
     passengers: 15,
     transmission: 'Manual',
     engine: '2,500 cc Diesel',
@@ -1256,7 +1256,7 @@ export const VEHICLES_EN: Vehicle[] = [
     id: 'bus-29',
     name: 'Bus 29 Seat',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762175/1dcdb7c6-c3ac-4b4a-b509-fa0697eb985f.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762175/1dcdb7c6-c3ac-4b4a-b509-fa0697eb985f.png',
     passengers: 29,
     transmission: 'Manual',
     engine: 'Diesel Multi',

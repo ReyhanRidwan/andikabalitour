@@ -8,32 +8,32 @@ export const EXPERIENCES_AR: Experience[] = [
     tagline: 'رحلة غرب جزيرة نوسا بينيدا',
     shortDesc: 'استكشف روعة شاطئ كيلينغكينغ، بروكن بيتش، أنجلز بيلا بونغ، تلال بالوانغ، وكريستال باي.',
     longDesc: 'استمتع بمغامرة يوم كامل حصرية لاكتشاف سحر غرب نوسا بينيدا البحري. زيارة المعالم الأكثر شهرة في العالم بما في ذلك شاطئ كيلينغكينغ، وبروكن بيتش، وأنجلز بيلا بونغ، وتلال بالوانغ، والاسترخاء في كريستال باي. تشمل الباقة تذاكر الزورق السريع (ذهاب وعودة)، سيارة مكيفة خاصة مع سائق، وجبة غداء، ومرشد محلي معتمد.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
     galleryImages: [
       {
         name: 'شاطئ كيلينغكينغ (Kelingking Beach)',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
         description: 'جرف صخري مذهل على شكل تي ريكس مع إطلالة بانورامية على الشاطئ الرملي الأبيض والمياه الفيروزية.'
       },
       {
         name: 'بروكن بيتش (Broken Beach)',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
         description: 'خليج صخري طبيعي دائري فريد مع جسر صخري يتدفق من خلاله البحر المفتوح.'
       },
       {
         name: 'أنجلز بيلا بونغ (Angel’s Billabong)',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
         description: 'مسبح مد وجزر طبيعي بمياه زمردية شديدة النقاء وسط الصخور الساحلية الخلابة.'
       },
       {
         name: 'تلال بالوانغ (Paluang Hills)',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
         description: 'أفضل نقطة للتصوير توفر زاوية مميزة ومرتفعة لجرف كيلينغكينغ الشهير.'
       },
       {
         name: 'كريستال باي (Crystal Bay)',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
         description: 'شاطئ رملي أبيض ساحر محاط بأشجار النخيل—المكان المثالي للاسترخاء والسباحة.'
       }
     ],
@@ -77,32 +77,32 @@ export const EXPERIENCES_AR: Experience[] = [
     tagline: 'رحلة غرب جزيرة نوسا بينيدا',
     shortDesc: 'جرف صخري دائري طبيعي مذهل مع خليج بحري أزرق فيروزي وجسر حجري فريد.',
     longDesc: 'استمتع بالمشهد الخلاب لبروكن بيتش (باسيه أوغ) في غرب نوسا بينيدا. جزء من باقة غرب الجزيرة التي تضم 5 وجهات: شاطئ كيلينغكينغ، بروكن بيتش، أنجلز بيلا بونغ، تلال بالوانغ، وكريستال باي. تشمل سيارة خاصة مكيفة، زورق سريع، غداء، ومرشد.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
     galleryImages: [
       {
         name: 'بروكن بيتش',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
         description: 'خليج صخري طبيعي دائري فريد مع جسر صخري يتدفق من خلاله البحر المفتوح.'
       },
       {
         name: 'شاطئ كيلينغكينغ',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
         description: 'جرف صخري مذهل على شكل تي ريكس مع إطلالة بانورامية على الشاطئ الرملي الأبيض.'
       },
       {
         name: 'أنجلز بيلا بونغ',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
         description: 'مسبح مد وجزر طبيعي بمياه زمردية شديدة النقاء وسط الصخور الساحلية.'
       },
       {
         name: 'تلال بالوانغ',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
         description: 'أفضل نقطة للتصوير توفر زاوية مميزة ومرتفعة لجرف كيلينغكينغ الشهير.'
       },
       {
         name: 'كريستال باي',
-        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png',
         description: 'شاطئ رملي أبيض ساحر محاط بأشجار النخيل—المكان المثالي للاسترخاء.'
       }
     ],
@@ -146,14 +146,14 @@ export const EXPERIENCES_AR: Experience[] = [
     tagline: 'رحلة غرب جزيرة نوسا بينيدا',
     shortDesc: 'مسبح مد وجزر طبيعي بمياه زمردية صافية كالكريستال وسط التكوينات الصخرية البركانية.',
     longDesc: 'تحفة طبيعية ساحرة في أنجلز بيلا بونغ بغرب نوسا بينيدا. تشمل الباقة زيارة 5 وجهات: كيلينغكينغ، بروكن بيتش، أنجلز بيلا بونغ، تلال بالوانغ، وكريستال باي. سيارة خاصة مكيفة، زورق سريع، غداء، ومرشد.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png',
     galleryImages: [
-      { name: 'أنجلز بيلا بونغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png', description: 'مسبح مد طبيعي بمياه زمردية نقية محاط بالصخور.' },
-      { name: 'شاطئ كيلينغكينغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png', description: 'جرف تي ريكس البانورامي الشهير.' },
-      { name: 'بروكن بيتش', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png', description: 'جرف دائري طبيعي مع جسر صخري مفتوح على البحر.' },
-      { name: 'تلال بالوانغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png', description: 'زاوية تصوير بانورامية رائعة لكامل الساحل.' },
-      { name: 'كريستال باي', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png', description: 'شاطئ هادئ برمال ناعمة ومياه نقية.' }
+      { name: 'أنجلز بيلا بونغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png', description: 'مسبح مد طبيعي بمياه زمردية نقية محاط بالصخور.' },
+      { name: 'شاطئ كيلينغكينغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png', description: 'جرف تي ريكس البانورامي الشهير.' },
+      { name: 'بروكن بيتش', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png', description: 'جرف دائري طبيعي مع جسر صخري مفتوح على البحر.' },
+      { name: 'تلال بالوانغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png', description: 'زاوية تصوير بانورامية رائعة لكامل الساحل.' },
+      { name: 'كريستال باي', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png', description: 'شاطئ هادئ برمال ناعمة ومياه نقية.' }
     ],
     pricePerPerson: 850000,
     duration: '07:00 ص - 05:00 م (شخصين كحد أدنى)',
@@ -186,14 +186,14 @@ export const EXPERIENCES_AR: Experience[] = [
     tagline: 'رحلة غرب جزيرة نوسا بينيدا',
     shortDesc: 'أفضل نقطة مشاهدة بانورامية للجرف الصخري مع الاسترخاء على الشاطئ الرملي الأبيض الهادئ.',
     longDesc: 'إطلالات خلابة من تلال بالوانغ وهدوء ساحلي ساحر في كريستال باي بغرب نوسا بينيدا. جزء من باقة غرب الجزيرة التي تشمل 5 معالم رئيسية: كيلينغكينغ، بروكن بيتش، أنجلز بيلا بونغ، تلال بالوانغ، وكريستال باي. تشمل سيارة خاصة مكيفة، زورق سريع، غداء، ومرشد.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png',
     galleryImages: [
-      { name: 'تلال بالوانغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png', description: 'نقطة تصوير بانورامية مميزة ومرتفعة.' },
-      { name: 'كريستال باي', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png', description: 'شاطئ رملي أبيض هادئ محاط بأشجار النخيل.' },
-      { name: 'شاطئ كيلينغكينغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png', description: 'جرف تي ريكس الشهير عالمياً.' },
-      { name: 'بروكن بيتش', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png', description: 'جسر طبيعي صخري مدهش.' },
-      { name: 'أنجلز بيلا بونغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png', description: 'مسبح مد صخري بمياه صافية.' }
+      { name: 'تلال بالوانغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188206/9dc60007-a1d6-40fb-a07f-2db5622654dc.png', description: 'نقطة تصوير بانورامية مميزة ومرتفعة.' },
+      { name: 'كريستال باي', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188073/7106f686-f6a2-4d9d-85b5-0bd005911e58.png', description: 'شاطئ رملي أبيض هادئ محاط بأشجار النخيل.' },
+      { name: 'شاطئ كيلينغكينغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png', description: 'جرف تي ريكس الشهير عالمياً.' },
+      { name: 'بروكن بيتش', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png', description: 'جسر طبيعي صخري مدهش.' },
+      { name: 'أنجلز بيلا بونغ', image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786188544/70c34f11-a7bd-4249-8ef0-95f6f6c233e6.png', description: 'مسبح مد صخري بمياه صافية.' }
     ],
     pricePerPerson: 850000,
     duration: '07:00 ص - 05:00 م (شخصين كحد أدنى)',
@@ -335,8 +335,8 @@ export const EXPERIENCES_AR: Experience[] = [
     tagline: 'كينغ ATV إكستريم',
     shortDesc: 'أطلق العنان للقوة الجبارة والعزم الفائق على أكثر المسارات الوعرة تحدياً في بالي (850,000 روبية / للشخص).',
     longDesc: 'اختبر قمة الأداء على الطرق الوعرة مع كينغ ATV. مصممة لتحدي المنحدرات الحادة والممرات الصخرية والمسارات الموحلة بمحركات قوية. الخيار الأمثل لعشاق الإثارة الحقيقية بـ 850,000 روبية للشخص.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786183838/ed568b2f-ebc4-495a-962d-692c5239b1cb.png',
     pricePerPerson: 850000,
     duration: 'شخصان كحد أقصى',
     location: 'أوبود، بالي',
@@ -375,8 +375,8 @@ export const EXPERIENCES_AR: Experience[] = [
     tagline: 'ركوب الخيل الساحلي',
     shortDesc: 'رحلة فروسية هادئة ورومانسية على طول شواطئ جزيرة ليمبونغان الساحرة.',
     longDesc: 'استمتع بأجواء استثنائية هادئة وامتطِ خيولاً مدربة ولطيفة على طول المسارات الساحلية والمناظر الطبيعية الخلابة في ليمبونغان ½، بإشراف مدربين محترفين ومعايير أمان عالية.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786162688/77000547-25b5-4ca1-a3a4-45330dbe54cc.png',
     pricePerPerson: 450000,
     duration: 'شخصان كحد أقصى',
     location: 'ليمبونغان، بالي',
@@ -416,8 +416,8 @@ export const EXPERIENCES_AR: Experience[] = [
     tagline: 'تجديف نهر BMW المثير',
     shortDesc: 'مغامرة تجديف مائي حماسية عبر وديان وأنهار بالي الطبيعية مع BMW Rafting.',
     longDesc: 'تحدَّ التيارات المائية السريعة في أنهار بالي مع BMW Rafting. شاهد الشلالات المخفية وجدران الأخاديد المنحوتة والغابات الاستوائية تحت إشراف قباطنة أنهار متمرسين.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184051/968d1498-d1d6-4267-9b60-b1fb937a44e2.png',
     pricePerPerson: 650000,
     duration: 'شخصان كحد أقصى',
     location: 'كارانغاسيم / تيلاغا واجا، بالي',
@@ -456,8 +456,8 @@ export const EXPERIENCES_AR: Experience[] = [
     tagline: 'تجديف نهر أيونغ أوبود',
     shortDesc: 'تجديف ممتع وساحر عبر نهر أيونغ في أوبود مع الطبيعة الاستوائية والنحوت الصخرية التاريخية.',
     longDesc: 'إحدى أكثر المغامرات شهرة في بالي! تجديف نهر أيونغ في أوبود يوفر تيارات آمنة من الدرجة II-III، ونقوشاً حجرية تراثية ساحرة على جدران الوادي، وغابات خضراء مورقة.',
-    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
-    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786184128/e0699feb-0cd5-4d84-9055-d2819efa51a4.png',
     pricePerPerson: 550000,
     duration: 'شخصان كحد أقصى',
     location: 'نهر أيونغ، أوبود، بالي',
@@ -498,7 +498,7 @@ export const VEHICLES_AR: Vehicle[] = [
     id: 'toyota-avanza',
     name: 'Toyota All New Avanza',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783761973/24693abb-f732-49b4-ba68-28c882af0c16.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783761973/24693abb-f732-49b4-ba68-28c882af0c16.png',
     passengers: 6,
     transmission: 'أوتوماتيك / يدوي',
     engine: '1.5 لتر Dual VVT-i',
@@ -511,7 +511,7 @@ export const VEHICLES_AR: Vehicle[] = [
     id: 'toyota-innova',
     name: 'Toyota Innova Reborn',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762018/64feebd4-e9e7-4ffe-ac80-801b1ab26fd0.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762018/64feebd4-e9e7-4ffe-ac80-801b1ab26fd0.png',
     passengers: 6,
     transmission: 'أوتوماتيك',
     engine: '2.4 لتر ديزل توربو',
@@ -524,7 +524,7 @@ export const VEHICLES_AR: Vehicle[] = [
     id: 'innova-zenix',
     name: 'Toyota Innova Zenix Type Q',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762059/56d3602a-cd36-437e-9a76-eab2be375ce3.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762059/56d3602a-cd36-437e-9a76-eab2be375ce3.png',
     passengers: 5,
     transmission: 'أوتوماتيك CVT',
     engine: '2.0 لتر هايبرد',
@@ -537,7 +537,7 @@ export const VEHICLES_AR: Vehicle[] = [
     id: 'toyota-alphard',
     name: 'Toyota Alphard',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762106/74503d32-3371-4191-a619-7b1cd976e1d2.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762106/74503d32-3371-4191-a619-7b1cd976e1d2.png',
     passengers: 5,
     transmission: 'أوتوماتيك فائق النعومة',
     engine: '2.5 لتر',
@@ -550,7 +550,7 @@ export const VEHICLES_AR: Vehicle[] = [
     id: 'hiace-commuter',
     name: 'Toyota Hiace Commuter',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762136/882d66e6-45b8-429b-a17f-6769179a7221.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762136/882d66e6-45b8-429b-a17f-6769179a7221.png',
     passengers: 15,
     transmission: 'يدوي',
     engine: '2.5 لتر ديزل',
@@ -563,7 +563,7 @@ export const VEHICLES_AR: Vehicle[] = [
     id: 'bus-29',
     name: 'Bus 29 Seat',
     type: 'car',
-    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1783762175/1dcdb7c6-c3ac-4b4a-b509-fa0697eb985f.png',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783762175/1dcdb7c6-c3ac-4b4a-b509-fa0697eb985f.png',
     passengers: 29,
     transmission: 'يدوي',
     engine: 'ديزل قوي',
