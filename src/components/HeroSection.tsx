@@ -33,13 +33,16 @@ export default function HeroSection({
   const startXRef = useRef(0);
   const hasDraggedRef = useRef(false);
 
+  const [isInitialDelayPassed, setIsInitialDelayPassed] = useState(false);
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const startAutoplay = () => {
     stopAutoplay();
+    const delay = isInitialDelayPassed ? 4000 : 8000;
     autoplayTimerRef.current = setInterval(() => {
+      setIsInitialDelayPassed(true);
       setActiveIndex((activeIndex + 1) % HERO_EXPERIENCES.length);
-    }, 5000);
+    }, delay);
   };
 
   const stopAutoplay = () => {
@@ -52,7 +55,7 @@ export default function HeroSection({
   useEffect(() => {
     startAutoplay();
     return () => stopAutoplay();
-  }, [activeIndex, setActiveIndex, HERO_EXPERIENCES.length]);
+  }, [activeIndex, isInitialDelayPassed, setActiveIndex, HERO_EXPERIENCES.length]);
 
   const getCardTag = (exp: Experience) => {
     return exp.tagline;
@@ -129,10 +132,12 @@ export default function HeroSection({
     const swipeThreshold = 50;
     if (dragOffset < -swipeThreshold) {
       if (activeIndex < HERO_EXPERIENCES.length - 1) {
+        setIsInitialDelayPassed(true);
         setActiveIndex(activeIndex + 1);
       }
     } else if (dragOffset > swipeThreshold) {
       if (activeIndex > 0) {
+        setIsInitialDelayPassed(true);
         setActiveIndex(activeIndex - 1);
       }
     }
@@ -300,6 +305,7 @@ export default function HeroSection({
                           e.preventDefault();
                           return;
                         }
+                        setIsInitialDelayPassed(true);
                         setActiveIndex(index);
                       }}
                       id={`hero-card-${exp.id}`}
