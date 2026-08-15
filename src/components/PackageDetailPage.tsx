@@ -62,8 +62,6 @@ export default function PackageDetailPage({
           <img
             src={experience.bgImage}
             alt={experience.title}
-            loading="lazy"
-            referrerPolicy="no-referrer"
             className="absolute inset-0 w-full h-full object-cover"
           />
           {/* Multi-stage dark gradient for 100% crystal clear readability on all screens */}
@@ -165,8 +163,6 @@ export default function PackageDetailPage({
                     <img
                       src={item.image}
                       alt={item.name}
-                      loading="lazy"
-                      referrerPolicy="no-referrer"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent" />
@@ -362,13 +358,7 @@ export default function PackageDetailPage({
             >
               <X size={20} />
             </button>
-            <img
-              src={selectedPhoto}
-              alt="Preview Wahana"
-              loading="lazy"
-              referrerPolicy="no-referrer"
-              className="w-full h-full object-contain"
-            />
+            <img src={selectedPhoto} alt="Preview Wahana" className="w-full h-full object-contain" />
           </div>
         </div>
       )}

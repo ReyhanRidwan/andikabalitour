@@ -148,7 +148,6 @@ export default function GallerySection() {
               <img
                 src={filteredPhotos[lightboxIndex].url}
                 alt={filteredPhotos[lightboxIndex].title}
-                loading="lazy"
                 referrerPolicy="no-referrer"
                 onClick={(e) => e.stopPropagation()}
                 className="object-contain max-h-[75vh] w-auto border border-gold-400/20 shadow-2xl"

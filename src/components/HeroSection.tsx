@@ -4,7 +4,6 @@ import { ChevronDown } from 'lucide-react';
 import { Experience } from '../types';
 import { getExperiences } from '../data';
 import { useLanguage } from '../context/LanguageContext';
-import { optimizeCloudinaryUrl } from '../utils/imageOptimizer';
 
 interface HeroSectionProps {
   activeIndex: number;
@@ -174,9 +173,9 @@ export default function HeroSection({
             <img
               src={currentExp.bgImage}
               alt={currentExp.tagline}
-              loading={activeIndex === 0 ? 'eager' : 'lazy'}
+              loading="eager"
               // @ts-ignore
-              fetchPriority={activeIndex === 0 ? 'high' : 'auto'}
+              fetchPriority="high"
               className="absolute inset-0 w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
@@ -187,7 +186,20 @@ export default function HeroSection({
           </motion.div>
         </AnimatePresence>
 
-
+        {/* Eager preloading for other slides */}
+        <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+          {HERO_EXPERIENCES.map((exp, idx) => (
+            idx !== activeIndex && (
+              <img
+                key={exp.id}
+                src={exp.bgImage}
+                alt=""
+                loading="eager"
+                referrerPolicy="no-referrer"
+              />
+            )
+          ))}
+        </div>
       </div>
 
       {/* Main Content Arena */}
@@ -299,9 +311,9 @@ export default function HeroSection({
                     >
                       {/* Card Image */}
                       <img
-                        src={optimizeCloudinaryUrl(exp.cardImage, 'f_auto,q_auto,w_400')}
+                        src={exp.cardImage}
                         alt={exp.tagline}
-                        loading="lazy"
+                        loading="eager"
                         referrerPolicy="no-referrer"
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
