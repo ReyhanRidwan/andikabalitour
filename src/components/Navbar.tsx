@@ -163,7 +163,7 @@ export default function Navbar({ activePage, setActivePage, onBookNow }: NavbarP
           <div className="flex items-center bg-neutral-900 border border-gold-500/20 rounded-full p-0.5">
             <button
               onClick={() => setLanguage('id')}
-              className={`px-2 py-0.5 text-[9px] font-mono font-bold rounded-full transition-all cursor-pointer ${
+              className={`px-1.5 py-0.5 text-[9px] font-mono font-bold rounded-full transition-all cursor-pointer ${
                 language === 'id' ? 'bg-gold-500 text-neutral-950' : 'text-gold-200/70'
               }`}
             >
@@ -171,11 +171,19 @@ export default function Navbar({ activePage, setActivePage, onBookNow }: NavbarP
             </button>
             <button
               onClick={() => setLanguage('en')}
-              className={`px-2 py-0.5 text-[9px] font-mono font-bold rounded-full transition-all cursor-pointer ${
+              className={`px-1.5 py-0.5 text-[9px] font-mono font-bold rounded-full transition-all cursor-pointer ${
                 language === 'en' ? 'bg-gold-500 text-neutral-950' : 'text-gold-200/70'
               }`}
             >
               EN
+            </button>
+            <button
+              onClick={() => setLanguage('ar')}
+              className={`px-1.5 py-0.5 text-[9px] font-mono font-bold rounded-full transition-all cursor-pointer ${
+                language === 'ar' ? 'bg-gold-500 text-neutral-950' : 'text-gold-200/70'
+              }`}
+            >
+              AR
             </button>
           </div>
 
