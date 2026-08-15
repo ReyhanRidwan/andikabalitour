@@ -6,6 +6,7 @@ import ActivitySection from './components/ActivitySection';
 import ExperienceDetails from './components/ExperienceDetails';
 import GallerySection from './components/GallerySection';
 import ReviewsSection from './components/ReviewsSection';
+import FaqSection from './components/FaqSection';
 import Footer from './components/Footer';
 import BookingModal from './components/BookingModal';
 
@@ -19,11 +20,15 @@ import RentalPage from './components/RentalPage';
 import PackageDetailPage from './components/PackageDetailPage';
 
 import { BookingDetails } from './types';
-import { EXPERIENCES } from './data';
+import { getExperiences } from './data';
+import { useLanguage } from './context/LanguageContext';
 
 type Page = 'home' | 'tours' | 'rental' | 'about' | 'gallery' | 'whyus' | 'contact' | 'package-detail';
 
 export default function App() {
+  const { language } = useLanguage();
+  const experiences = getExperiences(language);
+
   const [activePage, setActivePage] = useState<Page>('home');
   const [heroActiveIndex, setHeroActiveIndex] = useState<number>(0);
   const [isBookingOpen, setIsBookingOpen] = useState<boolean>(false);
@@ -40,11 +45,11 @@ export default function App() {
   // General booking click (pre-select current active experience in hero)
   const handleGeneralBookNow = () => {
     if (activePage === 'home') {
-      const currentId = EXPERIENCES[heroActiveIndex]?.id || 'water-sport';
+      const currentId = experiences[heroActiveIndex]?.id || 'water-sport';
       handleOpenBooking(currentId);
     } else {
       // Default to first experience on other pages
-      handleOpenBooking(EXPERIENCES[0]?.id || 'water-sport');
+      handleOpenBooking(experiences[0]?.id || 'water-sport');
     }
   };
 
@@ -63,6 +68,9 @@ export default function App() {
     setActivePage('rental');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const currentDetailExperience =
+    experiences.find((e) => e.id === selectedDetailExperienceId) || experiences[0];
 
   return (
     <div className="relative min-h-screen bg-neutral-950 text-gold-100 font-sans selection:bg-gold-500/20 selection:text-gold-200">
@@ -106,6 +114,9 @@ export default function App() {
               }}
             />
 
+            {/* Frequently Asked Questions */}
+            <FaqSection />
+
             {/* Testimonials Review section */}
             <ReviewsSection />
           </div>
@@ -123,11 +134,9 @@ export default function App() {
         {activePage === 'package-detail' && (
           <div className="animate-fade-in">
             <PackageDetailPage
-              experience={
-                EXPERIENCES.find((e) => e.id === selectedDetailExperienceId) || EXPERIENCES[0]
-              }
+              experience={currentDetailExperience}
               onBack={() => {
-                setActivePage('home');
+                setActivePage('tours');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               onBookNow={handleOpenBooking}
@@ -144,6 +153,7 @@ export default function App() {
         {activePage === 'about' && (
           <div className="animate-fade-in">
             <AboutSection />
+            <FaqSection />
           </div>
         )}
 
@@ -156,6 +166,7 @@ export default function App() {
         {activePage === 'whyus' && (
           <div className="animate-fade-in">
             <WhyUsSection />
+            <FaqSection />
           </div>
         )}
 

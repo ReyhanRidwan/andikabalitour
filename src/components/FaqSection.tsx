@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
-import { FAQS } from '../data';
+import { getFaqs } from '../data';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { language } = useLanguage();
+  const faqs = getFaqs(language);
 
   const toggleAccordion = (index: number) => {
     if (openIndex === index) {
@@ -20,19 +23,21 @@ export default function FaqSection() {
         {/* FAQ Header */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold-400 font-semibold">
-            Common Inquiries
+            {language === 'en' ? 'Common Inquiries' : 'Tanya Jawab Populer'}
           </p>
           <h2 className="font-serif text-3xl md:text-4xl text-gold-100 font-medium tracking-wide">
-            Expedition Directives & FAQs
+            {language === 'en' ? 'Frequently Asked Questions (FAQ)' : 'Pertanyaan Yang Sering Diajukan'}
           </h2>
           <p className="font-sans text-sm text-gold-100/50 leading-relaxed font-light">
-            Everything you need to plan your pristine private vacation with peace of mind.
+            {language === 'en'
+              ? 'Everything you need to know to plan your bespoke private vacation in Bali with confidence.'
+              : 'Semua informasi penting yang Anda perlukan untuk merencanakan liburan privat di Bali dengan tenang.'}
           </p>
         </div>
 
         {/* Accordions */}
         <div className="space-y-4 text-left" id="faq-accordion-container">
-          {FAQS.map((faq, index) => {
+          {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
 
             return (

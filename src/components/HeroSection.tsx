@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown, Calendar, Compass, ShieldCheck } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { Experience } from '../types';
-import { EXPERIENCES } from '../data';
+import { getExperiences } from '../data';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HeroSectionProps {
   activeIndex: number;
@@ -12,8 +13,6 @@ interface HeroSectionProps {
   onViewDetails?: (experienceId: string) => void;
 }
 
-const HERO_EXPERIENCES = EXPERIENCES.filter((e) => e.id !== 'rafting-bmw');
-
 export default function HeroSection({
   activeIndex,
   setActiveIndex,
@@ -21,6 +20,9 @@ export default function HeroSection({
   onBookNowClick,
   onViewDetails,
 }: HeroSectionProps) {
+  const { language, t } = useLanguage();
+  const experiences = getExperiences(language);
+  const HERO_EXPERIENCES = experiences.filter((e) => e.id !== 'rafting-bmw');
   const currentExp = HERO_EXPERIENCES[activeIndex] || HERO_EXPERIENCES[0];
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,7 +52,7 @@ export default function HeroSection({
   useEffect(() => {
     startAutoplay();
     return () => stopAutoplay();
-  }, [activeIndex, setActiveIndex]);
+  }, [activeIndex, setActiveIndex, HERO_EXPERIENCES.length]);
 
   const getCardTag = (exp: Experience) => {
     return exp.tagline;
@@ -76,7 +78,6 @@ export default function HeroSection({
     };
     updateWidth();
     window.addEventListener('resize', updateWidth);
-    // Extra timeout to capture layout after mount
     const timer = setTimeout(updateWidth, 100);
     return () => {
       window.removeEventListener('resize', updateWidth);
@@ -84,8 +85,8 @@ export default function HeroSection({
     };
   }, []);
 
-  const cardWidth = isMobile ? 144 : 192; // w-36 is 144px, w-48 is 192px
-  const gap = 16; // gap-4 is 16px
+  const cardWidth = isMobile ? 144 : 192;
+  const gap = 16;
 
   const targetTranslate = containerWidth > 0
     ? (containerWidth / 2) - (activeIndex * (cardWidth + gap) + cardWidth / 2)
@@ -153,63 +154,6 @@ export default function HeroSection({
     }
   };
 
-  // Helper to highlight parts of text matching the screenshot
-  const formatHighlightedText = (text: string) => {
-    if (text.includes('Toyota Kijang Innova premium')) {
-      const parts = text.split(/(Toyota Kijang Innova premium|kenyamanan ekstra)/g);
-      return parts.map((part, index) => {
-        if (part === 'Toyota Kijang Innova premium' || part === 'kenyamanan ekstra') {
-          return (
-            <span key={index} className="text-gold-300 font-semibold italic">
-              {part}
-            </span>
-          );
-        }
-        return part;
-      });
-    }
-    if (text.includes('private luxury 4x4')) {
-      const parts = text.split(/(private luxury 4x4|Conquer volcanic trails)/g);
-      return parts.map((part, index) => {
-        if (part === 'private luxury 4x4' || part === 'Conquer volcanic trails') {
-          return (
-            <span key={index} className="text-gold-300 font-semibold italic">
-              {part}
-            </span>
-          );
-        }
-        return part;
-      });
-    }
-    if (text.includes('premium yacht')) {
-      const parts = text.split(/(premium yacht|dine under the sunset)/g);
-      return parts.map((part, index) => {
-        if (part === 'premium yacht' || part === 'dine under the sunset') {
-          return (
-            <span key={index} className="text-gold-300 font-semibold italic">
-              {part}
-            </span>
-          );
-        }
-        return part;
-      });
-    }
-    if (text.includes('tropical rainforests')) {
-      const parts = text.split(/(tropical rainforests|holistic wellness therapies)/g);
-      return parts.map((part, index) => {
-        if (part === 'tropical rainforests' || part === 'holistic wellness therapies') {
-          return (
-            <span key={index} className="text-gold-300 font-semibold italic">
-              {part}
-            </span>
-          );
-        }
-        return part;
-      });
-    }
-    return text;
-  };
-
   return (
     <section
       id="hero-top"
@@ -236,15 +180,15 @@ export default function HeroSection({
               referrerPolicy="no-referrer"
             />
             {/* Ambient Dark Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-r from-luxury-dark/95 via-luxury-dark/40 to-luxury-dark/15" />
+            <div className="absolute inset-0 bg-gradient-to-r from-luxury-dark/95 via-luxury-dark/40 to-luxury-dark/15 rtl:bg-gradient-to-l" />
             <div className="absolute inset-0 bg-gradient-to-t from-luxury-dark via-transparent to-luxury-dark/30" />
             <div className="absolute inset-0 bg-black/20" />
           </motion.div>
         </AnimatePresence>
 
-        {/* Eager preloading for the other carousel slides to make transitions instant */}
+        {/* Eager preloading for other slides */}
         <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
-          {EXPERIENCES.map((exp, idx) => (
+          {HERO_EXPERIENCES.map((exp, idx) => (
             idx !== activeIndex && (
               <img
                 key={exp.id}
@@ -262,20 +206,20 @@ export default function HeroSection({
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full flex-grow flex flex-col justify-center pt-28 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left Text Block */}
-          <div className="lg:col-span-5 flex flex-col items-start text-left" id="hero-text-block">
+          {/* Text Block */}
+          <div className="lg:col-span-5 flex flex-col items-start text-left rtl:items-start rtl:text-right" id="hero-text-block">
             <AnimatePresence mode="wait">
               <motion.div
-                key={currentExp.id}
+                key={currentExp.id + language}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -30 }}
                 transition={{ duration: 0.6, ease: 'easeOut' }}
-                className="space-y-6"
+                className="space-y-6 w-full"
               >
                 {/* Dynamic Category/Tagline */}
-                <div className="flex items-center space-x-3">
-                  <span className="h-[1px] w-5 bg-gold-400" />
+                <div className="flex items-center gap-3">
+                  <span className="h-[1px] w-5 bg-gold-400 shrink-0" />
                   <span className="font-mono text-xs uppercase tracking-[0.3em] text-gold-400 font-semibold">
                     {currentExp.tagline}
                   </span>
@@ -288,7 +232,7 @@ export default function HeroSection({
 
                 {/* Hero Description */}
                 <p className="font-sans text-xs md:text-sm text-gold-100/75 leading-relaxed max-w-sm font-light">
-                  {formatHighlightedText(currentExp.shortDesc)}
+                  {currentExp.shortDesc}
                 </p>
 
                 {/* Buttons container */}
@@ -297,34 +241,38 @@ export default function HeroSection({
                     onClick={() => onViewDetails ? onViewDetails(currentExp.id) : onExploreClick(currentExp)}
                     className="border border-gold-400/40 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm cursor-pointer text-center hover:bg-gold-500/10"
                   >
-                    Detail Paket
+                    {t.hero.viewDetails}
                   </button>
                   <button
                     onClick={() => onExploreClick(currentExp)}
                     id="btn-start-adventure"
                     className="bg-gold-400 hover:bg-gold-500 text-luxury-dark font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm active:scale-95 hover:shadow-lg hover:shadow-gold-500/10 text-center cursor-pointer"
                   >
-                    Booking Sekarang
+                    {t.hero.bookNow}
                   </button>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Right Interactive Slider Cards matching the screenshot */}
+          {/* Interactive Slider Cards */}
           <div className="lg:col-span-7 flex flex-col space-y-4" id="hero-slider-block">
             {/* Visual Header for Cards Block */}
-            <div className="flex items-center justify-between pb-2 border-b border-gold-900/10 max-w-md ml-auto mr-0 w-full">
+            <div className="flex items-center justify-between pb-2 border-b border-gold-900/10 max-w-md w-full ltr:lg:ml-auto rtl:lg:mr-auto">
               <span className="font-mono text-[10px] text-gold-300/40 uppercase tracking-widest">
-                Curated Destinations
+                {t.hero.curatedDestinations}
               </span>
-              <span className="font-mono text-[10px] text-gold-400 font-semibold tracking-widest">
-                {String(activeIndex + 1).padStart(2, '0')} / {String(EXPERIENCES.length).padStart(2, '0')}
+              <span className="font-mono text-[10px] text-gold-400 font-semibold tracking-widest font-sans">
+                {String(activeIndex + 1).padStart(2, '0')} / {String(HERO_EXPERIENCES.length).padStart(2, '0')}
               </span>
             </div>
 
             {/* Floating Row of portrait cards stacked beautifully */}
-            <div className="w-full max-w-md md:max-w-lg xl:max-w-xl lg:ml-auto overflow-hidden relative pb-4 pt-6" id="hero-slider-container">
+            <div
+              dir="ltr"
+              className="w-full max-w-md md:max-w-lg xl:max-w-xl ltr:lg:ml-auto rtl:lg:mr-auto overflow-hidden relative pb-4 pt-6"
+              id="hero-slider-container"
+            >
 
               <div
                 ref={containerRef}
@@ -377,7 +325,10 @@ export default function HeroSection({
                       <div className="absolute inset-0 bg-gold-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                       {/* Card Content focused at bottom */}
-                      <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end">
+                      <div
+                        className="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end text-left rtl:text-right"
+                        dir={language === 'ar' ? 'rtl' : 'ltr'}
+                      >
                         <p className="font-mono text-[9px] uppercase tracking-widest text-gold-300/80 font-bold mb-1">
                           {getCardTag(exp)}
                         </p>
@@ -385,8 +336,8 @@ export default function HeroSection({
                           {getCardTitle(exp)}
                         </h3>
                         {isActive && (
-                          <span className="font-mono text-[8px] text-gold-400 uppercase tracking-wider mt-1 flex items-center space-x-1">
-                            <span>Active Experience</span>
+                          <span className="font-mono text-[8px] text-gold-400 uppercase tracking-wider mt-1 flex items-center gap-1.5">
+                            <span>{t.hero.activeExperience}</span>
                           </span>
                         )}
                       </div>
@@ -400,7 +351,7 @@ export default function HeroSection({
         </div>
       </div>
 
-      {/* Bottom Scroll/Chevron Pill matching the screenshot */}
+      {/* Bottom Scroll/Chevron Pill */}
       <div className="relative z-10 w-full flex justify-center pb-8">
         <button
           onClick={handleScrollDown}
@@ -427,3 +378,4 @@ export default function HeroSection({
     </section>
   );
 }
+

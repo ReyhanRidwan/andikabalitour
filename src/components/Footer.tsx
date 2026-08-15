@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, Compass, Globe, Send, Sun, CloudRain, HelpCircle, Check, MapPin, Phone, Instagram } from 'lucide-react';
+import { Mail, Compass, Globe, Send, Sun, CloudRain, Check, MapPin, Phone, Instagram } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Footer() {
+  const { language, t } = useLanguage();
   const [email, setEmail] = useState('');
   const [success, setSuccess] = useState(false);
   const [baliTime, setBaliTime] = useState('');
@@ -27,7 +29,7 @@ export default function Footer() {
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() || !email.includes('@')) {
-      alert('Please enter a valid email address.');
+      alert(language === 'id' ? 'Mohon masukkan alamat email yang valid.' : 'Please enter a valid email address.');
       return;
     }
     setSuccess(true);
@@ -52,30 +54,30 @@ export default function Footer() {
                 andhikabalitour
               </span>
               <span className="font-sans text-[10px] uppercase tracking-[0.25em] text-gold-300/80 -mt-1 font-semibold">
-                Premium Tour & Travel
+                {language === 'id' ? 'Wisata & Perjalanan Premium' : 'Premium Tour & Travel'}
               </span>
             </div>
           </div>
           <p className="font-sans text-xs md:text-sm text-gold-100/55 leading-relaxed font-light">
-            andhikabalitour is the premier bespoke private charter and luxury tour operator on the Island of Gods. We tailor highly specialized off-road, yacht sailing, and wellness retreats to cater to high-society tourists seeking pristine ecological wonders.
+            {t.footer.brandDesc}
           </p>
 
           {/* Social icons or badges */}
           <div className="flex items-center space-x-3 text-gold-400 font-mono text-[9px] uppercase tracking-widest">
             <Compass size={12} />
-            <span>Sustainable Luxury Tourism Registered</span>
+            <span>{t.footer.registeredBadge}</span>
           </div>
         </div>
 
         {/* Contact Coordinates Column */}
         <div className="lg:col-span-3 space-y-4">
           <h4 className="font-serif text-base text-gold-200 tracking-wide font-semibold">
-            The Head Office
+            {t.footer.headOffice}
           </h4>
           <ul className="space-y-3 text-xs md:text-sm text-gold-100/60 font-light">
             <li className="flex items-start space-x-2.5">
               <MapPin size={14} className="text-gold-400 mt-0.5 flex-shrink-0" />
-              <span>Jalan Raya Seminyak No. 14A, Kuta, Bali 80361, Indonesia</span>
+              <span>Gg. Perbatasan No.18, Pemogan, Denpasar Selatan, Kota Denpasar, Bali 80222</span>
             </li>
             <li className="flex items-center space-x-2.5">
               <Phone size={14} className="text-gold-400 flex-shrink-0" />
@@ -93,7 +95,7 @@ export default function Footer() {
 
           {/* Social Media Links */}
           <div className="pt-2 space-y-2">
-            <p className="text-[10px] font-mono uppercase tracking-widest text-gold-300/50 font-bold">Follow Us</p>
+            <p className="text-[10px] font-mono uppercase tracking-widest text-gold-300/50 font-bold">{t.footer.followUs}</p>
             <div className="flex flex-col space-y-2 text-xs text-gold-100/70">
               <a
                 href="https://www.instagram.com/andhika_balidriver?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
@@ -122,11 +124,11 @@ export default function Footer() {
         {/* Real-time Simulated Bali Weather Microclimate Widget */}
         <div className="lg:col-span-2 space-y-4">
           <h4 className="font-serif text-base text-gold-200 tracking-wide font-semibold">
-            Bali Microclimates
+            {t.footer.weatherTitle}
           </h4>
           <div className="space-y-3 bg-luxury-gray/40 border border-gold-900/10 p-4 rounded-sm text-xs font-sans">
             <div className="flex justify-between items-center text-gold-100/40">
-              <span>Local Time (WITA)</span>
+              <span>{t.footer.baliTime} (WITA)</span>
               <span className="font-mono text-gold-300 font-semibold">{baliTime || '12:00 PM'}</span>
             </div>
             
@@ -159,23 +161,23 @@ export default function Footer() {
         {/* Private Newsletter Column */}
         <div className="lg:col-span-3 space-y-4">
           <h4 className="font-serif text-base text-gold-200 tracking-wide font-semibold">
-            The Private Ledger
+            {language === 'id' ? 'Buletin Eksklusif' : 'The Private Ledger'}
           </h4>
           <p className="font-sans text-xs text-gold-100/50 leading-relaxed font-light">
-            Subscribe to receive exclusive off-market luxury travel offers, helicopter transfers announcements, and private yacht seasonal discounts.
+            {language === 'id' ? 'Daftar untuk menerima informasi promo eksklusif, charter privat, dan penawaran musiman pulau Bali.' : 'Subscribe to receive exclusive off-market luxury travel offers, transfers announcements, and private seasonal discounts.'}
           </p>
 
           {success ? (
             <div className="flex items-center space-x-2 text-xs font-mono text-emerald-400 bg-emerald-500/10 p-3 rounded-sm border border-emerald-400/20">
               <Check size={14} className="stroke-[3]" />
-              <span>Added to Elite Ledger.</span>
+              <span>{language === 'id' ? 'Terdaftar di buletin eksklusif.' : 'Added to Elite Ledger.'}</span>
             </div>
           ) : (
             <form onSubmit={handleSubscribe} className="flex items-center border border-gold-400/20 bg-luxury-gray rounded-sm overflow-hidden focus-within:border-gold-400 transition-colors">
               <input
                 type="email"
                 required
-                placeholder="vanderbilt@estate.com"
+                placeholder="guest@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 id="newsletter-email-input"
@@ -197,17 +199,18 @@ export default function Footer() {
 
       {/* Copyright area */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 flex flex-col md:flex-row items-center justify-between text-xs font-mono text-gold-300/30 gap-4">
-        <span>© {new Date().getFullYear()} andhikabalitour. All Rights Reserved.</span>
+        <span>© {new Date().getFullYear()} andhikabalitour. {t.footer.rightsReserved}</span>
         
         <div className="flex space-x-6">
           <span className="flex items-center space-x-1.5">
             <Globe size={12} />
             <span>Bali, Indonesia</span>
           </span>
-          <a href="#faq" className="hover:text-gold-400 transition-colors">Safety Protocols</a>
-          <a href="#faq" className="hover:text-gold-400 transition-colors">Charter Terms</a>
+          <a href="#faq" className="hover:text-gold-400 transition-colors">{language === 'id' ? 'Protokol Keamanan' : 'Safety Protocols'}</a>
+          <a href="#faq" className="hover:text-gold-400 transition-colors">{language === 'id' ? 'Ketentuan Layanan' : 'Terms of Service'}</a>
         </div>
       </div>
     </footer>
   );
 }
+

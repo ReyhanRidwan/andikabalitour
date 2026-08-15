@@ -1,6 +1,7 @@
 import React from 'react';
-import { Clock, MapPin, Star, Sparkles, Check, ArrowRight, ShieldCheck, Award } from 'lucide-react';
-import { EXPERIENCES } from '../data';
+import { MapPin, Star, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
+import { getExperiences } from '../data';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ExperienceDetailsProps {
   onBookNow: (experienceId: string) => void;
@@ -8,8 +9,9 @@ interface ExperienceDetailsProps {
 }
 
 export default function ExperienceDetails({ onBookNow, onViewDetails }: ExperienceDetailsProps) {
-  // Only showcase the 3 core signature packages on the landing page
-  const signatureExperiences = EXPERIENCES.slice(0, 3);
+  const { language, t } = useLanguage();
+  const experiences = getExperiences(language);
+  const signatureExperiences = experiences.slice(0, 3);
 
   return (
     <section id="experiences" className="py-24 bg-neutral-900 border-t border-b border-gold-500/10">
@@ -18,13 +20,13 @@ export default function ExperienceDetails({ onBookNow, onViewDetails }: Experien
         {/* Editorial Title Header */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold-400 font-semibold">
-            Signature Expeditions
+            {t.experiences.badge}
           </p>
           <h2 className="font-serif text-3xl md:text-5xl text-gold-100 font-medium tracking-wide">
-            Our Elite Expeditions
+            {t.experiences.title}
           </h2>
           <p className="font-sans text-sm md:text-base text-gold-100/50 leading-relaxed font-light">
-            Masing-masing petualangan dirancang privat, berkelas tinggi, dan didedikasikan sepenuhnya untuk mewujudkan impian perjalanan tak terlupakan Anda di pulau dewata.
+            {t.experiences.subtitle}
           </p>
         </div>
 
@@ -32,7 +34,7 @@ export default function ExperienceDetails({ onBookNow, onViewDetails }: Experien
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8" id="signature-experiences-deck">
           {signatureExperiences.map((exp) => (
             <div
-              key={exp.id}
+              key={exp.id + language}
               className="bg-neutral-950 border border-gold-400/10 rounded-lg overflow-hidden flex flex-col justify-between group shadow-xl hover:border-gold-400/30 transition-all duration-500 hover:shadow-2xl hover:shadow-black/60 text-left"
             >
               {/* Card Image */}
@@ -62,7 +64,7 @@ export default function ExperienceDetails({ onBookNow, onViewDetails }: Experien
                     <div className="flex items-center space-x-1 text-gold-400">
                       <Star size={14} className="fill-gold-400" />
                       <span className="font-mono text-xs font-bold">{exp.rating}</span>
-                      <span className="text-gold-200/40 text-[10px]">({exp.reviewCount} ulasan)</span>
+                      <span className="text-gold-200/40 text-[10px]">({exp.reviewCount} {t.common.reviews})</span>
                     </div>
                     <div className="flex items-center text-gold-200/50 text-[11px] font-mono gap-1">
                       <MapPin size={12} className="text-gold-400" />
@@ -84,7 +86,7 @@ export default function ExperienceDetails({ onBookNow, onViewDetails }: Experien
                   <div className="space-y-3 pt-4 border-t border-gold-900/10">
                     <h4 className="font-mono text-[10px] uppercase tracking-wider text-gold-400 font-bold flex items-center gap-1.5">
                       <Sparkles size={11} />
-                      <span>Sorotan Utama Paket</span>
+                      <span>{t.experiences.highlightsLabel}</span>
                     </h4>
                     <ul className="space-y-2 text-xs text-gold-200/70 font-sans font-light">
                       {exp.highlights.slice(0, 3).map((high, i) => (
@@ -101,7 +103,7 @@ export default function ExperienceDetails({ onBookNow, onViewDetails }: Experien
                 <div className="pt-6 mt-8 border-t border-gold-900/15 flex items-center justify-between gap-3">
                   <div className="text-left">
                     <span className="block text-[9px] font-mono text-gold-300/40 tracking-widest uppercase font-semibold">
-                      {exp.pricingOptions ? 'Opsi Tarif' : 'Mulai'}
+                      {exp.pricingOptions ? (language === 'id' ? 'Opsi Tarif' : 'Pricing') : (language === 'id' ? 'Mulai' : 'From')}
                     </span>
                     {exp.pricingOptions ? (
                       <div className="font-mono text-xs font-bold text-gold-300">
@@ -111,7 +113,7 @@ export default function ExperienceDetails({ onBookNow, onViewDetails }: Experien
                     ) : (
                       <>
                         <span className="font-mono text-base font-bold text-gold-300">Rp {exp.pricePerPerson.toLocaleString('id-ID')}</span>
-                        <span className="text-[10px] text-gold-200/40 font-light"> / pax</span>
+                        <span className="text-[10px] text-gold-200/40 font-light"> / {language === 'id' ? 'pax' : 'pax'}</span>
                       </>
                     )}
                   </div>
@@ -121,13 +123,13 @@ export default function ExperienceDetails({ onBookNow, onViewDetails }: Experien
                       onClick={() => onViewDetails ? onViewDetails(exp.id) : onBookNow(exp.id)}
                       className="border border-gold-400/30 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-mono text-xs uppercase tracking-wider font-semibold px-3 py-3 rounded-sm transition-all cursor-pointer"
                     >
-                      Detail
+                      {t.common.viewDetails}
                     </button>
                     <button
                       onClick={() => onBookNow(exp.id)}
                       className="bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-widest font-extrabold px-4 py-3 rounded-sm transition-all shadow-md cursor-pointer hover:shadow-gold-500/10 flex items-center gap-1.5 active:scale-95"
                     >
-                      <span>Book</span>
+                      <span>{t.common.bookNow}</span>
                       <ArrowRight size={12} className="stroke-[2.5]" />
                     </button>
                   </div>
@@ -141,10 +143,11 @@ export default function ExperienceDetails({ onBookNow, onViewDetails }: Experien
         {/* Footnote comfort seal */}
         <div className="flex items-center justify-center space-x-2 text-[10px] text-gold-300/30 font-mono mt-12">
           <ShieldCheck size={12} className="text-gold-400" />
-          <span>GARANSI 100% PRIVATE TOUR TANPA DICAMPUR PESERTA LAIN</span>
+          <span>{t.experiences.guaranteeSeal}</span>
         </div>
 
       </div>
     </section>
   );
 }
+

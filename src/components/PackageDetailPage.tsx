@@ -15,6 +15,7 @@ import {
   Maximize2
 } from 'lucide-react';
 import { Experience } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface PackageDetailPageProps {
   experience: Experience;
@@ -28,91 +29,99 @@ export default function PackageDetailPage({
   onBookNow
 }: PackageDetailPageProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
+  const { language, t } = useLanguage();
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-gold-100 font-sans pt-20 pb-24">
+    <div className="min-h-screen bg-neutral-950 text-gold-100 font-sans pt-16 md:pt-20 pb-24">
       {/* Top sticky navigation bar */}
-      <div className="bg-neutral-900/80 backdrop-blur-md border-b border-gold-400/10 sticky top-16 z-40 py-3.5 px-6 md:px-12 flex items-center justify-between">
+      <div className="bg-neutral-950/95 backdrop-blur-md border-b border-gold-400/15 sticky top-14 md:top-16 z-40 py-2.5 md:py-3.5 px-4 sm:px-6 md:px-12 flex items-center justify-between">
         <button
           onClick={onBack}
           className="inline-flex items-center space-x-2 text-xs font-mono uppercase tracking-widest text-gold-300 hover:text-gold-100 transition-colors cursor-pointer"
         >
           <ArrowLeft size={16} />
-          <span>Kembali</span>
+          <span>{t.common.back}</span>
         </button>
         <div className="flex items-center space-x-3">
-          <span className="text-xs font-mono text-gold-200/50 hidden sm:inline">
-            Rp {experience.pricePerPerson.toLocaleString('id-ID')} / pax
+          <span className="text-xs font-mono text-gold-200/60 hidden sm:inline">
+            Rp {experience.pricePerPerson.toLocaleString('id-ID')} {t.common.perPerson}
           </span>
           <button
             onClick={() => onBookNow(experience.id)}
-            className="bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-widest font-extrabold px-5 py-2 rounded-sm transition-all shadow-md active:scale-95 cursor-pointer flex items-center gap-1.5"
+            className="bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-widest font-extrabold px-4 md:px-5 py-2 rounded-sm transition-all shadow-md active:scale-95 cursor-pointer flex items-center gap-1.5"
           >
-            <span>Pesan Sekarang</span>
+            <span>{t.common.bookNow}</span>
             <ArrowRight size={13} />
           </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mt-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 mt-4 md:mt-6">
         {/* Banner Hero Section */}
-        <div className="relative rounded-xl overflow-hidden border border-gold-400/20 shadow-2xl h-[360px] md:h-[480px]">
+        <div className="relative rounded-xl overflow-hidden border border-gold-400/20 shadow-2xl min-h-[460px] sm:min-h-[400px] md:h-[480px] md:min-h-0 flex flex-col justify-end">
           <img
             src={experience.bgImage}
             alt={experience.title}
-            className="w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent" />
+          {/* Multi-stage dark gradient for 100% crystal clear readability on all screens */}
+          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/80 sm:via-neutral-950/55 to-black/30" />
           
-          <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10 flex flex-col md:flex-row md:items-end justify-between gap-6 text-left">
-            <div className="space-y-3 max-w-2xl">
+          <div className="relative z-10 p-5 sm:p-6 md:p-10 flex flex-col md:flex-row md:items-end justify-between gap-5 md:gap-6 text-left">
+            <div className="space-y-2.5 sm:space-y-3 max-w-2xl">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="bg-gold-400 text-neutral-950 text-[10px] font-mono font-extrabold uppercase tracking-widest px-3 py-1 rounded-sm">
+                <span className="bg-gold-400 text-neutral-950 text-[10px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-sm shadow-xs">
                   {experience.tagline}
                 </span>
-                <span className="bg-neutral-900/90 border border-gold-400/30 text-gold-300 font-mono text-[10px] px-2.5 py-1 rounded-sm flex items-center gap-1">
+                <span className="bg-neutral-950/80 border border-gold-400/30 text-gold-300 font-mono text-[10px] px-2.5 py-1 rounded-sm flex items-center gap-1 backdrop-blur-xs">
                   <Star size={11} className="fill-gold-400 text-gold-400" />
-                  <span>{experience.rating} ({experience.reviewCount} ulasan)</span>
+                  <span>{experience.rating} ({experience.reviewCount} {t.common.reviews})</span>
                 </span>
               </div>
 
-              <h1 className="font-serif text-3xl md:text-5xl font-medium text-gold-100 tracking-wide">
+              <h1 className="font-serif text-2xl sm:text-3xl md:text-5xl font-medium text-gold-100 tracking-wide leading-tight drop-shadow-md">
                 {experience.title}
               </h1>
 
-              <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-gold-200/80 pt-1">
-                <div className="flex items-center gap-1.5">
-                  <Clock size={14} className="text-gold-400" />
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-mono text-gold-200/90 pt-1">
+                <div className="flex items-center gap-1.5 bg-neutral-950/80 backdrop-blur-xs border border-gold-400/20 px-2.5 py-1 rounded-sm">
+                  <Clock size={13} className="text-gold-400 flex-shrink-0" />
                   <span>{experience.duration}</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <MapPin size={14} className="text-gold-400" />
+                <div className="flex items-center gap-1.5 bg-neutral-950/80 backdrop-blur-xs border border-gold-400/20 px-2.5 py-1 rounded-sm">
+                  <MapPin size={13} className="text-gold-400 flex-shrink-0" />
                   <span>{experience.location}</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Users size={14} className="text-gold-400" />
+                <div className="flex items-center gap-1.5 bg-neutral-950/80 backdrop-blur-xs border border-gold-400/20 px-2.5 py-1 rounded-sm">
+                  <Users size={13} className="text-gold-400 flex-shrink-0" />
                   <span>{experience.difficulty}</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-neutral-900/90 border border-gold-400/30 p-5 rounded-lg backdrop-blur-md text-left md:text-right min-w-[240px]">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-gold-300/60">Harga Paket Lengkap</p>
+            <div className="bg-neutral-950/90 border border-gold-400/30 p-4 sm:p-5 rounded-lg backdrop-blur-md text-left md:text-right min-w-[220px] md:min-w-[240px] shadow-xl">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-gold-300/70">{t.packageDetail.completePackagePrice}</p>
               {experience.pricingOptions ? (
-                <div className="mt-1 space-y-0.5">
+                <div className="mt-1.5 space-y-1">
                   {experience.pricingOptions.map((opt, idx) => (
-                    <div key={idx} className="flex md:justify-end items-center gap-2 font-mono text-sm font-bold text-gold-300">
-                      <span className="text-gold-200/60 text-xs">{opt.name}:</span>
+                    <div key={idx} className="flex justify-between md:justify-end items-center gap-2 font-mono text-xs sm:text-sm font-bold text-gold-300">
+                      <span className="text-gold-200/60 text-[11px] sm:text-xs">{opt.name}:</span>
                       <span>Rp {opt.price.toLocaleString('id-ID')}</span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="font-mono text-2xl md:text-3xl font-extrabold text-gold-300 mt-1">
+                <p className="font-mono text-xl sm:text-2xl md:text-3xl font-extrabold text-gold-300 mt-1">
                   Rp {experience.pricePerPerson.toLocaleString('id-ID')}
                 </p>
               )}
-              <p className="text-[10px] text-gold-100/40 font-light mt-1">Sudah termasuk asuransi & makan siang</p>
+              <p className="text-[10px] text-gold-100/50 font-light mt-1">
+                {language === 'ar'
+                  ? 'يشمل التأمين الكامل ووجبة الغداء'
+                  : language === 'en'
+                  ? 'Includes full insurance & lunch'
+                  : 'Sudah termasuk asuransi & makan siang'}
+              </p>
             </div>
           </div>
         </div>
@@ -122,13 +131,23 @@ export default function PackageDetailPage({
           <div className="mt-16 text-left">
             <div className="flex items-center space-x-2 text-gold-400 font-mono text-xs uppercase tracking-[0.25em] font-semibold mb-2">
               <Sparkles size={14} />
-              <span>4 Wahana Utama Paket</span>
+              <span>
+                {language === 'ar'
+                  ? 'أبرز معالم الباقة والأنشطة'
+                  : language === 'en'
+                  ? 'Package Highlights & Spots'
+                  : 'Wahana & Spot Utama Paket'}
+              </span>
             </div>
             <h2 className="font-serif text-2xl md:text-3xl text-gold-100 font-medium mb-3">
-              Foto & Wahana Terlengkap Dalam Paket
+              {t.packageDetail.photoGallery}
             </h2>
             <p className="text-xs md:text-sm text-gold-100/60 max-w-2xl mb-8 font-light leading-relaxed">
-              Semua 4 wahana di bawah ini sudah termasuk secara lengkap dalam paket tanpa biaya tersembunyi.
+              {language === 'ar'
+                ? 'جميع الوجهات والأنشطة أدناه مشمولة بالكامل في هذه الباقة الخاصة دون أي رسوم خفية.'
+                : language === 'en'
+                ? 'All featured destinations and activities below are fully inclusive in this private package.'
+                : 'Semua spot dan wahana di bawah ini sudah termasuk secara lengkap dalam paket tanpa biaya tersembunyi.'}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -152,7 +171,7 @@ export default function PackageDetailPage({
                     </div>
                     <div className="absolute bottom-3 left-3">
                       <span className="bg-gold-400 text-neutral-950 font-mono font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-sm">
-                        Wahana #{index + 1}: {item.name}
+                        #{index + 1}: {item.name}
                       </span>
                     </div>
                   </div>
@@ -180,7 +199,7 @@ export default function PackageDetailPage({
             {/* Description */}
             <div className="bg-neutral-900/40 border border-gold-400/10 p-6 md:p-8 rounded-xl space-y-4">
               <h2 className="font-serif text-2xl text-gold-100 font-medium border-b border-gold-400/10 pb-4">
-                Deskripsi Paket Aktivitas
+                {language === 'en' ? 'Package Overview' : 'Deskripsi Paket Aktivitas'}
               </h2>
               <p className="text-sm md:text-base text-gold-100/70 font-light leading-relaxed">
                 {experience.longDesc}
@@ -191,7 +210,7 @@ export default function PackageDetailPage({
             <div className="bg-neutral-900/40 border border-gold-400/10 p-6 md:p-8 rounded-xl space-y-6">
               <h2 className="font-serif text-2xl text-gold-100 font-medium flex items-center gap-2">
                 <Sparkles className="text-gold-400" size={20} />
-                <span>Keunggulan & Sorotan Utama</span>
+                <span>{t.packageDetail.keyHighlights}</span>
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {experience.highlights.map((highlight, idx) => (
@@ -214,7 +233,7 @@ export default function PackageDetailPage({
             <div className="bg-neutral-900/40 border border-gold-400/10 p-6 md:p-8 rounded-xl space-y-6">
               <h2 className="font-serif text-2xl text-gold-100 font-medium flex items-center gap-2">
                 <Calendar className="text-gold-400" size={20} />
-                <span>Jadwal & Rundown Aktivitas</span>
+                <span>{t.packageDetail.dailyItinerary}</span>
               </h2>
 
               <div className="relative border-l border-gold-400/20 ml-3 space-y-8 pl-6 pt-2">
@@ -241,7 +260,9 @@ export default function PackageDetailPage({
             {/* Quick Booking Box */}
             <div className="bg-neutral-900 border border-gold-400/20 p-6 rounded-xl space-y-6 sticky top-36 shadow-xl">
               <div className="space-y-1">
-                <span className="text-[10px] font-mono text-gold-400 uppercase tracking-widest">Aktivitas Privat</span>
+                <span className="text-[10px] font-mono text-gold-400 uppercase tracking-widest">
+                  {language === 'ar' ? 'نشاط خاص VIP' : language === 'en' ? 'Private Experience' : 'Aktivitas Privat'}
+                </span>
                 <h3 className="font-serif text-xl text-gold-100 font-medium">{experience.title}</h3>
                 {experience.pricingOptions ? (
                   <div className="pt-2 space-y-1">
@@ -255,22 +276,22 @@ export default function PackageDetailPage({
                 ) : (
                   <p className="font-mono text-2xl font-bold text-gold-300 pt-2">
                     Rp {experience.pricePerPerson.toLocaleString('id-ID')}
-                    <span className="text-xs font-normal text-gold-100/40"> / pax</span>
+                    <span className="text-xs font-normal text-gold-100/40"> {t.common.perPerson}</span>
                   </p>
                 )}
               </div>
 
               <div className="space-y-3 pt-4 border-t border-gold-400/10 text-xs font-mono text-gold-200/70">
                 <div className="flex items-center justify-between">
-                  <span className="text-gold-100/50">Lokasi:</span>
+                  <span className="text-gold-100/50">{t.common.location}:</span>
                   <span className="font-bold text-gold-200">{experience.location}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gold-100/50">Kapasitas:</span>
+                  <span className="text-gold-100/50">{t.common.duration}:</span>
                   <span className="font-bold text-gold-200">{experience.duration}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gold-100/50">Karakteristik:</span>
+                  <span className="text-gold-100/50">{t.common.difficulty}:</span>
                   <span className="font-bold text-gold-200">{experience.difficulty}</span>
                 </div>
               </div>
@@ -279,13 +300,13 @@ export default function PackageDetailPage({
                 onClick={() => onBookNow(experience.id)}
                 className="w-full bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-widest font-extrabold py-3.5 rounded-sm transition-all shadow-md active:scale-95 cursor-pointer flex items-center justify-center gap-2"
               >
-                <span>Pesan Paket Sekarang</span>
+                <span>{t.packageDetail.reserveThisTrip}</span>
                 <ArrowRight size={14} />
               </button>
 
               <div className="flex items-center justify-center space-x-1.5 text-[10px] text-gold-300/50 font-mono pt-2">
                 <ShieldCheck size={13} className="text-gold-400" />
-                <span>Garansi 100% Bebas Antre & Privat</span>
+                <span>{t.packageDetail.instantConfirmation}</span>
               </div>
             </div>
 
@@ -293,7 +314,7 @@ export default function PackageDetailPage({
             <div className="bg-neutral-900/40 border border-gold-400/10 p-6 rounded-xl space-y-4">
               <h3 className="font-serif text-lg text-gold-100 font-medium flex items-center gap-2">
                 <Award className="text-gold-400" size={18} />
-                <span>Termasuk Dalam Paket (Inclusions)</span>
+                <span>{t.packageDetail.includedWithTour}</span>
               </h3>
               <ul className="space-y-2 text-xs text-gold-100/75">
                 {experience.inclusions.map((inc, i) => (
@@ -309,7 +330,7 @@ export default function PackageDetailPage({
             <div className="bg-neutral-900/40 border border-gold-400/10 p-6 rounded-xl space-y-4">
               <h3 className="font-serif text-lg text-gold-100 font-medium flex items-center gap-2">
                 <X className="text-red-400" size={18} />
-                <span>Tidak Termasuk (Exclusions)</span>
+                <span>{t.packageDetail.notIncludedWithTour}</span>
               </h3>
               <ul className="space-y-2 text-xs text-gold-100/50">
                 {experience.exclusions.map((exc, i) => (
@@ -333,7 +354,7 @@ export default function PackageDetailPage({
           <div className="relative max-w-4xl max-h-[90vh] overflow-hidden rounded-lg border border-gold-400/30">
             <button
               onClick={() => setSelectedPhoto(null)}
-              className="absolute top-4 right-4 bg-black/70 text-gold-300 p-2 rounded-full hover:text-white z-10"
+              className="absolute top-4 right-4 bg-black/70 text-gold-300 p-2 rounded-full hover:text-white z-10 cursor-pointer"
             >
               <X size={20} />
             </button>

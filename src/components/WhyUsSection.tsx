@@ -1,37 +1,40 @@
 import React from 'react';
-import { ShieldCheck, Compass, Sparkles, ChefHat, Camera, CalendarDays, Award } from 'lucide-react';
+import { ShieldCheck, Sparkles, ChefHat, Camera, CalendarDays, Award } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function WhyUsSection() {
+  const { t } = useLanguage();
+
   const points = [
     {
       icon: <Award className="w-6 h-6 text-gold-400" />,
-      title: '100% Layanan Privat VIP',
-      desc: 'Tidak ada rombongan lain. Seluruh kendaraan, pemandu, dan akomodasi selama perjalanan adalah hak eksklusif Anda demi privasi mutlak.'
+      title: t.whyUs.item1Title,
+      desc: t.whyUs.item1Desc
     },
     {
       icon: <CalendarDays className="w-6 h-6 text-gold-400" />,
-      title: 'Garansi Fleksibilitas Jadwal',
-      desc: 'Ubah tanggal perjalanan atau jadwal tur Anda secara gratis jika terjadi cuaca buruk, kendala penerbangan, atau perubahan rencana mendadak.'
+      title: t.whyUs.item2Title,
+      desc: t.whyUs.item2Desc
     },
     {
       icon: <ChefHat className="w-6 h-6 text-gold-400" />,
-      title: 'Kurasi Kuliner Kelas Bintang 5',
-      desc: 'Mulai dari lobster panggang segar di tepi pantai Jimbaran hingga piknik gourmet hangat di lereng kawah gunung berapi. Pilihan vegan dan bebas alergi selalu tersedia.'
+      title: t.whyUs.item3Title,
+      desc: t.whyUs.item3Desc
     },
     {
       icon: <Camera className="w-6 h-6 text-gold-400" />,
-      title: 'Dokumentasi Profesional Eksklusif',
-      desc: 'Lupakan foto selfie buram. Opsi add-on fotografer handal dengan kamera DSLR profesional dan drone 4K siap mengabadikan petualangan emas Anda.'
+      title: t.whyUs.item4Title,
+      desc: t.whyUs.item4Desc
     },
     {
       icon: <ShieldCheck className="w-6 h-6 text-gold-400" />,
-      title: 'Keamanan Standar Internasional',
-      desc: 'Semua armada penjelajah 4x4, speed boat, dan yacht telah tersertifikasi kelayakan laut & darat serta dilengkapi asuransi perjalanan penuh.'
+      title: t.whyUs.item5Title,
+      desc: t.whyUs.item5Desc
     },
     {
       icon: <Sparkles className="w-6 h-6 text-gold-400" />,
-      title: 'Pemandu Lokal Berlisensi Resmi',
-      desc: 'Pemandu kami bukan sekadar supir biasa. Mereka adalah ahli sejarah lokal, instruktur bersertifikasi nasional, dan pengamat budaya Bali yang berpengetahuan luas.'
+      title: t.whyUs.item6Title,
+      desc: t.whyUs.item6Desc
     }
   ];
 
@@ -42,13 +45,13 @@ export default function WhyUsSection() {
         {/* Title */}
         <div className="max-w-3xl space-y-4 mb-20 text-left">
           <span className="font-mono text-xs uppercase tracking-[0.25em] text-gold-400 font-bold bg-gold-500/5 px-4 py-2 border border-gold-400/10 rounded-full inline-block">
-            Elite Advantages
+            {t.whyUs.badge}
           </span>
           <h1 className="font-serif text-4xl md:text-6xl text-gold-100 font-medium tracking-tight leading-tight">
-            Standar Pelayanan yang Berbeda
+            {t.whyUs.title}
           </h1>
           <p className="font-sans text-sm md:text-base text-gold-200/60 leading-relaxed font-light">
-            Mengapa memilih andhikabalitour? Kami tidak sekadar merancang tur, melainkan menciptakan karya seni petualangan pribadi yang tak lekang oleh waktu.
+            {t.whyUs.subtitle}
           </p>
         </div>
 
@@ -80,10 +83,10 @@ export default function WhyUsSection() {
         <div className="mt-20 bg-neutral-950 border border-gold-400/10 rounded-xl p-8 lg:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" id="whyus-highlight-block">
           <div className="lg:col-span-8 text-left space-y-4">
             <h3 className="font-serif text-2xl lg:text-3xl text-gold-200 font-medium tracking-wide">
-              Butuh Rencana Perjalanan Custom di Luar Paket?
+              {t.whyUs.customBoxTitle}
             </h3>
             <p className="text-gold-200/60 text-xs md:text-sm font-sans leading-relaxed">
-              Tim perancang perjalanan VIP kami siap menyusun program liburan eksklusif multi-hari yang disesuaikan dengan jenis hobi, minat, atau perayaan romantis khusus Anda di pulau Bali. Hubungi kami kapan pun secara langsung.
+              {t.whyUs.customBoxDesc}
             </p>
           </div>
           <div className="lg:col-span-4 flex justify-end">
@@ -92,7 +95,7 @@ export default function WhyUsSection() {
               className="w-full lg:w-auto text-center bg-gold-400 hover:bg-gold-500 text-neutral-950 text-xs uppercase tracking-widest font-mono font-bold px-8 py-4 rounded-sm transition-all shadow-md cursor-pointer active:scale-95"
               id="whyus-btn-custom-consult"
             >
-              Konsultasi Privat Gratis
+              {t.whyUs.customBoxBtn}
             </a>
           </div>
         </div>
@@ -101,3 +104,4 @@ export default function WhyUsSection() {
     </div>
   );
 }
+

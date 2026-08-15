@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Car, Bike, Users, Settings, Fuel, Shield, Check, Calendar, MapPin, 
+  Car, Users, Settings, Fuel, Shield, Check, Calendar, 
   Sparkles, ArrowRight, CreditCard, Wallet, Landmark, Copy, CheckCircle2, 
-  Info, ArrowLeft, Clock, Search, SlidersHorizontal, Star
+  Info, ArrowLeft, Clock, Search, Star
 } from 'lucide-react';
-import { VEHICLES } from '../data';
+import { getVehicles } from '../data';
 import { Vehicle } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 
 interface RentalPageProps {
   initialVehicleId?: string;
 }
 
 export default function RentalPage({ initialVehicleId }: RentalPageProps) {
+  const { language, t } = useLanguage();
+  const vehicles = getVehicles(language);
+
   // Page states: 'catalog' | 'booking' | 'payment' | 'success'
   const [step, setStep] = useState<'catalog' | 'booking' | 'payment' | 'success'>('catalog');
   
@@ -21,13 +25,21 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
   
   // Active selected vehicle
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle>(
-    VEHICLES.find(v => v.id === initialVehicleId) || VEHICLES[0]
+    vehicles.find(v => v.id === initialVehicleId) || vehicles[0]
   );
+
+  // Keep selected vehicle localized if language switches
+  useEffect(() => {
+    const match = vehicles.find(v => v.id === selectedVehicle.id);
+    if (match) {
+      setSelectedVehicle(match);
+    }
+  }, [language, vehicles]);
 
   // Booking details state
   const [startDate, setStartDate] = useState('');
   const [durationDays, setDurationDays] = useState(3);
-  const [driverOption, setDriverOption] = useState<'with' | 'without'>('without');
+  const driverOption = 'with';
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -51,30 +63,22 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
   // Update selected vehicle if initialVehicleId changes
   useEffect(() => {
     if (initialVehicleId) {
-      const match = VEHICLES.find(v => v.id === initialVehicleId);
+      const match = vehicles.find(v => v.id === initialVehicleId);
       if (match) {
         setSelectedVehicle(match);
         setStep('booking');
       }
     }
-  }, [initialVehicleId]);
+  }, [initialVehicleId, vehicles]);
 
-  useEffect(() => {
-    if (selectedVehicle) {
-      setDriverOption(selectedVehicle.priceWithoutDriverPerDay > 0 ? 'without' : 'with');
-    }
-  }, [selectedVehicle]);
-
-  // Pricing calculations
-  const pricePerDay = driverOption === 'with' 
-    ? selectedVehicle.priceWithDriverPerDay 
-    : selectedVehicle.priceWithoutDriverPerDay;
+  // Pricing calculations (All-inclusive with driver & fuel)
+  const pricePerDay = selectedVehicle ? selectedVehicle.priceWithDriverPerDay : 0;
   const basePriceTotal = pricePerDay * durationDays;
   const deliveryFee = 0; // VIP complimentary service
   const tax = Math.round(basePriceTotal * 0.1); // 10% VAT
   const grandTotal = basePriceTotal + deliveryFee + tax;
 
-  const filteredVehicles = VEHICLES.filter(vehicle => {
+  const filteredVehicles = vehicles.filter(vehicle => {
     const matchesSearch = vehicle.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           vehicle.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesType = typeFilter === 'all' ? true : vehicle.type === typeFilter;
@@ -90,11 +94,11 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
   const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!startDate) {
-      alert('Mohon pilih tanggal mulai sewa.');
+      alert(language === 'ar' ? 'يرجى اختيار تاريخ بدء الإيجار.' : language === 'en' ? 'Please select a rental start date.' : 'Mohon pilih tanggal mulai sewa.');
       return;
     }
     if (!fullName.trim() || !email.trim() || !phone.trim() || !deliveryLocation.trim()) {
-      alert('Mohon lengkapi seluruh formulir data diri & lokasi penyerahan.');
+      alert(language === 'ar' ? 'يرجى ملء جميع بيانات المستأجر وموقع الاستلام.' : language === 'en' ? 'Please fill in all renter details and pickup location.' : 'Mohon lengkapi seluruh formulir data diri & lokasi penyerahan.');
       return;
     }
     setStep('payment');
@@ -105,15 +109,15 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
     e.preventDefault();
     if (paymentChannel === 'card') {
       if (cardNumber.replace(/\s/g, '').length < 16) {
-        alert('Mohon masukkan nomor kartu kredit 16-digit yang valid.');
+        alert(language === 'ar' ? 'يرجى إدخال رقم بطاقة ائتمان صحيح مكون من 16 رقماً.' : language === 'en' ? 'Please enter a valid 16-digit credit card number.' : 'Mohon masukkan nomor kartu kredit 16-digit yang valid.');
         return;
       }
       if (!cardExpiry || !cardExpiry.includes('/')) {
-        alert('Mohon masukkan masa berlaku kartu MM/YY.');
+        alert(language === 'ar' ? 'يرجى إدخال تاريخ انتهاء صلاحية صالح (MM/YY).' : language === 'en' ? 'Please enter a valid expiry date (MM/YY).' : 'Mohon masukkan masa berlaku kartu MM/YY.');
         return;
       }
       if (cardCvv.length < 3) {
-        alert('Mohon masukkan CVV yang valid.');
+        alert(language === 'ar' ? 'يرجى إدخال رمز CVV صالح.' : language === 'en' ? 'Please enter a valid CVV.' : 'Mohon masukkan CVV yang valid.');
         return;
       }
     }
@@ -124,11 +128,11 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
       setIsProcessing(false);
       const bookingCode = `BG-RENT-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
       
-      let finalPaymentLabel = 'Kartu Kredit (Visa/Mastercard)';
+      let finalPaymentLabel = language === 'ar' ? 'بطاقة ائتمان (فيزا / ماستركارد)' : language === 'en' ? 'Credit Card (Visa/Mastercard)' : 'Kartu Kredit (Visa/Mastercard)';
       if (paymentChannel === 'qris') {
-        finalPaymentLabel = `E-Wallet QRIS (${selectedEWallet.toUpperCase()})`;
+        finalPaymentLabel = language === 'ar' ? `دفع QRIS (${selectedEWallet.toUpperCase()})` : `E-Wallet QRIS (${selectedEWallet.toUpperCase()})`;
       } else if (paymentChannel === 'va') {
-        finalPaymentLabel = `Virtual Account (${selectedBank.toUpperCase()})`;
+        finalPaymentLabel = language === 'ar' ? `حساب افتراضي (${selectedBank.toUpperCase()})` : `Virtual Account (${selectedBank.toUpperCase()})`;
       }
 
       const bookingObj = {
@@ -164,7 +168,6 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
     setStep('catalog');
     setStartDate('');
     setDurationDays(3);
-    setDriverOption('without');
     setFullName('');
     setEmail('');
     setPhone('');
@@ -195,13 +198,13 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
             <div className="mb-12">
               <div className="inline-flex items-center space-x-2 bg-gold-400/10 border border-gold-400/20 px-3 py-1 rounded-full mb-4">
                 <Sparkles size={11} className="text-gold-400" />
-                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold-300 font-bold">Armada Eksklusif</span>
+                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold-300 font-bold">{t.rental.badge}</span>
               </div>
               <h1 className="font-serif text-4xl md:text-6xl text-gold-200 tracking-wide font-medium leading-tight">
-                Layanan Sewa Mobil Premium Bali
+                {t.rental.title}
               </h1>
               <p className="font-sans text-sm md:text-base text-gold-100/60 max-w-3xl mt-4 leading-relaxed">
-                Nikmati kenyamanan berkendara di pulau dewata dengan unit kendaraan ber-AC dingin, wangi, bersih, dan berperfoma prima. Kami menawarkan skema sewa fleksibel Lepas Kunci (Tanpa Sopir) atau Dengan Supir Profesional beserta bahan bakar (BBM).
+                {t.rental.subtitle}
               </p>
             </div>
 
@@ -211,7 +214,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               <div className="flex bg-neutral-950 p-1 rounded-sm border border-gold-400/10 w-full md:w-auto">
                 <span className="px-4 py-2 text-xs font-mono font-bold uppercase tracking-wider text-gold-400 flex items-center gap-2">
                   <Car size={13} />
-                  Armada Mobil & Transport Premium
+                  {t.rental.fleetBadge}
                 </span>
               </div>
 
@@ -220,7 +223,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gold-300/40 w-4 h-4" />
                 <input
                   type="text"
-                  placeholder="Cari kendaraan (misal: Avanza, Alphard)..."
+                  placeholder={language === 'ar' ? 'ابحث عن سيارة (مثال: Avanza, Alphard)...' : language === 'en' ? 'Search vehicle (e.g. Avanza, Alphard)...' : 'Cari kendaraan (misal: Avanza, Alphard)...'}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-neutral-950 border border-gold-400/15 pl-10 pr-4 py-2.5 rounded-sm text-xs text-gold-100 focus:outline-none focus:border-gold-400 placeholder-gold-300/20 font-sans"
@@ -232,8 +235,12 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
             {filteredVehicles.length === 0 ? (
               <div className="text-center py-20 border border-dashed border-gold-900/15 rounded-lg bg-neutral-900/20">
                 <Info className="mx-auto text-gold-400/50 w-10 h-10 mb-4" />
-                <p className="font-serif text-lg text-gold-200">Tidak ada armada ditemukan</p>
-                <p className="font-sans text-xs text-gold-100/40 mt-1">Coba gunakan kata kunci pencarian yang lain.</p>
+                <p className="font-serif text-lg text-gold-200">
+                  {language === 'ar' ? 'لم يتم العثور على سيارات' : language === 'en' ? 'No vehicles found' : 'Tidak ada armada ditemukan'}
+                </p>
+                <p className="font-sans text-xs text-gold-100/40 mt-1">
+                  {language === 'ar' ? 'يرجى محاولة استخدام كلمات بحث أخرى.' : language === 'en' ? 'Try using a different search keyword.' : 'Coba gunakan kata kunci pencarian yang lain.'}
+                </p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -256,41 +263,30 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                         {/* Type Tag */}
                         {vehicle.passengers && (
                           <span className="absolute top-4 left-4 bg-neutral-950/95 backdrop-blur-md border border-gold-400/25 text-gold-300 font-mono text-[9px] uppercase tracking-wider font-bold py-1.5 px-3 rounded-sm shadow-md">
-                            {vehicle.passengers} Penumpang
+                            {vehicle.passengers} {language === 'ar' ? 'مقاعد' : language === 'en' ? 'Seats' : 'Penumpang'}
                           </span>
                         )}
                         
                         {/* Price Tag Overlay */}
                         <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent p-4 flex items-end justify-between">
-                          {vehicle.priceWithoutDriverPerDay > 0 ? (
-                            <>
-                              <div>
-                                <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">Lepas Kunci</p>
-                                <p className="font-mono text-sm font-bold text-gold-100">
-                                  Rp {vehicle.priceWithoutDriverPerDay.toLocaleString('id-ID')} <span className="text-[9px] font-normal text-gold-100/50">/hari</span>
-                                </p>
-                              </div>
-                              <div className="text-right">
-                                <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">Dengan Sopir + BBM</p>
-                                <p className="font-mono text-sm font-bold text-gold-300">
-                                  Rp {vehicle.priceWithDriverPerDay.toLocaleString('id-ID')} <span className="text-[9px] font-normal text-gold-300/60">/hari</span>
-                                </p>
-                              </div>
-                            </>
-                          ) : (
-                            <div className="w-full flex justify-between items-end">
-                              <div>
-                                <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">Layanan Eksklusif</p>
-                                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20 rounded-sm">Sopir + BBM Termasuk</span>
-                              </div>
-                              <div className="text-right">
-                                <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">Tarif Harian</p>
-                                <p className="font-mono text-base font-bold text-gold-300">
-                                  Rp {vehicle.priceWithDriverPerDay.toLocaleString('id-ID')} <span className="text-[9px] font-normal text-gold-300/60">/hari</span>
-                                </p>
-                              </div>
+                          <div className="w-full flex justify-between items-end">
+                            <div>
+                              <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">
+                                {language === 'ar' ? 'خدمة خاصة VIP' : language === 'en' ? 'Private Service' : 'Layanan Privat'}
+                              </p>
+                              <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20 rounded-sm">
+                                {t.rental.specsDriverFuel}
+                              </span>
                             </div>
-                          )}
+                            <div className="text-right">
+                              <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">
+                                {t.rental.pricePerDay}
+                              </p>
+                              <p className="font-mono text-base font-bold text-gold-300">
+                                Rp {vehicle.priceWithDriverPerDay.toLocaleString('id-ID')} <span className="text-[9px] font-normal text-gold-300/60">/ {language === 'ar' ? 'يومياً' : language === 'en' ? 'day' : 'hari'}</span>
+                              </p>
+                            </div>
+                          </div>
                         </div>
                       </div>
 
@@ -315,7 +311,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                             {isCar && vehicle.passengers && (
                               <div className="flex items-center gap-2">
                                 <Users size={12} className="text-gold-400" />
-                                <span>{vehicle.passengers} Kursi Penumpang</span>
+                                <span>{vehicle.passengers} {t.rental.specsSeats}</span>
                               </div>
                             )}
                             <div className="flex items-center gap-2">
@@ -324,11 +320,11 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                             </div>
                             <div className="flex items-center gap-2">
                               <Fuel size={12} className="text-gold-400" />
-                              <span>{vehicle.engine} Engine</span>
+                              <span>{vehicle.engine}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <Shield size={12} className="text-gold-400" />
-                              <span>Proteksi All-Risk</span>
+                              <span>{language === 'ar' ? 'تأمين شامل' : language === 'en' ? 'All-Risk Protection' : 'Proteksi All-Risk'}</span>
                             </div>
                           </div>
 
@@ -349,7 +345,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                             onClick={() => handleStartBooking(vehicle)}
                             className="w-full bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-[0.2em] font-bold py-3.5 rounded-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm cursor-pointer active:scale-95"
                           >
-                            <span>Reservasi Sewa</span>
+                            <span>{t.rental.bookCar}</span>
                             <ArrowRight size={13} />
                           </button>
                         </div>
@@ -366,19 +362,29 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/5 rounded-full blur-3xl pointer-events-none" />
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 <div className="lg:col-span-7">
-                  <h3 className="font-serif text-2xl text-gold-200 tracking-wide font-medium">Layanan Antar Jemput Gratis Se-Bali Selatan</h3>
+                  <h3 className="font-serif text-2xl text-gold-200 tracking-wide font-medium">
+                    {language === 'ar' ? 'خدمة توصيل واستقبال VIP مجانية في جميع أنحاء بالي' : language === 'en' ? 'Complimentary Island-Wide VIP Delivery' : 'Layanan Antar Jemput Gratis Se-Bali Selatan'}
+                  </h3>
                   <p className="font-sans text-xs md:text-sm text-gold-100/60 leading-relaxed mt-2.5">
-                    Demi kemudahan Anda, kami mengirimkan mobil atau motor secara cuma-cuma ke Bandara Internasional I Gusti Ngurah Rai (DPS), area Kuta, Seminyak, Legian, Sanur, Nusa Dua, Jimbaran, Canggu, hingga Ubud Central. Bebas biaya tersembunyi!
+                    {language === 'ar'
+                      ? 'لراحتكم التامة، نقوم بتسليم جميع السيارات مع السائق مباشرة إلى مطار نغوراه راي الدولي (DPS)، كوتا، سيمينياك، ليغيان، سانور، نوسا دوا، جيمباران، تشانغو، أو وسط أوبود دون أي رسوم إضافية مخفية!'
+                      : language === 'en'
+                      ? 'For your utmost convenience, we deliver all vehicles with driver straight to I Gusti Ngurah Rai International Airport (DPS), Kuta, Seminyak, Legian, Sanur, Nusa Dua, Jimbaran, Canggu, or Ubud Central without any hidden delivery surcharge!'
+                      : 'Demi kemudahan Anda, kami mengirimkan mobil bersama supir secara cuma-cuma ke Bandara Internasional I Gusti Ngurah Rai (DPS), area Kuta, Seminyak, Legian, Sanur, Nusa Dua, Jimbaran, Canggu, hingga Ubud Central. Bebas biaya tersembunyi!'}
                   </p>
                 </div>
                 <div className="lg:col-span-5 grid grid-cols-2 gap-4 text-xs font-mono">
                   <div className="bg-neutral-950/60 border border-gold-900/10 p-4 rounded-sm">
-                    <p className="text-gold-400 font-bold mb-1">24/7 SUPPORT</p>
-                    <p className="text-gold-100/40 text-[10px]">Bantuan darurat ban bocor & derek di jalan gratis.</p>
+                    <p className="text-gold-400 font-bold mb-1">{language === 'ar' ? 'دعم VIP على مدار 24/7' : '24/7 VIP SUPPORT'}</p>
+                    <p className="text-gold-100/40 text-[10px]">
+                      {language === 'ar' ? 'استجابة فورية لحالات الطوارئ وخدمة كونسيرج سريعة.' : language === 'en' ? 'Emergency dispatch & responsive concierge.' : 'Bantuan darurat & customer service responsif.'}
+                    </p>
                   </div>
                   <div className="bg-neutral-950/60 border border-gold-900/10 p-4 rounded-sm">
-                    <p className="text-gold-400 font-bold mb-1">LEPAS KUNCI</p>
-                    <p className="text-gold-100/40 text-[10px]">Pilihan mengemudi bebas sendiri tanpa terikat supir.</p>
+                    <p className="text-gold-400 font-bold mb-1">{language === 'ar' ? 'سائق ووقود مشمول' : language === 'en' ? 'DRIVER & FUEL' : 'SUPIR & BBM'}</p>
+                    <p className="text-gold-100/40 text-[10px]">
+                      {language === 'ar' ? 'سائق VIP مرخص ومحترف والوقود اليومي مشمول بالكامل.' : language === 'en' ? 'Licensed professional VIP driver & daily fuel included.' : 'Driver profesional ramah, berlisensi, & BBM sudah termasuk.'}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -389,7 +395,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
         {/* ------------------------------------------- */}
         {/* STEP 2: BOOKING INFORMATION INPUTS */}
         {/* ------------------------------------------- */}
-        {step === 'booking' && (
+        {step === 'booking' && selectedVehicle && (
           <div className="animate-fade-in text-left">
             {/* Back button */}
             <button
@@ -397,11 +403,11 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-gold-400 hover:text-gold-300 mb-8 cursor-pointer group"
             >
               <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-              <span>Kembali Ke Katalog Sewa</span>
+              <span>{language === 'ar' ? 'العودة إلى دليل السيارات' : language === 'en' ? 'Back to Fleet Catalog' : 'Kembali Ke Katalog Sewa'}</span>
             </button>
 
             <h1 className="font-serif text-3xl md:text-5xl text-gold-200 tracking-wide font-medium mb-10">
-              Formulir Reservasi Sewa {selectedVehicle.name}
+              {language === 'ar' ? `حجز استئجار ${selectedVehicle.name}` : language === 'en' ? `Reservation for ${selectedVehicle.name}` : `Formulir Reservasi Sewa ${selectedVehicle.name}`}
             </h1>
 
             <form onSubmit={handleBookingSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8" id="form-rental-details">
@@ -409,44 +415,27 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               {/* Left Column inputs */}
               <div className="lg:col-span-7 space-y-6">
                 
-                {/* Driver choice tabs */}
+                {/* Driver service info banner */}
                 <div className="space-y-2">
                   <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono">
-                    Pilihan Skema Berkendara
+                    {t.rental.servicePackage}
                   </label>
-                  <div className="grid grid-cols-2 gap-4">
-                    {selectedVehicle.priceWithoutDriverPerDay > 0 ? (
-                      <button
-                        type="button"
-                        onClick={() => setDriverOption('without')}
-                        className={`p-4 rounded-sm border transition-all flex flex-col justify-between gap-1 text-left cursor-pointer ${
-                          driverOption === 'without'
-                            ? 'bg-gold-500/5 border-gold-400'
-                            : 'bg-neutral-900/20 border-gold-900/10 hover:border-gold-400/30'
-                        }`}
-                      >
-                        <span className="font-serif text-sm font-semibold text-gold-200">Self-Drive (Lepas Kunci)</span>
-                        <span className="font-mono text-[10px] text-gold-400">Tanpa Sopir • Rp {selectedVehicle.priceWithoutDriverPerDay.toLocaleString('id-ID')}/hari</span>
-                      </button>
-                    ) : (
-                      <div className="p-4 rounded-sm border border-gold-900/10 bg-neutral-900/10 opacity-50 flex flex-col justify-between gap-1 text-left select-none">
-                        <span className="font-serif text-sm font-semibold text-gold-200/55">Self-Drive (Lepas Kunci)</span>
-                        <span className="font-mono text-[10px] text-red-400/75">Lepas Kunci Tidak Tersedia</span>
+                  <div className="p-4 rounded-sm border border-gold-400/40 bg-gold-500/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Shield size={14} className="text-gold-400" />
+                        <span className="font-serif text-sm font-semibold text-gold-200">{t.rental.includedDriverFuel}</span>
                       </div>
-                    )}
-
-                    <button
-                      type="button"
-                      onClick={() => setDriverOption('with')}
-                      className={`p-4 rounded-sm border transition-all flex flex-col justify-between gap-1 text-left cursor-pointer ${
-                        driverOption === 'with'
-                          ? 'bg-gold-500/5 border-gold-400'
-                          : 'bg-neutral-900/20 border-gold-900/10 hover:border-gold-400/30'
-                      }`}
-                    >
-                      <span className="font-serif text-sm font-semibold text-gold-200">Dengan Supir + BBM</span>
-                      <span className="font-mono text-[10px] text-gold-400">Sopir VIP Lokal • Rp {selectedVehicle.priceWithDriverPerDay.toLocaleString('id-ID')}/hari</span>
-                    </button>
+                      <p className="font-sans text-xs text-gold-100/60 leading-relaxed">
+                        {t.rental.includedDriverFuelDesc}
+                      </p>
+                    </div>
+                    <div className="text-left sm:text-right flex-shrink-0">
+                      <span className="font-mono text-xs font-bold text-gold-400 block">Rp {selectedVehicle.priceWithDriverPerDay.toLocaleString('id-ID')} / {language === 'ar' ? 'يومياً' : language === 'en' ? 'day' : 'hari'}</span>
+                      <span className="font-mono text-[9px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20 rounded-sm inline-block mt-0.5">
+                        {language === 'ar' ? 'شامل بالكامل' : language === 'en' ? 'All Inclusive' : 'Sudah Termasuk'}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -455,7 +444,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                   <div className="space-y-1.5">
                     <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono flex items-center gap-1.5">
                       <Calendar size={13} className="text-gold-400" />
-                      <span>Mulai Sewa (Start Date)</span>
+                      <span>{t.rental.startDate}</span>
                     </label>
                     <input
                       type="date"
@@ -470,7 +459,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                   <div className="space-y-1.5">
                     <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono flex items-center gap-1.5">
                       <Clock size={13} className="text-gold-400" />
-                      <span>Durasi Sewa (Hari)</span>
+                      <span>{t.rental.duration}</span>
                     </label>
                     <div className="flex items-center border border-gold-400/15 rounded-sm bg-neutral-900">
                       <button
@@ -481,7 +470,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                         -
                       </button>
                       <span className="flex-grow text-center text-sm font-semibold text-gold-100 font-mono">
-                        {durationDays} Hari
+                        {durationDays} {language === 'ar' ? 'أيام' : language === 'en' ? 'Days' : 'Hari'}
                       </span>
                       <button
                         type="button"
@@ -497,13 +486,13 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                 {/* Client contacts */}
                 <div className="space-y-4 pt-4 border-t border-gold-900/10">
                   <h3 className="text-xs uppercase tracking-widest text-gold-300 font-bold font-mono">
-                    Informasi Kontak Penyewa
+                    {t.rental.step2Title}
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <input
                       type="text"
                       required
-                      placeholder="Nama Lengkap Sesuai KTP / Paspor"
+                      placeholder={language === 'ar' ? 'الاسم الكامل حسب جواز السفر / الهوية' : language === 'en' ? 'Full Name as per Passport / ID' : 'Nama Lengkap Sesuai KTP / Paspor'}
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 placeholder-gold-300/20"
@@ -511,7 +500,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                     <input
                       type="email"
                       required
-                      placeholder="Alamat Email (Konfirmasi dikirim kesini)"
+                      placeholder={t.bookingModal.emailPlaceholder}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 placeholder-gold-300/20"
@@ -522,7 +511,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                     <input
                       type="tel"
                       required
-                      placeholder="Nomor WhatsApp (Aktif)"
+                      placeholder={t.bookingModal.phonePlaceholder}
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 placeholder-gold-300/20"
@@ -530,7 +519,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                     <input
                       type="text"
                       required
-                      placeholder="Lokasi Penyerahan / Hotel Anda di Bali"
+                      placeholder={t.rental.pickupPlaceholder}
                       value={deliveryLocation}
                       onChange={(e) => setDeliveryLocation(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 placeholder-gold-300/20"
@@ -539,7 +528,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                   
                   <textarea
                     rows={3}
-                    placeholder="Catatan tambahan (contoh: nomor penerbangan, waktu penyerahan spesifik, dll.)"
+                    placeholder={t.rental.specialNotesPlaceholder}
                     value={specialNotes}
                     onChange={(e) => setSpecialNotes(e.target.value)}
                     className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 placeholder-gold-300/20"
@@ -548,19 +537,19 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
 
                 {/* Terms and benefits checklist */}
                 <div className="bg-neutral-900/30 border border-gold-900/10 rounded p-4 space-y-2.5">
-                  <h4 className="font-serif text-sm text-gold-300 font-medium">Ketentuan Layanan Sewa andhikabalitour:</h4>
+                  <h4 className="font-serif text-sm text-gold-300 font-medium">{t.rental.rentalNoticeTitle}</h4>
                   <div className="space-y-1.5 text-xs text-gold-100/50 pl-1.5 font-sans leading-relaxed">
                     <p className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-gold-400" />
-                      <span><strong>Lepas Kunci:</strong> Wajib menyertakan foto SIM (SIM A untuk mobil, SIM C untuk motor) & KTP / Paspor penyewa saat serah terima.</span>
+                      <span>{t.rental.rentalNotice1}</span>
                     </p>
                     <p className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-gold-400" />
-                      <span><strong>Dengan Supir:</strong> Durasi pemakaian maksimal sopir adalah 10 jam per hari.</span>
+                      <span>{t.rental.rentalNotice2}</span>
                     </p>
                     <p className="flex items-center gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-gold-400" />
-                      <span><strong>Pengiriman Gratis:</strong> Antar-jemput unit gratis ke hotel di Kuta, Canggu, Ubud, Seminyak, Nusa Dua, DPS Airport.</span>
+                      <span>{t.rental.rentalNotice3}</span>
                     </p>
                   </div>
                 </div>
@@ -571,7 +560,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               <div className="lg:col-span-5 bg-neutral-900/60 border border-gold-400/15 p-6 rounded-md flex flex-col justify-between h-fit lg:sticky lg:top-24">
                 <div>
                   <h3 className="font-serif text-lg text-gold-200 border-b border-gold-900/10 pb-3 mb-4 font-medium tracking-wide">
-                    Rincian Pembayaran Sewa
+                    {t.rental.orderSummary}
                   </h3>
 
                   {/* Tiny vehicle badge */}
@@ -585,11 +574,11 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                     />
                     <div>
                       <p className="font-mono text-[9px] uppercase tracking-wider text-gold-400">
-                        {selectedVehicle.type === 'car' ? 'Car Rental' : 'Motorbike Rental'}
+                        {selectedVehicle.type === 'car' ? (language === 'ar' ? 'تأجير سيارة VIP' : language === 'en' ? 'Car Rental VIP' : 'Rental Mobil VIP') : (language === 'ar' ? 'تأجير دراجة نارية' : 'Motorbike Rental')}
                       </p>
                       <h4 className="font-serif text-sm text-gold-100 font-medium leading-tight">{selectedVehicle.name}</h4>
-                      <p className="font-mono text-[10px] text-gold-300 mt-1 uppercase">
-                        {driverOption === 'with' ? 'Dengan Supir' : 'Lepas Kunci'}
+                      <p className="font-mono text-[10px] text-emerald-400 mt-1 uppercase font-bold">
+                        {t.rental.specsDriverFuel}
                       </p>
                     </div>
                   </div>
@@ -597,23 +586,23 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                   {/* Calculations breakdown */}
                   <div className="space-y-4 text-sm font-mono text-gold-200/60">
                     <div className="flex justify-between">
-                      <span>Tarif per hari:</span>
+                      <span>{t.rental.pricePerDay}:</span>
                       <span className="text-gold-100 font-bold">Rp {pricePerDay.toLocaleString('id-ID')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Durasi sewa:</span>
-                      <span className="text-gold-100 font-bold">{durationDays} Hari</span>
+                      <span>{t.rental.totalDays}:</span>
+                      <span className="text-gold-100 font-bold">{durationDays} {language === 'ar' ? 'أيام' : language === 'en' ? 'Days' : 'Hari'}</span>
                     </div>
                     <div className="flex justify-between border-t border-gold-900/10 pt-3">
-                      <span>Subtotal sewa:</span>
+                      <span>{t.rental.subtotal}:</span>
                       <span className="text-gold-100 font-bold">Rp {basePriceTotal.toLocaleString('id-ID')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Pengantaran & Penjemputan:</span>
-                      <span className="text-gold-400 font-sans text-xs font-semibold">GRATIS (VIP Promo)</span>
+                      <span>{t.rental.deliveryFee}:</span>
+                      <span className="text-gold-400 font-sans text-xs font-semibold">{t.rental.freeDelivery}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Pajak (VAT 10%):</span>
+                      <span>{t.rental.taxVAT}:</span>
                       <span className="text-gold-100 font-bold">Rp {tax.toLocaleString('id-ID')}</span>
                     </div>
                   </div>
@@ -621,7 +610,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
 
                 <div className="pt-6 mt-8 border-t border-gold-400/20">
                   <div className="flex justify-between items-baseline mb-6">
-                    <span className="font-serif text-base text-gold-200">Total Biaya</span>
+                    <span className="font-serif text-base text-gold-200">{t.rental.totalPayment}</span>
                     <span className="font-mono text-2xl md:text-3xl text-gold-400 font-bold">Rp {grandTotal.toLocaleString('id-ID')}</span>
                   </div>
 
@@ -629,7 +618,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                     type="submit"
                     className="w-full bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-[0.2em] font-bold py-4 rounded-sm transition-all duration-300 flex items-center justify-center space-x-2 cursor-pointer shadow-md hover:shadow-gold-500/10 active:scale-95"
                   >
-                    <span>Lanjutkan ke Pembayaran</span>
+                    <span>{t.bookingModal.proceedToPayment}</span>
                     <ArrowRight size={14} />
                   </button>
 
@@ -654,11 +643,11 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               className="flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-gold-400 hover:text-gold-300 mb-8 cursor-pointer group"
             >
               <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-              <span>Kembali Ke Formulir Sewa</span>
+              <span>{t.common.back}</span>
             </button>
 
             <h1 className="font-serif text-3xl md:text-5xl text-gold-200 tracking-wide font-medium mb-10">
-              Gerbang Pembayaran Aman (Payment Gateway)
+              {t.rental.step3Title}
             </h1>
 
             <form onSubmit={handlePaymentSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8" id="form-rental-payment">
@@ -667,7 +656,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               <div className="lg:col-span-7 space-y-6">
                 <div className="space-y-3">
                   <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono">
-                    Pilih Metode Pembayaran Aman
+                    {t.rental.selectPaymentMethod}
                   </label>
                   
                   <div className="grid grid-cols-3 gap-3">
@@ -681,7 +670,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                       }`}
                     >
                       <CreditCard size={16} />
-                      <span>Kartu Kredit</span>
+                      <span>{language === 'ar' ? 'بطاقة ائتمان' : language === 'en' ? 'Credit Card' : 'Kartu Kredit'}</span>
                     </button>
 
                     <button
@@ -707,7 +696,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                       }`}
                     >
                       <Landmark size={16} />
-                      <span>Transfer VA</span>
+                      <span>{language === 'ar' ? 'تحويل VA' : language === 'en' ? 'VA Transfer' : 'Transfer VA'}</span>
                     </button>
                   </div>
                 </div>
@@ -716,7 +705,9 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                 {paymentChannel === 'card' && (
                   <div className="space-y-4 animate-fade-in bg-neutral-900/20 border border-gold-900/10 p-5 rounded-md">
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">Nomor Kartu Kredit</label>
+                      <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">
+                        {language === 'ar' ? 'رقم بطاقة الائتمان' : language === 'en' ? 'Credit Card Number' : 'Nomor Kartu Kredit'}
+                      </label>
                       <input
                         type="text"
                         required
@@ -732,7 +723,9 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">Nama Pemegang Kartu</label>
+                      <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">
+                        {language === 'ar' ? 'اسم صاحب البطاقة' : language === 'en' ? 'Cardholder Name' : 'Nama Pemegang Kartu'}
+                      </label>
                       <input
                         type="text"
                         required
@@ -745,7 +738,9 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">Masa Berlaku (Expiry Date)</label>
+                        <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">
+                          {language === 'ar' ? 'تاريخ الانتهاء (MM/YY)' : language === 'en' ? 'Expiry Date (MM/YY)' : 'Masa Berlaku (MM/YY)'}
+                        </label>
                         <input
                           type="text"
                           required
@@ -764,7 +759,9 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">Kode CVV</label>
+                        <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">
+                          CVV
+                        </label>
                         <input
                           type="password"
                           required
@@ -782,7 +779,9 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                 {/* 2. QRIS QR CODE DISPLAY */}
                 {paymentChannel === 'qris' && (
                   <div className="bg-neutral-900/60 border border-gold-400/15 rounded-lg p-6 space-y-6 text-center animate-fade-in flex flex-col items-center">
-                    <p className="font-serif text-gold-200 text-sm font-medium">Pindai Kode QRIS VIP Gateway</p>
+                    <p className="font-serif text-gold-200 text-sm font-medium">
+                      {language === 'ar' ? 'امسح رمز QRIS الرسمي' : language === 'en' ? 'Scan Official VIP QRIS Code' : 'Pindai Kode QRIS VIP Gateway'}
+                    </p>
                     
                     <div className="flex gap-2">
                       {['gopay', 'ovo', 'dana'].map((ew) => (
@@ -790,7 +789,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                           type="button"
                           key={ew}
                           onClick={() => setSelectedEWallet(ew as any)}
-                          className={`px-3 py-1.5 rounded text-[10px] uppercase font-mono font-bold border ${
+                          className={`px-3 py-1.5 rounded text-[10px] uppercase font-mono font-bold border cursor-pointer ${
                             selectedEWallet === ew
                               ? 'bg-gold-400 text-neutral-950 border-gold-400'
                               : 'bg-neutral-950 text-gold-100/40 border-gold-900/10'
@@ -814,8 +813,8 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                     </div>
 
                     <div className="text-xs text-gold-100/60 leading-relaxed space-y-1">
-                      <p>Buka aplikasi perbankan atau e-wallet pilihan Anda lalu scan QR code.</p>
-                      <p className="font-mono text-gold-400 text-[10px] font-bold">WAKTU BAYAR: 04:59</p>
+                      <p>{language === 'ar' ? 'افتح تطبيق المحفظة الإلكترونية أو البنك الخاص بك وامسح هذا الرمز.' : language === 'en' ? 'Open your banking or e-wallet app and scan this QR code.' : 'Buka aplikasi perbankan atau e-wallet pilihan Anda lalu scan QR code.'}</p>
+                      <p className="font-mono text-gold-400 text-[10px] font-bold">{language === 'ar' ? 'الوقت المتبقي: 04:59' : language === 'en' ? 'TIME REMAINING: 04:59' : 'WAKTU BAYAR: 04:59'}</p>
                     </div>
                   </div>
                 )}
@@ -824,14 +823,14 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                 {paymentChannel === 'va' && (
                   <div className="bg-neutral-900/60 border border-gold-400/15 rounded-lg p-6 space-y-6 text-left animate-fade-in">
                     <div className="flex justify-between items-center border-b border-gold-900/10 pb-4">
-                      <p className="font-serif text-gold-200 text-sm font-medium">Virtual Account Transfer</p>
+                      <p className="font-serif text-gold-200 text-sm font-medium">{language === 'ar' ? 'تحويل الحساب الافتراضي' : 'Virtual Account Transfer'}</p>
                       <div className="flex gap-2">
                         {['bca', 'mandiri', 'bni'].map((bank) => (
                           <button
                             type="button"
                             key={bank}
                             onClick={() => setSelectedBank(bank as any)}
-                            className={`px-3 py-1.5 rounded text-[10px] uppercase font-mono font-bold border ${
+                            className={`px-3 py-1.5 rounded text-[10px] uppercase font-mono font-bold border cursor-pointer ${
                               selectedBank === bank
                                 ? 'bg-gold-400 text-neutral-950 border-gold-400'
                                 : 'bg-neutral-950 text-gold-100/40 border-gold-900/10'
@@ -845,7 +844,9 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
 
                     <div className="bg-neutral-950 p-4 border border-gold-400/10 rounded flex items-center justify-between font-mono">
                       <div>
-                        <span className="text-[9px] uppercase tracking-wider text-gold-400/50 block">NOMOR REKENING VA {selectedBank.toUpperCase()}</span>
+                        <span className="text-[9px] uppercase tracking-wider text-gold-400/50 block">
+                          {language === 'ar' ? `رقم الحساب الافتراضي (${selectedBank.toUpperCase()})` : language === 'en' ? `VA ACCOUNT NUMBER (${selectedBank.toUpperCase()})` : `NOMOR REKENING VA ${selectedBank.toUpperCase()}`}
+                        </span>
                         <span className="text-sm md:text-base font-bold text-gold-200 tracking-wider">
                           {selectedBank === 'bca' ? '3901 0899 4567 8912' : selectedBank === 'mandiri' ? '88012 89945 678912' : '98014 0899 4567 8912'}
                         </span>
@@ -856,15 +857,15 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                         className="bg-gold-400/10 border border-gold-400/25 hover:bg-gold-400 text-gold-400 hover:text-neutral-950 p-2 rounded-sm transition-all flex items-center gap-1 text-[10px] font-bold cursor-pointer"
                       >
                         {copied ? <Check size={12} /> : <Copy size={12} />}
-                        <span>{copied ? 'Tersalin' : 'Salin'}</span>
+                        <span>{copied ? t.common.copied : t.common.copy}</span>
                       </button>
                     </div>
 
                     <div className="text-xs text-gold-200/50 leading-relaxed space-y-2">
-                      <h5 className="font-bold text-gold-200 text-xs">Instruksi Pembayaran singkat:</h5>
-                      <p>1. Salin nomor Virtual Account di atas.</p>
-                      <p>2. Lakukan transfer dari Mobile Banking dengan tujuan Virtual Account pilihan Anda.</p>
-                      <p>3. Nominal akan otomatis cocok dengan total tagihan sewa di sebelah kanan.</p>
+                      <h5 className="font-bold text-gold-200 text-xs">{t.rental.paymentInstructions}:</h5>
+                      <p>{language === 'ar' ? '1. انسخ رقم الحساب الافتراضي أعلاه.' : language === 'en' ? '1. Copy the Virtual Account number above.' : '1. Salin nomor Virtual Account di atas.'}</p>
+                      <p>{language === 'ar' ? '2. أكمل التحويل عبر تطبيق البنك الخاص بك.' : language === 'en' ? '2. Complete the transfer via Mobile/Internet Banking.' : '2. Lakukan transfer dari Mobile Banking dengan tujuan Virtual Account pilihan Anda.'}</p>
+                      <p>{language === 'ar' ? '3. سيتم التحقق من المبلغ الإجمالي ومطابقته تلقائياً.' : language === 'en' ? '3. The exact invoice amount will automatically reconcile.' : '3. Nominal akan otomatis cocok dengan total tagihan sewa di sebelah kanan.'}</p>
                     </div>
                   </div>
                 )}
@@ -875,36 +876,36 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               <div className="lg:col-span-5 bg-neutral-900/60 border border-gold-400/15 p-6 rounded-md flex flex-col justify-between h-fit lg:sticky lg:top-24">
                 <div className="space-y-6">
                   <h3 className="font-serif text-lg text-gold-200 border-b border-gold-900/10 pb-3 mb-4 font-medium tracking-wide">
-                    Ringkasan Reservasi
+                    {t.rental.orderSummary}
                   </h3>
 
                   <div className="space-y-4 text-xs font-mono text-gold-200/60">
                     <div className="flex justify-between">
-                      <span>Armada:</span>
+                      <span>{t.rental.eTicketVehicle}:</span>
                       <span className="text-gold-200 font-bold font-serif">{selectedVehicle.name}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Tanggal Mulai:</span>
+                      <span>{t.rental.startDate}:</span>
                       <span className="text-gold-200 font-bold">{startDate}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Durasi Sewa:</span>
-                      <span className="text-gold-200 font-bold">{durationDays} Hari</span>
+                      <span>{t.rental.duration}:</span>
+                      <span className="text-gold-200 font-bold">{durationDays} {language === 'ar' ? 'أيام' : language === 'en' ? 'Days' : 'Hari'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Sopir & BBM:</span>
-                      <span className="text-gold-200 font-bold uppercase">{driverOption === 'with' ? 'Y' : 'N'}</span>
+                      <span>{t.rental.specsService}:</span>
+                      <span className="text-gold-200 font-bold">{t.rental.specsDriverFuel}</span>
                     </div>
                     <div className="flex justify-between border-t border-gold-900/10 pt-4">
-                      <span>Biaya Sewa:</span>
+                      <span>{t.rental.subtotal}:</span>
                       <span className="text-gold-200 font-bold">Rp {basePriceTotal.toLocaleString('id-ID')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Pajak & Layanan:</span>
+                      <span>{t.rental.taxVAT}:</span>
                       <span className="text-gold-200 font-bold">Rp {tax.toLocaleString('id-ID')}</span>
                     </div>
                     <div className="flex justify-between border-t border-gold-400/20 pt-4 text-sm font-sans">
-                      <span className="font-serif text-gold-200">Total Biaya:</span>
+                      <span className="font-serif text-gold-200">{t.rental.totalPayment}:</span>
                       <span className="font-mono text-lg text-gold-400 font-extrabold">Rp {grandTotal.toLocaleString('id-ID')}</span>
                     </div>
                   </div>
@@ -919,12 +920,12 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                     {isProcessing ? (
                       <>
                         <span className="animate-spin w-4 h-4 border-2 border-neutral-950 border-t-transparent rounded-full" />
-                        <span>Memproses Gateway...</span>
+                        <span>{t.common.processing}</span>
                       </>
                     ) : (
                       <>
                         <CheckCircle2 size={13} />
-                        <span>Konfirmasi & Bayar</span>
+                        <span>{t.rental.confirmPayment}</span>
                       </>
                     )}
                   </button>
@@ -946,10 +947,14 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
             </div>
 
             <h1 className="font-serif text-3xl md:text-5xl text-gold-200 tracking-wide font-medium">
-              Sewa Berhasil Dikonfirmasi!
+              {t.rental.eTicketSuccess}
             </h1>
             <p className="font-sans text-xs md:text-sm text-gold-100/50 mt-3 max-w-lg mx-auto">
-              E-Tiket, rincian serah terima, serta bukti bayar resmi telah berhasil diterbitkan dan dikirimkan ke email Anda (<strong>{confirmedBooking.email}</strong>).
+              {language === 'ar'
+                ? `تم إرسال التذكرة الإلكترونية وتفاصيل السائق وإيصال الدفع الرسمي إلى ${confirmedBooking.email}.`
+                : language === 'en'
+                ? `E-Ticket, chauffeur pickup details, and official proof of payment have been dispatched to ${confirmedBooking.email}.`
+                : `E-Tiket, rincian serah terima, serta bukti bayar resmi telah berhasil diterbitkan dan dikirimkan ke email Anda (${confirmedBooking.email}).`}
             </p>
 
             {/* Premium Paper Receipt Block */}
@@ -960,10 +965,10 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gold-900/15 pb-6 mb-6">
                 <div>
                   <h3 className="font-serif text-xl text-gold-200 tracking-wide lowercase font-semibold">andhikabalitour</h3>
-                  <p className="font-sans text-[10px] text-gold-400 uppercase tracking-widest font-mono mt-0.5">Mobility Rental Voucher</p>
+                  <p className="font-sans text-[10px] text-gold-400 uppercase tracking-widest font-mono mt-0.5">{t.rental.eTicketTitle}</p>
                 </div>
                 <div className="text-left sm:text-right font-mono">
-                  <span className="text-[9px] uppercase text-gold-300/40 block">Kode Reservasi</span>
+                  <span className="text-[9px] uppercase text-gold-300/40 block">{t.rental.eTicketCode}</span>
                   <span className="text-sm font-extrabold text-gold-400">{confirmedBooking.bookingCode}</span>
                 </div>
               </div>
@@ -971,17 +976,25 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               {/* Grid content specs */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-xs leading-relaxed border-b border-gold-900/10 pb-6 mb-6">
                 <div className="space-y-2 text-left">
-                  <p className="font-mono text-[9px] uppercase tracking-wider text-gold-300/40">Data Kendaraan & Skema</p>
+                  <p className="font-mono text-[9px] uppercase tracking-wider text-gold-300/40">
+                    {language === 'ar' ? 'مواصفات السيارة والخدمة' : language === 'en' ? 'Vehicle & Service Specs' : 'Data Kendaraan & Skema'}
+                  </p>
                   <p className="text-gold-200 text-sm font-bold">{confirmedBooking.vehicle.name}</p>
-                  <p className="text-gold-100/60 uppercase">Skema: <span className="text-gold-400 font-bold">{confirmedBooking.driverOption === 'with' ? 'Dengan Supir' : 'Lepas Kunci'}</span></p>
-                  <p className="text-gold-100/60">Durasi: <span className="text-gold-200 font-bold">{confirmedBooking.durationDays} Hari</span></p>
+                  <p className="text-gold-100/60 uppercase">
+                    {t.rental.specsService}: <span className="text-emerald-400 font-bold">{t.rental.specsDriverFuel}</span>
+                  </p>
+                  <p className="text-gold-100/60">
+                    {t.rental.eTicketDuration}: <span className="text-gold-200 font-bold">{confirmedBooking.durationDays} {language === 'ar' ? 'أيام' : language === 'en' ? 'Days' : 'Hari'}</span>
+                  </p>
                 </div>
 
                 <div className="space-y-2 text-left">
-                  <p className="font-mono text-[9px] uppercase tracking-wider text-gold-300/40">Data Serah Terima</p>
-                  <p className="text-gold-200 text-sm font-bold">Mulai: {confirmedBooking.startDate}</p>
-                  <p className="text-gold-100/60">Penyewa: <span className="text-gold-100 font-medium">{confirmedBooking.fullName}</span></p>
-                  <p className="text-gold-100/60">Lokasi Drop: <span className="text-gold-100 font-medium">{confirmedBooking.deliveryLocation}</span></p>
+                  <p className="font-mono text-[9px] uppercase tracking-wider text-gold-300/40">
+                    {language === 'ar' ? 'بيانات الاستلام والمستأجر' : language === 'en' ? 'Handover & Renter Info' : 'Data Serah Terima'}
+                  </p>
+                  <p className="text-gold-200 text-sm font-bold">{t.rental.startDate}: {confirmedBooking.startDate}</p>
+                  <p className="text-gold-100/60">{t.rental.fullName}: <span className="text-gold-100 font-medium">{confirmedBooking.fullName}</span></p>
+                  <p className="text-gold-100/60">{t.rental.pickupLocation}: <span className="text-gold-100 font-medium">{confirmedBooking.deliveryLocation}</span></p>
                 </div>
               </div>
 
@@ -989,23 +1002,31 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               <div className="bg-neutral-950 p-4 border border-gold-900/10 rounded-sm mb-6 flex items-start gap-3">
                 <Info size={16} className="text-gold-400 mt-0.5 flex-shrink-0" />
                 <div className="text-[11px] text-gold-100/50 leading-relaxed text-left">
-                  <p className="font-bold text-gold-300">Konfirmasi WhatsApp Otomatis</p>
-                  <p className="mt-0.5">Staff operasional pengantaran kami akan menghubungi Anda di nomor <strong>{confirmedBooking.phone}</strong> 1 hari sebelum tanggal mulai sewa untuk memvalidasi detail serah terima kunci.</p>
+                  <p className="font-bold text-gold-300">
+                    {language === 'ar' ? 'تنسيق آلي عبر واتساب' : language === 'en' ? 'Automatic WhatsApp Coordination' : 'Konfirmasi WhatsApp Otomatis'}
+                  </p>
+                  <p className="mt-0.5">
+                    {language === 'ar'
+                      ? `سيتواصل معك فريق العمليات مباشرة على الرقم ${confirmedBooking.phone} قبل يوم واحد من بدء الإيجار لتأكيد تفاصيل الاستلام والسائق.`
+                      : language === 'en'
+                      ? `Our concierge logistics team will reach out directly to ${confirmedBooking.phone} 1 day prior to your rental start date to verify all pickup and chauffeur details.`
+                      : `Staff operasional pengantaran kami akan menghubungi Anda di nomor ${confirmedBooking.phone} 1 hari sebelum tanggal mulai sewa untuk memvalidasi detail serah terima kunci.`}
+                  </p>
                 </div>
               </div>
 
               {/* Total Invoice calculations */}
               <div className="space-y-3 pt-4 border-t border-gold-900/15 font-mono text-xs text-gold-200/50">
                 <div className="flex justify-between">
-                  <span>Metode Pembayaran:</span>
+                  <span>{language === 'ar' ? 'طريقة الدفع:' : language === 'en' ? 'Payment Method:' : 'Metode Pembayaran:'}</span>
                   <span className="text-gold-200 font-sans">{confirmedBooking.paymentMethod}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Status Tagihan:</span>
-                  <span className="text-emerald-400 font-bold tracking-wider">SUCCESSFUL / LUNAS</span>
+                  <span>{t.rental.eTicketStatus}:</span>
+                  <span className="text-emerald-400 font-bold tracking-wider">{t.rental.confirmed}</span>
                 </div>
                 <div className="flex justify-between border-t border-gold-900/10 pt-3 text-sm text-gold-100 font-sans">
-                  <span className="font-serif">Total Pembayaran:</span>
+                  <span className="font-serif">{t.rental.totalPayment}:</span>
                   <span className="font-mono text-lg text-gold-400 font-extrabold">Rp {confirmedBooking.totalPrice.toLocaleString('id-ID')}</span>
                 </div>
               </div>
@@ -1013,8 +1034,14 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               {/* Dynamic QR block fake representation */}
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-dashed border-gold-900/20">
                 <div className="text-[9px] font-mono text-gold-100/30 text-left">
-                  <p>VOUCHER RESMI BERKODE ELEKTRONIK ENKRIPSI</p>
-                  <p className="mt-0.5">Tunjukkan kode QR di samping kepada staff pengirim kendaraan kami saat serah terima.</p>
+                  <p>{t.common.officialVoucher}</p>
+                  <p className="mt-0.5">
+                    {language === 'ar'
+                      ? 'يرجى إبراز رمز الاستجابة السريعة (QR) لسائق VIP عند الاستقبال.'
+                      : language === 'en'
+                      ? 'Present this digital voucher QR to your VIP chauffeur at pickup.'
+                      : 'Tunjukkan kode QR di samping kepada staff pengirim kendaraan kami saat serah terima.'}
+                  </p>
                 </div>
                 {/* Visual QR Mini */}
                 <div className="p-1 bg-white rounded border border-gold-400/20">
@@ -1029,7 +1056,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
               onClick={handleReset}
               className="mt-10 bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-[0.2em] font-bold py-4 px-10 rounded-sm transition-all duration-300 shadow-md cursor-pointer inline-block active:scale-95"
             >
-              Kembali ke Armada Utama
+              {t.rental.backToCatalogBtn}
             </button>
           </div>
         )}
@@ -1039,7 +1066,6 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
   );
 }
 
-// Private icons component mockup helper to bypass lint import issues
 function ShieldCheckIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-gold-400">

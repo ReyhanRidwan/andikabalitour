@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, MapPin, Clock, ArrowRight, Shield, Star, Award, Compass, Flame, Waves, Wind } from 'lucide-react';
-import { EXPERIENCES } from '../data';
+import { getExperiences } from '../data';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ActivitySectionProps {
   onBookNow: (experienceId: string) => void;
@@ -9,24 +10,27 @@ interface ActivitySectionProps {
 }
 
 export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySectionProps) {
-  // Extract the new activity packages from the database
-  const waterSport = EXPERIENCES.find(e => e.id === 'water-sport') || EXPERIENCES[0];
-  const atvRide = EXPERIENCES.find(e => e.id === 'atv-ride') || EXPERIENCES[1];
-  const atvKing = EXPERIENCES.find(e => e.id === 'atv-king') || EXPERIENCES[2];
-  const horseRiding = EXPERIENCES.find(e => e.id === 'horse-riding') || EXPERIENCES[3];
-  const nusaPenida = EXPERIENCES.find(e => e.id === 'nusa-penida-west') || EXPERIENCES[4];
+  const { language, t } = useLanguage();
+  const experiences = getExperiences(language);
+
+  // Extract the activity packages from the localized data
+  const waterSport = experiences.find(e => e.id === 'water-sport') || experiences[0];
+  const atvRide = experiences.find(e => e.id === 'atv-ride') || experiences[1];
+  const atvKing = experiences.find(e => e.id === 'atv-king') || experiences[2];
+  const horseRiding = experiences.find(e => e.id === 'horse-riding') || experiences[3];
+  const nusaPenida = experiences.find(e => e.id === 'nusa-penida-west') || experiences[4];
 
   const activities = [
     {
       ...waterSport,
-      badge: 'Terpopuler',
+      badge: language === 'id' ? 'Terpopuler' : 'Most Popular',
       accentColor: 'text-amber-500',
       borderColor: 'hover:border-amber-500/40',
       icon: <Flame size={14} className="text-amber-500" />
     },
     {
       ...atvRide,
-      badge: 'Rekomendasi',
+      badge: language === 'id' ? 'Rekomendasi' : 'Recommended',
       accentColor: 'text-teal-400',
       borderColor: 'hover:border-teal-400/40',
       icon: <Compass size={14} className="text-teal-400" />
@@ -40,7 +44,7 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
     },
     {
       ...horseRiding,
-      badge: 'Eksotis',
+      badge: language === 'id' ? 'Eksotis' : 'Exotic',
       accentColor: 'text-blue-400',
       borderColor: 'hover:border-blue-400/40',
       icon: <Waves size={14} className="text-blue-400" />
@@ -67,24 +71,24 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
           <div className="inline-flex items-center space-x-2 bg-gold-400/10 border border-gold-400/20 px-4 py-1.5 rounded-full mb-4">
             <Sparkles size={11} className="text-gold-400 animate-pulse" />
             <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-gold-300 font-bold">
-              High Adrenaline & Wilderness
+              {t.activities.badge}
             </span>
           </div>
           <h2 className="font-serif text-3xl md:text-5xl text-gold-200 tracking-wide font-medium">
-            Petualangan Aktivitas Outdoor Elit
+            {t.activities.title}
           </h2>
           <p className="font-sans text-xs md:text-sm text-gold-100/60 leading-relaxed mt-4 max-w-2xl mx-auto">
-            Pacu adrenalin Anda dengan menembus rimbunnya hutan belantara Bali atau nikmati kesegaran alami menyusuri jeram sungai purba dengan standar keamanan internasional yang mewah.
+            {t.activities.subtitle}
           </p>
         </div>
 
-        {/* Dynamic Cards Layout: 3 on Top, 2 on Bottom */}
+        {/* Dynamic Cards Layout */}
         <div className="space-y-6">
           {/* Top Row: 3 Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {activities.slice(0, 3).map((activity, idx) => (
               <motion.div
-                key={activity.id}
+                key={activity.id + language}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
@@ -117,10 +121,10 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                     </div>
                   </div>
 
-                  {/* Price Tag Overlay bottom-left */}
+                  {/* Price Tag Overlay */}
                   <div className="absolute bottom-3 left-4 z-10 text-left">
                     <p className="text-[8px] uppercase font-mono tracking-widest text-gold-400/70">
-                      {activity.pricingOptions ? 'Tarif Paket' : 'Mulai'}
+                      {activity.pricingOptions ? (language === 'id' ? 'Tarif Paket' : 'Package Rate') : (language === 'id' ? 'Mulai' : 'From')}
                     </p>
                     {activity.pricingOptions ? (
                       <div className="font-mono text-xs font-bold text-gold-100 flex flex-col">
@@ -134,11 +138,11 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                     )}
                   </div>
 
-                  {/* Quick specs overlay bottom-right */}
+                  {/* Quick specs */}
                   <div className="absolute bottom-3 right-4 z-10 flex flex-col items-end space-y-0.5 text-right font-mono text-[9px] text-gold-300/80">
                     <div className="flex items-center gap-1">
                       <Clock size={10} className="text-gold-400" />
-                      <span>{activity.duration.split(' ')[0]} {activity.duration.includes('Hari') ? 'Hari' : 'Hours'}</span>
+                      <span>{activity.duration}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <MapPin size={10} className="text-gold-400" />
@@ -150,7 +154,6 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                 {/* Content Details */}
                 <div className="p-5 flex-grow flex flex-col justify-between text-left">
                   <div>
-                    {/* Header */}
                     <div className="flex items-center space-x-1.5 mb-2">
                       {activity.icon}
                       <span className={`text-[9px] font-mono uppercase tracking-widest font-semibold ${activity.accentColor}`}>
@@ -167,7 +170,7 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                     {/* Features checklist */}
                     <div className="space-y-1.5 pt-3.5 border-t border-gold-900/10">
                       <h4 className="font-serif text-[10px] uppercase tracking-widest text-gold-300 font-bold mb-1.5">
-                        Highlights:
+                        {language === 'id' ? 'Highlights:' : 'Highlights:'}
                       </h4>
                       <div className="flex flex-col gap-1.5">
                         {activity.highlights.slice(0, 2).map((highlight, hIdx) => (
@@ -184,20 +187,20 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                   <div className="mt-5 pt-4 border-t border-gold-900/10 flex flex-col gap-3">
                     <div className="flex items-center gap-1.5">
                       <Award size={12} className="text-gold-400 flex-shrink-0" />
-                      <span className="font-mono text-[9px] text-gold-300/70 truncate">Asuransi & Fasilitas Termasuk</span>
+                      <span className="font-mono text-[9px] text-gold-300/70 truncate">{t.activities.insuranceIncluded}</span>
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         onClick={() => onViewDetails ? onViewDetails(activity.id) : onBookNow(activity.id)}
                         className="w-full border border-gold-400/30 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-mono text-[10px] uppercase tracking-widest font-semibold py-2.5 px-2 rounded-sm transition-all duration-300 cursor-pointer hover:bg-gold-500/10 text-center"
                       >
-                        Detail Paket
+                        {t.common.viewDetails}
                       </button>
                       <button
                         onClick={() => onBookNow(activity.id)}
                         className="w-full bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-[10px] uppercase tracking-widest font-bold py-2.5 px-2 rounded-sm transition-all duration-300 flex items-center justify-center gap-1 shadow-md cursor-pointer active:scale-95"
                       >
-                        <span>Pesan</span>
+                        <span>{t.common.bookNow}</span>
                         <ArrowRight size={11} />
                       </button>
                     </div>
@@ -212,7 +215,7 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:max-w-4xl lg:mx-auto">
             {activities.slice(3, 5).map((activity, idx) => (
               <motion.div
-                key={activity.id}
+                key={activity.id + language}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
@@ -245,10 +248,10 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                     </div>
                   </div>
 
-                  {/* Price Tag Overlay bottom-left */}
+                  {/* Price Tag Overlay */}
                   <div className="absolute bottom-3 left-4 z-10 text-left">
                     <p className="text-[8px] uppercase font-mono tracking-widest text-gold-400/70">
-                      {activity.pricingOptions ? 'Tarif Paket' : 'Mulai'}
+                      {activity.pricingOptions ? (language === 'id' ? 'Tarif Paket' : 'Package Rate') : (language === 'id' ? 'Mulai' : 'From')}
                     </p>
                     {activity.pricingOptions ? (
                       <div className="font-mono text-xs font-bold text-gold-100 flex flex-col">
@@ -262,11 +265,11 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                     )}
                   </div>
 
-                  {/* Quick specs overlay bottom-right */}
+                  {/* Quick specs */}
                   <div className="absolute bottom-3 right-4 z-10 flex flex-col items-end space-y-0.5 text-right font-mono text-[9px] text-gold-300/80">
                     <div className="flex items-center gap-1">
                       <Clock size={10} className="text-gold-400" />
-                      <span>{activity.duration.split(' ')[0]} {activity.duration.includes('Hari') ? 'Hari' : 'Hours'}</span>
+                      <span>{activity.duration}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <MapPin size={10} className="text-gold-400" />
@@ -278,7 +281,6 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                 {/* Content Details */}
                 <div className="p-5 flex-grow flex flex-col justify-between text-left">
                   <div>
-                    {/* Header */}
                     <div className="flex items-center space-x-1.5 mb-2">
                       {activity.icon}
                       <span className={`text-[9px] font-mono uppercase tracking-widest font-semibold ${activity.accentColor}`}>
@@ -312,20 +314,20 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                   <div className="mt-5 pt-4 border-t border-gold-900/10 flex flex-col gap-3">
                     <div className="flex items-center gap-1.5">
                       <Award size={12} className="text-gold-400 flex-shrink-0" />
-                      <span className="font-mono text-[9px] text-gold-300/70 truncate">Asuransi & Fasilitas Termasuk</span>
+                      <span className="font-mono text-[9px] text-gold-300/70 truncate">{t.activities.insuranceIncluded}</span>
                     </div>
                     <div className="grid grid-cols-2 gap-2">
                       <button
                         onClick={() => onViewDetails ? onViewDetails(activity.id) : onBookNow(activity.id)}
                         className="w-full border border-gold-400/30 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-mono text-[10px] uppercase tracking-widest font-semibold py-2.5 px-2 rounded-sm transition-all duration-300 cursor-pointer hover:bg-gold-500/10 text-center"
                       >
-                        Detail Paket
+                        {t.common.viewDetails}
                       </button>
                       <button
                         onClick={() => onBookNow(activity.id)}
                         className="w-full bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-[10px] uppercase tracking-widest font-bold py-2.5 px-2 rounded-sm transition-all duration-300 flex items-center justify-center gap-1 shadow-md cursor-pointer active:scale-95"
                       >
-                        <span>Pesan</span>
+                        <span>{t.common.bookNow}</span>
                         <ArrowRight size={11} />
                       </button>
                     </div>
@@ -341,19 +343,19 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16 bg-neutral-900/30 border border-gold-900/10 rounded-lg p-5">
           <div className="text-center p-3">
             <p className="font-mono text-gold-400 text-lg font-bold">100% SAFE</p>
-            <p className="font-sans text-[10px] text-gold-100/40 mt-1">Sertifikasi Keamanan Kelas Dunia</p>
+            <p className="font-sans text-[10px] text-gold-100/40 mt-1">{t.activities.safeBadge}</p>
           </div>
           <div className="text-center p-3 border-l border-gold-900/10">
             <p className="font-mono text-gold-400 text-lg font-bold">VIP SERVICE</p>
-            <p className="font-sans text-[10px] text-gold-100/40 mt-1">Antar-Jemput Hotel Privat</p>
+            <p className="font-sans text-[10px] text-gold-100/40 mt-1">{t.activities.vipBadge}</p>
           </div>
           <div className="text-center p-3 border-l border-gold-900/10">
             <p className="font-mono text-gold-400 text-lg font-bold">TOP GUIDES</p>
-            <p className="font-sans text-[10px] text-gold-100/40 mt-1">Instruktur Lisensi Internasional</p>
+            <p className="font-sans text-[10px] text-gold-100/40 mt-1">{t.activities.guidesBadge}</p>
           </div>
           <div className="text-center p-3 border-l border-gold-900/10">
             <p className="font-mono text-gold-400 text-lg font-bold">FLEXIBLE</p>
-            <p className="font-sans text-[10px] text-gold-100/40 mt-1">Bebas Reschedule / Cancel</p>
+            <p className="font-sans text-[10px] text-gold-100/40 mt-1">{t.activities.flexibleBadge}</p>
           </div>
         </div>
 
@@ -361,3 +363,4 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
     </section>
   );
 }
+

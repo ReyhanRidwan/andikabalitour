@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Star, MessageSquare, Check, User, Calendar, Award, X } from 'lucide-react';
+import { Star, MessageSquare, Check, User, Award, X } from 'lucide-react';
 import { Review } from '../types';
 import { INITIAL_REVIEWS } from '../data';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ReviewsSection() {
+  const { language, t } = useLanguage();
   const [reviews, setReviews] = useState<Review[]>(INITIAL_REVIEWS);
   const [filterRating, setFilterRating] = useState<number | 'all'>('all');
 
@@ -26,11 +28,11 @@ export default function ReviewsSection() {
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newName.trim()) {
-      alert('Please enter your name.');
+      alert(language === 'id' ? 'Mohon masukkan nama Anda.' : 'Please enter your name.');
       return;
     }
     if (!newComment.trim()) {
-      alert('Please write your testimonial experience.');
+      alert(language === 'id' ? 'Mohon tulis ulasan pengalaman Anda.' : 'Please write your testimonial experience.');
       return;
     }
 
@@ -64,13 +66,13 @@ export default function ReviewsSection() {
         {/* Review Headers */}
         <div className="text-center max-w-2xl mx-auto space-y-4 mb-16">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold-400 font-semibold">
-            Guest Testimonials
+            {t.reviews.badge}
           </p>
           <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-gold-100 font-medium tracking-wide">
-            Shared Chronicles of Splendor
+            {t.reviews.title}
           </h2>
           <p className="font-sans text-sm md:text-base text-gold-100/50 leading-relaxed font-light">
-            Read actual verified reviews from high-society travelers, honeymooners, and adventurers who explored Bali with us.
+            {t.reviews.subtitle}
           </p>
         </div>
 
@@ -81,7 +83,7 @@ export default function ReviewsSection() {
           <div className="lg:col-span-4 bg-luxury-gray border border-gold-400/15 p-6 rounded-sm text-center lg:text-left flex flex-col md:flex-row lg:flex-col items-center justify-around gap-6">
             <div className="space-y-2">
               <span className="font-mono text-[9px] uppercase tracking-widest text-gold-300/50 block">
-                Average guest score
+                {t.reviews.ratingAverage}
               </span>
               <div className="flex items-baseline justify-center lg:justify-start space-x-2">
                 <span className="font-serif text-5xl font-bold text-gold-400">
@@ -99,7 +101,7 @@ export default function ReviewsSection() {
                 ))}
               </div>
               <span className="font-mono text-[10px] text-gold-300/40 block pt-1">
-                Based on {totalReviews} private reviews
+                {t.reviews.totalReviews}
               </span>
             </div>
 
@@ -110,7 +112,7 @@ export default function ReviewsSection() {
                 id="btn-trigger-review-form"
                 className="bg-transparent hover:bg-gold-400/10 border border-gold-400/50 hover:border-gold-400 text-gold-200 hover:text-gold-100 px-6 py-3.5 text-xs uppercase tracking-wider font-bold font-mono transition-colors rounded-sm cursor-pointer"
               >
-                Pen Your Experience
+                {t.reviews.writeReview}
               </button>
             )}
           </div>
@@ -118,8 +120,8 @@ export default function ReviewsSection() {
           {/* Filter pills and info */}
           <div className="lg:col-span-8 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-luxury-gray/30 p-6 border border-gold-900/5 rounded-sm">
             <div className="text-left">
-              <h4 className="font-serif text-base text-gold-200">Filter Guest Reviews</h4>
-              <p className="font-sans text-xs text-gold-100/50 mt-1">Show testimonials based on star scores.</p>
+              <h4 className="font-serif text-base text-gold-200">{language === 'id' ? 'Filter Ulasan Tamu' : 'Filter Guest Reviews'}</h4>
+              <p className="font-sans text-xs text-gold-100/50 mt-1">{language === 'id' ? 'Tampilkan ulasan berdasarkan skor bintang.' : 'Show testimonials based on star scores.'}</p>
             </div>
             
             <div className="flex flex-wrap gap-2" id="review-filters">
@@ -131,7 +133,7 @@ export default function ReviewsSection() {
                     : 'border-gold-900/20 text-gold-100/50 hover:border-gold-400/30'
                 }`}
               >
-                All Rating ({reviews.length})
+                {language === 'id' ? 'Semua Rating' : 'All Ratings'} ({reviews.length})
               </button>
               {[5, 4, 3].map((star) => {
                 const count = reviews.filter((r) => r.rating === star).length;
@@ -145,7 +147,7 @@ export default function ReviewsSection() {
                         : 'border-gold-900/20 text-gold-100/50 hover:border-gold-400/30'
                     }`}
                   >
-                    <span>{star} Stars</span>
+                    <span>{star} {language === 'id' ? 'Bintang' : 'Stars'}</span>
                     <span className="opacity-40">({count})</span>
                   </button>
                 );
@@ -166,15 +168,15 @@ export default function ReviewsSection() {
                 <div className="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-full flex items-center justify-center border border-emerald-400">
                   <Check size={20} />
                 </div>
-                <h4 className="font-serif text-lg text-gold-200">Review Submitted</h4>
-                <p className="font-sans text-xs text-gold-100/50">Your review was verified and loaded live onto the ledger database.</p>
+                <h4 className="font-serif text-lg text-gold-200">{language === 'id' ? 'Ulasan Terkirim' : 'Review Submitted'}</h4>
+                <p className="font-sans text-xs text-gold-100/50">{t.reviews.thankYou}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmitReview} className="space-y-6">
                 <div className="flex justify-between items-center border-b border-gold-900/10 pb-4">
                   <h3 className="font-serif text-lg text-gold-200 font-medium flex items-center space-x-2">
                     <MessageSquare size={16} className="text-gold-400" />
-                    <span>Pen Your Testimonial</span>
+                    <span>{t.reviews.modalTitle}</span>
                   </h3>
                   <button
                     type="button"
@@ -191,12 +193,12 @@ export default function ReviewsSection() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-1">
                         <label className="block text-[10px] uppercase tracking-wider font-mono text-gold-300/60 font-medium">
-                          Your Name
+                          {t.reviews.yourName}
                         </label>
                         <input
                           type="text"
                           required
-                          placeholder="e.g. Lady Georgina"
+                          placeholder={language === 'id' ? 'Nama Anda' : 'Your Name'}
                           value={newName}
                           onChange={(e) => setNewName(e.target.value)}
                           className="w-full bg-luxury-dark border border-gold-400/15 px-4 py-2.5 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400"
@@ -205,7 +207,7 @@ export default function ReviewsSection() {
 
                       <div className="space-y-1">
                         <label className="block text-[10px] uppercase tracking-wider font-mono text-gold-300/60 font-medium">
-                          Expedition taken
+                          {language === 'id' ? 'Paket yang Diambil' : 'Expedition taken'}
                         </label>
                         <select
                           value={newExpId}
@@ -213,20 +215,21 @@ export default function ReviewsSection() {
                           className="w-full bg-luxury-dark border border-gold-400/15 px-4 py-2.5 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 cursor-pointer"
                         >
                           <option value="jeep-adventure">Bali Jeep Adventure</option>
-                          <option value="ocean-escape">Ocean Luxury Escape</option>
-                          <option value="jungle-retreat">Serene Jungle Retreat</option>
+                          <option value="watersport-package">Tanjung Benoa Watersport</option>
+                          <option value="ayung-rafting">Ayung River Rafting</option>
+                          <option value="atv-ride">Bali ATV Quad Bike</option>
                         </select>
                       </div>
                     </div>
 
                     <div className="space-y-1">
                       <label className="block text-[10px] uppercase tracking-wider font-mono text-gold-300/60 font-medium">
-                        Your Testimonial Experience
+                        {t.reviews.yourComment}
                       </label>
                       <textarea
                         required
                         rows={4}
-                        placeholder="Detail your private charter adventure..."
+                        placeholder={language === 'id' ? 'Ceritakan pengalaman liburan Anda...' : 'Detail your private charter adventure...'}
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                         className="w-full bg-luxury-dark border border-gold-400/15 px-4 py-2.5 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 resize-none"
@@ -238,7 +241,7 @@ export default function ReviewsSection() {
                   <div className="md:col-span-5 bg-luxury-dark/40 border border-gold-900/10 p-5 rounded-sm flex flex-col justify-between text-center md:text-left">
                     <div className="space-y-3">
                       <span className="block text-[10px] uppercase tracking-widest font-mono text-gold-300/60 font-medium">
-                        Review Star Score
+                        {t.reviews.yourRating}
                       </span>
                       <div className="flex justify-center md:justify-start items-center space-x-2">
                         {[1, 2, 3, 4, 5].map((star) => (
@@ -256,11 +259,11 @@ export default function ReviewsSection() {
                         ))}
                       </div>
                       <p className="font-mono text-[10px] text-gold-400 font-semibold uppercase tracking-wider pt-1">
-                        {newRating === 5 && 'Absolutely Flawless (5/5)'}
-                        {newRating === 4 && 'Curated Splendor (4/5)'}
-                        {newRating === 3 && 'Enjoyable Journey (3/5)'}
-                        {newRating === 2 && 'Requires Enhancements (2/5)'}
-                        {newRating === 1 && 'Poor Experience (1/5)'}
+                        {newRating === 5 && (language === 'id' ? 'Sangat Sempurna (5/5)' : 'Absolutely Flawless (5/5)')}
+                        {newRating === 4 && (language === 'id' ? 'Sangat Memuaskan (4/5)' : 'Curated Splendor (4/5)')}
+                        {newRating === 3 && (language === 'id' ? 'Cukup Menyenangkan (3/5)' : 'Enjoyable Journey (3/5)')}
+                        {newRating === 2 && (language === 'id' ? 'Perlu Ditingkatkan (2/5)' : 'Requires Enhancements (2/5)')}
+                        {newRating === 1 && (language === 'id' ? 'Kurang Memuaskan (1/5)' : 'Poor Experience (1/5)')}
                       </p>
                     </div>
 
@@ -269,7 +272,7 @@ export default function ReviewsSection() {
                         type="submit"
                         className="w-full bg-gold-400 hover:bg-gold-500 text-luxury-dark font-sans text-xs uppercase tracking-[0.2em] font-bold py-3 transition-colors rounded-sm cursor-pointer"
                       >
-                        Publish Verified Testimonial
+                        {t.reviews.submitReview}
                       </button>
                     </div>
                   </div>
@@ -299,8 +302,9 @@ export default function ReviewsSection() {
                       </h4>
                       <p className="font-mono text-[8px] text-gold-400 tracking-wider uppercase mt-0.5">
                         {r.experienceId === 'jeep-adventure' && 'Volcano Tour'}
-                        {r.experienceId === 'ocean-escape' && 'Yacht Cruise'}
-                        {r.experienceId === 'jungle-retreat' && 'Jungle Sanctuary'}
+                        {r.experienceId === 'watersport-package' && 'Watersport Package'}
+                        {r.experienceId === 'ayung-rafting' && 'Ayung Rafting'}
+                        {r.experienceId === 'atv-ride' && 'ATV Quad Bike'}
                       </p>
                     </div>
                   </div>
@@ -316,7 +320,7 @@ export default function ReviewsSection() {
                       ))}
                     </div>
                     <span className="font-mono text-[8px] text-gold-300/30 block mt-1">
-                      {new Date(r.date).toLocaleDateString('en-US', {
+                      {new Date(r.date).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', {
                         year: 'numeric',
                         month: 'short',
                         day: 'numeric',
@@ -335,7 +339,7 @@ export default function ReviewsSection() {
               {r.verified && (
                 <div className="flex items-center space-x-1 text-[9px] uppercase tracking-wider font-mono text-emerald-400 font-semibold pt-4 border-t border-gold-900/5 mt-4">
                   <Award size={10} className="stroke-[3]" />
-                  <span>Verified Charter Booking</span>
+                  <span>{t.reviews.verifiedTraveler}</span>
                 </div>
               )}
             </div>
@@ -346,3 +350,4 @@ export default function ReviewsSection() {
     </section>
   );
 }
+

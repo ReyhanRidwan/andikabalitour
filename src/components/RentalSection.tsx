@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Car, Bike, Users, Settings, Fuel, ArrowRight, Shield, Check, Sparkles } from 'lucide-react';
-import { VEHICLES } from '../data';
-import { Vehicle } from '../types';
+import React from 'react';
+import { Car, Users, Settings, Fuel, ArrowRight, Shield, Check, Sparkles } from 'lucide-react';
+import { getVehicles } from '../data';
+import { useLanguage } from '../context/LanguageContext';
 
 interface RentalSectionProps {
   onSelectVehicle: (vehicleId: string) => void;
@@ -9,11 +9,8 @@ interface RentalSectionProps {
 }
 
 export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage }: RentalSectionProps) {
-  const [activeTab, setActiveTab] = useState<'all' | 'car' | 'motorbike'>('all');
-
-  const filteredVehicles = activeTab === 'all'
-    ? VEHICLES
-    : VEHICLES.filter(v => v.type === activeTab);
+  const { language, t } = useLanguage();
+  const vehicles = getVehicles(language);
 
   const handleBookVehicle = (id: string) => {
     onSelectVehicle(id);
@@ -31,14 +28,14 @@ export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage 
           <div className="inline-flex items-center space-x-2 bg-gold-400/10 border border-gold-400/20 px-3.5 py-1.5 rounded-full mb-4">
             <Sparkles size={12} className="text-gold-400 animate-pulse" />
             <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-gold-300 font-bold">
-              Premium Mobility Solutions
+              {t.rentalSection.badge}
             </span>
           </div>
           <h2 className="font-serif text-3xl md:text-5xl text-gold-200 tracking-wide font-medium">
-            Layanan Sewa Mobil & Motor Bali
+            {t.rentalSection.title}
           </h2>
           <p className="font-sans text-sm md:text-base text-gold-100/60 leading-relaxed mt-4">
-            Jelajahi keindahan Bali dengan kebebasan penuh. Kami menyediakan armada mobil premium dan motor modis dengan opsi berkendara sendiri (lepas kunci) atau layanan supir VIP dengan bahan bakar.
+            {t.rentalSection.subtitle}
           </p>
         </div>
 
@@ -48,7 +45,7 @@ export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage 
           <div className="flex bg-neutral-900/80 p-1.5 rounded-md border border-gold-400/10 w-full md:w-auto">
             <span className="px-5 py-2.5 text-xs font-mono font-bold uppercase tracking-wider text-gold-400 flex items-center gap-2">
               <Car size={13} />
-              Armada Transportasi Premium
+              {t.rentalSection.carFleet}
             </span>
           </div>
 
@@ -57,20 +54,19 @@ export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage 
             onClick={onNavigateToRentalPage}
             className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] font-bold text-gold-400 hover:text-gold-300 group transition-colors cursor-pointer"
           >
-            <span>Selengkapnya & Booking</span>
+            <span>{t.rentalSection.viewAllBtn}</span>
             <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />
           </button>
         </div>
 
         {/* Grid Display */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {VEHICLES.map((vehicle) => {
+          {vehicles.map((vehicle) => {
             const isCar = vehicle.type === 'car';
-            const hasSelfDrive = vehicle.priceWithoutDriverPerDay > 0;
 
             return (
               <div
-                key={vehicle.id}
+                key={vehicle.id + language}
                 className="bg-neutral-900/40 border border-gold-900/15 hover:border-gold-400/40 rounded-lg overflow-hidden flex flex-col group transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-gold-500/5"
               >
                 {/* Vehicle Image Container */}
@@ -85,41 +81,24 @@ export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage 
                   {/* Category Badge */}
                   {vehicle.passengers && (
                     <span className="absolute top-4 left-4 bg-neutral-950/95 backdrop-blur-md border border-gold-400/25 text-gold-300 font-mono text-[9px] uppercase tracking-wider font-bold py-1.5 px-3 rounded-sm shadow-md">
-                      {vehicle.passengers} Penumpang
+                      {vehicle.passengers} {t.rentalSection.passengers}
                     </span>
                   )}
                   
                   {/* Custom pricing display over image */}
                   <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-neutral-950 via-neutral-950/45 to-transparent p-4 flex items-end justify-between">
-                    {hasSelfDrive ? (
-                      <>
-                        <div>
-                          <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">Lepas Kunci</p>
-                          <p className="font-mono text-sm font-bold text-gold-100">
-                            Rp {vehicle.priceWithoutDriverPerDay.toLocaleString('id-ID')} <span className="text-[9px] font-normal text-gold-100/50">/hari</span>
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">Dengan Supir + BBM</p>
-                          <p className="font-mono text-sm font-bold text-gold-300">
-                            Rp {vehicle.priceWithDriverPerDay.toLocaleString('id-ID')} <span className="text-[9px] font-normal text-gold-300/60">/hari</span>
-                          </p>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="w-full flex justify-between items-end">
-                        <div>
-                          <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">Layanan Eksklusif</p>
-                          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20 rounded-sm">Sopir + BBM Termasuk</span>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">Tarif Harian</p>
-                          <p className="font-mono text-base font-bold text-gold-300">
-                            Rp {vehicle.priceWithDriverPerDay.toLocaleString('id-ID')} <span className="text-[9px] font-normal text-gold-300/60">/hari</span>
-                          </p>
-                        </div>
+                    <div className="w-full flex justify-between items-end">
+                      <div>
+                        <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">{t.rentalSection.privateService}</p>
+                        <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20 rounded-sm">{t.rentalSection.driverFuelIncluded}</span>
                       </div>
-                    )}
+                      <div className="text-right">
+                        <p className="text-[9px] uppercase font-mono tracking-widest text-gold-400/70">{t.rentalSection.ratePerDay}</p>
+                        <p className="font-mono text-base font-bold text-gold-300">
+                          Rp {vehicle.priceWithDriverPerDay.toLocaleString('id-ID')} <span className="text-[9px] font-normal text-gold-300/60">{t.rentalSection.perDay}</span>
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -138,7 +117,7 @@ export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage 
                       {isCar && vehicle.passengers && (
                         <div className="flex items-center gap-2">
                           <Users size={12} className="text-gold-400" />
-                          <span>{vehicle.passengers} Penumpang</span>
+                          <span>{vehicle.passengers} {t.rentalSection.passengers}</span>
                         </div>
                       )}
                       <div className="flex items-center gap-2">
@@ -151,7 +130,7 @@ export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage 
                       </div>
                       <div className="flex items-center gap-2">
                         <Shield size={12} className="text-gold-400" />
-                        <span>Asuransi All-Risk</span>
+                        <span>{t.rentalSection.allRiskInsurance}</span>
                       </div>
                     </div>
                   </div>
@@ -162,13 +141,13 @@ export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage 
                       onClick={() => handleBookVehicle(vehicle.id)}
                       className="flex-1 bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-[10px] uppercase tracking-widest font-bold py-3 px-4 rounded-sm transition-all duration-300 text-center cursor-pointer shadow-sm hover:shadow-gold-500/10 active:scale-95"
                     >
-                      Sewa Sekarang
+                      {t.rentalSection.rentNow}
                     </button>
                     <button
                       onClick={onNavigateToRentalPage}
                       className="border border-gold-400/20 hover:border-gold-400/50 hover:bg-gold-400/5 text-gold-300 px-3 py-3 rounded-sm text-[10px] font-mono uppercase tracking-wider transition-colors cursor-pointer"
                     >
-                      Detail rute
+                      {t.rentalSection.routeDetails}
                     </button>
                   </div>
                 </div>
@@ -185,8 +164,8 @@ export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage 
               <Check size={16} />
             </div>
             <div>
-              <h4 className="font-serif text-sm text-gold-200 font-medium">Bebas Repot & On-Time</h4>
-              <p className="font-sans text-xs text-gold-100/50 leading-relaxed mt-1">Layanan antar-jemput kendaraan gratis ke hotel Anda di seluruh area Bali Selatan & Ubud.</p>
+              <h4 className="font-serif text-sm text-gold-200 font-medium">{t.rentalSection.benefit1Title}</h4>
+              <p className="font-sans text-xs text-gold-100/50 leading-relaxed mt-1">{t.rentalSection.benefit1Desc}</p>
             </div>
           </div>
           <div className="flex items-start space-x-3 text-left border-t md:border-t-0 md:border-l border-gold-900/10 pt-4 md:pt-0 md:pl-6">
@@ -194,8 +173,8 @@ export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage 
               <Check size={16} />
             </div>
             <div>
-              <h4 className="font-serif text-sm text-gold-200 font-medium">Supir Berbahasa Inggris</h4>
-              <p className="font-sans text-xs text-gold-100/50 leading-relaxed mt-1">Supir VIP kami profesional, sopan, dan berwawasan luas mengenai tempat wisata tersembunyi.</p>
+              <h4 className="font-serif text-sm text-gold-200 font-medium">{t.rentalSection.benefit2Title}</h4>
+              <p className="font-sans text-xs text-gold-100/50 leading-relaxed mt-1">{t.rentalSection.benefit2Desc}</p>
             </div>
           </div>
           <div className="flex items-start space-x-3 text-left border-t md:border-t-0 md:border-l border-gold-900/10 pt-4 md:pt-0 md:pl-6">
@@ -203,8 +182,8 @@ export default function RentalSection({ onSelectVehicle, onNavigateToRentalPage 
               <Check size={16} />
             </div>
             <div>
-              <h4 className="font-serif text-sm text-gold-200 font-medium">Kondisi Bersih & Prima</h4>
-              <p className="font-sans text-xs text-gold-100/50 leading-relaxed mt-1">Seluruh kendaraan disinfeksi lengkap dan diservis berkala demi keselamatan prima di jalan.</p>
+              <h4 className="font-serif text-sm text-gold-200 font-medium">{t.rentalSection.benefit3Title}</h4>
+              <p className="font-sans text-xs text-gold-100/50 leading-relaxed mt-1">{t.rentalSection.benefit3Desc}</p>
             </div>
           </div>
         </div>

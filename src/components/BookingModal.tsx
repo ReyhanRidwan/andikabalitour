@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
-  X, Check, Calendar, Users, Star, ArrowRight, ShieldCheck, CreditCard,
-  Sparkles, Printer, Download, Copy, AlertTriangle, Loader2, Wallet, Landmark, CheckCircle2
+  X, Check, Calendar, Users, ArrowRight, ShieldCheck, CreditCard,
+  Sparkles, Printer, Copy, AlertTriangle, Loader2, Wallet, Landmark, CheckCircle2
 } from 'lucide-react';
 import { Experience, BookingDetails, BookingAddon } from '../types';
-import { EXPERIENCES, BOOKING_ADDONS } from '../data';
+import { getExperiences, getBookingAddons } from '../data';
+import { useLanguage } from '../context/LanguageContext';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -16,7 +17,7 @@ interface BookingModalProps {
 interface Participant {
   name: string;
   idNumber: string; // Passport / KTP
-  ageCategory: 'Dewasa' | 'Anak';
+  ageCategory: string;
 }
 
 export default function BookingModal({
@@ -25,11 +26,15 @@ export default function BookingModal({
   initialExperienceId,
   onBookingSuccess,
 }: BookingModalProps) {
+  const { language, t } = useLanguage();
+  const experiences = getExperiences(language);
+  const addons = getBookingAddons(language);
+
   // Step state: 'details' | 'payment_gateway' | 'processing' | 'success'
   const [step, setStep] = useState<'details' | 'payment_gateway' | 'processing' | 'success'>('details');
 
   // Booking fields state
-  const [selectedExpId, setSelectedExpId] = useState(initialExperienceId || EXPERIENCES[0].id);
+  const [selectedExpId, setSelectedExpId] = useState(initialExperienceId || experiences[0].id);
   const [selectedPricingOptionIndex, setSelectedPricingOptionIndex] = useState<number>(0);
   const [date, setDate] = useState('');
   const [guests, setGuests] = useState(2);
@@ -43,9 +48,10 @@ export default function BookingModal({
   const [dateWarning, setDateWarning] = useState<string | null>(null);
 
   // Dynamic Participants state
+  const defaultAge = language === 'en' ? 'Adult' : 'Dewasa';
   const [participants, setParticipants] = useState<Participant[]>([
-    { name: '', idNumber: '', ageCategory: 'Dewasa' },
-    { name: '', idNumber: '', ageCategory: 'Dewasa' },
+    { name: '', idNumber: '', ageCategory: defaultAge },
+    { name: '', idNumber: '', ageCategory: defaultAge },
   ]);
 
   // Payment State
@@ -73,18 +79,17 @@ export default function BookingModal({
   useEffect(() => {
     setParticipants((prev) => {
       const next = [...prev];
+      const ageLabel = language === 'en' ? 'Adult' : 'Dewasa';
       if (next.length < guests) {
-        // Add new blank participants
         while (next.length < guests) {
-          next.push({ name: '', idNumber: '', ageCategory: 'Dewasa' });
+          next.push({ name: '', idNumber: '', ageCategory: ageLabel });
         }
       } else if (next.length > guests) {
-        // Trim participants
         return next.slice(0, guests);
       }
       return next;
     });
-  }, [guests]);
+  }, [guests, language]);
 
   // Check for fully booked dates
   useEffect(() => {
@@ -97,38 +102,49 @@ export default function BookingModal({
 
     // 1. Block Mondays
     if (dayOfWeek === 1) {
-      setDateWarning('⚠️ Hari Senin adalah jadwal pemeliharaan berkala yacht & area konservasi gunung berapi. Jadwal ini terisi penuh (Fully Booked). Silakan pilih tanggal lain.');
+      setDateWarning(
+        language === 'en'
+          ? '⚠️ Mondays are scheduled for periodic yacht maintenance and volcanic sanctuary preservation. This date is fully booked. Please choose another date.'
+          : '⚠️ Hari Senin adalah jadwal pemeliharaan berkala yacht & area konservasi gunung berapi. Jadwal ini terisi penuh (Fully Booked). Silakan pilih tanggal lain.'
+      );
       return;
     }
 
     // 2. Block specific high-demand dates: July 12, July 15, July 20
-    const month = selectedDate.getMonth() + 1; // 1-indexed
+    const month = selectedDate.getMonth() + 1;
     const day = selectedDate.getDate();
     const year = selectedDate.getFullYear();
 
     if (year === 2026 && month === 7 && (day === 12 || day === 15 || day === 20)) {
-      setDateWarning('⚠️ Tanggal ini sudah dipesan penuh oleh tamu kenegaraan (Fully Booked). Silakan pilih tanggal lain.');
+      setDateWarning(
+        language === 'en'
+          ? '⚠️ This date is fully booked by private VIP expeditions. Please choose another date.'
+          : '⚠️ Tanggal ini sudah dipesan penuh oleh tamu kenegaraan (Fully Booked). Silakan pilih tanggal lain.'
+      );
       return;
     }
 
     setDateWarning(null);
-  }, [date]);
+  }, [date, language]);
 
   if (!isOpen) return null;
 
-  const currentExp = EXPERIENCES.find((e) => e.id === selectedExpId) || EXPERIENCES[0];
+  const currentExp = experiences.find((e) => e.id === selectedExpId) || experiences[0];
   const selectedPricingOption = currentExp.pricingOptions
     ? currentExp.pricingOptions[selectedPricingOptionIndex] || currentExp.pricingOptions[0]
     : null;
 
   // Price calculations
   const basePrice = selectedPricingOption
-    ? (selectedPricingOption.name === 'Tandem' ? selectedPricingOption.price * Math.max(1, Math.ceil(guests / 2)) : selectedPricingOption.price * guests)
+    ? (selectedPricingOption.name.toLowerCase().includes('tandem')
+        ? selectedPricingOption.price * Math.max(1, Math.ceil(guests / 2))
+        : selectedPricingOption.price * guests)
     : currentExp.pricePerPerson * guests;
-  const addonsPrice = BOOKING_ADDONS.filter((addon) => selectedAddons.includes(addon.id)).reduce(
-    (total, addon) => total + addon.price,
-    0
-  );
+
+  const addonsPrice = addons
+    .filter((addon) => selectedAddons.includes(addon.id))
+    .reduce((total, addon) => total + addon.price, 0);
+
   const subtotal = basePrice + addonsPrice;
   const tax = Math.round(subtotal * 0.1); // 10% Luxury tax
   const grandTotal = subtotal + tax;
@@ -151,34 +167,34 @@ export default function BookingModal({
 
   const validateDetails = () => {
     if (!date) {
-      alert('Mohon pilih tanggal pilihan tur pribadi Anda.');
+      alert(language === 'en' ? 'Please select your preferred tour date.' : 'Mohon pilih tanggal pilihan tur pribadi Anda.');
       return false;
     }
     if (dateWarning) {
-      alert('Tanggal yang Anda pilih saat ini sedang penuh (Fully Booked). Silakan pilih tanggal lain.');
+      alert(language === 'en' ? 'The selected date is currently fully booked. Please choose another date.' : 'Tanggal yang Anda pilih saat ini sedang penuh (Fully Booked). Silakan pilih tanggal lain.');
       return false;
     }
     if (!fullName.trim()) {
-      alert('Mohon masukkan nama pemesan utama.');
+      alert(language === 'en' ? 'Please enter primary booker full name.' : 'Mohon masukkan nama pemesan utama.');
       return false;
     }
     if (!email.trim() || !email.includes('@')) {
-      alert('Mohon masukkan alamat email yang valid.');
+      alert(language === 'en' ? 'Please enter a valid email address.' : 'Mohon masukkan alamat email yang valid.');
       return false;
     }
     if (!phone.trim()) {
-      alert('Mohon masukkan nomor WhatsApp aktif Anda.');
+      alert(language === 'en' ? 'Please enter your active WhatsApp number.' : 'Mohon masukkan nomor WhatsApp aktif Anda.');
       return false;
     }
 
     // Validate each participant
     for (let i = 0; i < participants.length; i++) {
       if (!participants[i].name.trim()) {
-        alert(`Mohon lengkapi nama untuk Peserta #${i + 1}`);
+        alert(language === 'en' ? `Please provide name for Guest #${i + 1}` : `Mohon lengkapi nama untuk Peserta #${i + 1}`);
         return false;
       }
       if (!participants[i].idNumber.trim()) {
-        alert(`Mohon lengkapi nomor KTP / Paspor untuk Peserta #${i + 1}`);
+        alert(language === 'en' ? `Please provide ID / Passport number for Guest #${i + 1}` : `Mohon lengkapi nomor KTP / Paspor untuk Peserta #${i + 1}`);
         return false;
       }
     }
@@ -198,15 +214,15 @@ export default function BookingModal({
 
     if (paymentChannel === 'card') {
       if (cardNumber.replace(/\s/g, '').length < 16) {
-        alert('Mohon masukkan nomor kartu kredit 16-digit yang valid.');
+        alert(language === 'en' ? 'Please enter a valid 16-digit credit card number.' : 'Mohon masukkan nomor kartu kredit 16-digit yang valid.');
         return;
       }
       if (!cardExpiry || !cardExpiry.includes('/')) {
-        alert('Mohon masukkan tanggal kedaluwarsa MM/YY.');
+        alert(language === 'en' ? 'Please enter a valid card expiry date MM/YY.' : 'Mohon masukkan tanggal kedaluwarsa MM/YY.');
         return;
       }
       if (cardCvv.length < 3) {
-        alert('Mohon masukkan kode keamanan CVV yang valid.');
+        alert(language === 'en' ? 'Please enter a valid CVV security code.' : 'Mohon masukkan kode keamanan CVV yang valid.');
         return;
       }
     }
@@ -218,7 +234,7 @@ export default function BookingModal({
     setTimeout(() => {
       const bookingCode = `BG-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
       
-      let finalPaymentLabel = 'Kartu Kredit (Visa/Mastercard)';
+      let finalPaymentLabel = language === 'en' ? 'Credit Card (Visa/Mastercard)' : 'Kartu Kredit (Visa/Mastercard)';
       if (paymentChannel === 'qris') {
         finalPaymentLabel = `E-Wallet QRIS (${selectedEWallet.toUpperCase()})`;
       } else if (paymentChannel === 'va') {
@@ -268,9 +284,10 @@ export default function BookingModal({
     setCardName('');
     setCardExpiry('');
     setCardCvv('');
+    const ageLabel = language === 'en' ? 'Adult' : 'Dewasa';
     setParticipants([
-      { name: '', idNumber: '', ageCategory: 'Dewasa' },
-      { name: '', idNumber: '', ageCategory: 'Dewasa' },
+      { name: '', idNumber: '', ageCategory: ageLabel },
+      { name: '', idNumber: '', ageCategory: ageLabel },
     ]);
     setConfirmedBooking(null);
     onClose();
@@ -287,16 +304,16 @@ export default function BookingModal({
           <div className="flex items-center space-x-2">
             <Sparkles size={16} className="text-gold-400" />
             <h2 className="font-serif text-lg text-gold-200 tracking-wide font-medium">
-              {step === 'details' && 'Reservasi Paket Tour VIP'}
-              {step === 'payment_gateway' && 'Gerbang Pembayaran Aman (Payment Gateway)'}
-              {step === 'processing' && 'Memproses Pembayaran...'}
-              {step === 'success' && 'E-Tiket & Voucher Resmi Konfirmasi'}
+              {step === 'details' && (language === 'en' ? 'VIP Tour Package Reservation' : 'Reservasi Paket Tour VIP')}
+              {step === 'payment_gateway' && (language === 'en' ? 'Secure Payment Gateway' : 'Gerbang Pembayaran Aman (Payment Gateway)')}
+              {step === 'processing' && (language === 'en' ? 'Processing Payment...' : 'Memproses Pembayaran...')}
+              {step === 'success' && (language === 'en' ? 'Official E-Voucher & Ticket Confirmation' : 'E-Tiket & Voucher Resmi Konfirmasi')}
             </h2>
           </div>
           <button
             onClick={handleReset}
             className="text-gold-300/60 hover:text-gold-400 transition-colors p-1 cursor-pointer"
-            aria-label="Tutup"
+            aria-label={t.common.close}
             id="btn-close-booking"
           >
             <X size={20} />
@@ -316,7 +333,7 @@ export default function BookingModal({
                 {/* Select Package Dropdown */}
                 <div className="space-y-1.5 text-left">
                   <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono">
-                    Pilih Paket Perjalanan Eksklusif
+                    {t.bookingModal.selectPackage}
                   </label>
                   <select
                     value={selectedExpId}
@@ -328,9 +345,9 @@ export default function BookingModal({
                     id="booking-select-experience"
                     className="w-full bg-neutral-900 border border-gold-400/20 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 font-sans cursor-pointer"
                   >
-                    {EXPERIENCES.map((exp) => (
+                    {experiences.map((exp) => (
                       <option key={exp.id} value={exp.id}>
-                        {exp.title} — {exp.pricingOptions ? `Single Rp ${exp.pricingOptions[0].price.toLocaleString('id-ID')} / Tandem Rp ${exp.pricingOptions[1]?.price.toLocaleString('id-ID')}` : `Rp ${exp.pricePerPerson.toLocaleString('id-ID')} / pax`}
+                        {exp.title} — {exp.pricingOptions ? `Single Rp ${exp.pricingOptions[0].price.toLocaleString('id-ID')} / Tandem Rp ${exp.pricingOptions[1]?.price.toLocaleString('id-ID')}` : `Rp ${exp.pricePerPerson.toLocaleString('id-ID')} ${t.common.perPerson}`}
                       </option>
                     ))}
                   </select>
@@ -340,7 +357,7 @@ export default function BookingModal({
                 {currentExp.pricingOptions && (
                   <div className="space-y-2 text-left">
                     <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono">
-                      <span>Pilih Opsi Tipe Ride ATV</span>
+                      <span>{t.bookingModal.selectPricingOption}</span>
                     </label>
                     <div className="grid grid-cols-2 gap-3">
                       {currentExp.pricingOptions.map((opt, idx) => (
@@ -372,7 +389,7 @@ export default function BookingModal({
                   <div className="space-y-1.5">
                     <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono flex items-center gap-1.5">
                       <Calendar size={13} className="text-gold-400" />
-                      <span>Pilih Tanggal</span>
+                      <span>{t.bookingModal.tripDate}</span>
                     </label>
                     <input
                       type="date"
@@ -388,7 +405,7 @@ export default function BookingModal({
                   <div className="space-y-1.5">
                     <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono flex items-center gap-1.5">
                       <Users size={13} className="text-gold-400" />
-                      <span>Jumlah Peserta (Maks. 2)</span>
+                      <span>{t.bookingModal.totalGuests}</span>
                     </label>
                     <div className="flex items-center border border-gold-400/20 rounded-sm bg-neutral-900">
                       <button
@@ -399,11 +416,11 @@ export default function BookingModal({
                         -
                       </button>
                       <span className="flex-grow text-center text-sm font-semibold text-gold-100 font-mono">
-                        {guests} Orang
+                        {guests} {language === 'en' ? 'Guests' : 'Orang'}
                       </span>
                       <button
                         type="button"
-                        onClick={() => setGuests(Math.min(2, guests + 1))}
+                        onClick={() => setGuests(Math.min(10, guests + 1))}
                         className="px-4 py-3 text-gold-300 hover:text-gold-400 font-bold cursor-pointer"
                       >
                         +
@@ -424,9 +441,11 @@ export default function BookingModal({
                 <div className="space-y-4 pt-4 border-t border-gold-900/10 text-left">
                   <div className="flex justify-between items-baseline">
                     <h3 className="text-xs uppercase tracking-widest text-gold-300 font-bold font-mono">
-                      Data Informasi Seluruh Peserta ({guests} Orang)
+                      {t.bookingModal.participantDetails} ({guests} {language === 'en' ? 'Guests' : 'Orang'})
                     </h3>
-                    <span className="text-[10px] font-mono text-gold-400/60">WAJIB DISI</span>
+                    <span className="text-[10px] font-mono text-gold-400/60">
+                      {language === 'en' ? 'REQUIRED' : 'WAJIB DIISI'}
+                    </span>
                   </div>
 
                   <div className="space-y-4" id="participants-data-fields">
@@ -437,25 +456,32 @@ export default function BookingModal({
                       >
                         <div className="flex justify-between items-center">
                           <span className="font-mono text-xs font-bold text-gold-400">
-                            Peserta #{idx + 1} {idx === 0 ? '(Kontak Utama)' : ''}
+                            {t.bookingModal.participant} #{idx + 1} {idx === 0 ? (language === 'en' ? '(Primary Booker)' : '(Kontak Utama)') : ''}
                           </span>
                           
                           {/* Age Category selection */}
                           <div className="flex gap-2">
-                            {['Dewasa', 'Anak'].map((cat) => (
-                              <button
-                                key={cat}
-                                type="button"
-                                onClick={() => handleParticipantChange(idx, 'ageCategory', cat)}
-                                className={`px-2.5 py-1 rounded-sm text-[10px] font-mono font-bold uppercase border transition-all ${
-                                  part.ageCategory === cat
-                                    ? 'bg-gold-400 text-neutral-950 border-gold-400'
-                                    : 'bg-transparent text-gold-200/40 border-gold-900/10 hover:border-gold-400/30'
-                                }`}
-                              >
-                                {cat}
-                              </button>
-                            ))}
+                            {[
+                              { key: 'Adult', label: t.bookingModal.adult },
+                              { key: 'Child', label: t.bookingModal.child },
+                            ].map((cat) => {
+                              const isActive = (cat.key === 'Adult' && (part.ageCategory === 'Adult' || part.ageCategory === 'Dewasa')) ||
+                                               (cat.key === 'Child' && (part.ageCategory === 'Child' || part.ageCategory === 'Anak'));
+                              return (
+                                <button
+                                  key={cat.key}
+                                  type="button"
+                                  onClick={() => handleParticipantChange(idx, 'ageCategory', cat.label)}
+                                  className={`px-2.5 py-1 rounded-sm text-[10px] font-mono font-bold uppercase border transition-all cursor-pointer ${
+                                    isActive
+                                      ? 'bg-gold-400 text-neutral-950 border-gold-400'
+                                      : 'bg-transparent text-gold-200/40 border-gold-900/10 hover:border-gold-400/30'
+                                  }`}
+                                >
+                                  {cat.label}
+                                </button>
+                              );
+                            })}
                           </div>
                         </div>
 
@@ -463,7 +489,7 @@ export default function BookingModal({
                           <input
                             type="text"
                             required
-                            placeholder={`Nama Lengkap Peserta #${idx + 1}`}
+                            placeholder={`${t.bookingModal.fullName} #${idx + 1}`}
                             value={part.name}
                             onChange={(e) => handleParticipantChange(idx, 'name', e.target.value)}
                             className="w-full bg-neutral-950 border border-gold-400/15 px-3 py-2.5 text-xs text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 placeholder-gold-300/20"
@@ -471,7 +497,7 @@ export default function BookingModal({
                           <input
                             type="text"
                             required
-                            placeholder="Nomor KTP / Paspor"
+                            placeholder={t.bookingModal.idNumber}
                             value={part.idNumber}
                             onChange={(e) => handleParticipantChange(idx, 'idNumber', e.target.value)}
                             className="w-full bg-neutral-950 border border-gold-400/15 px-3 py-2.5 text-xs text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 placeholder-gold-300/20"
@@ -485,17 +511,16 @@ export default function BookingModal({
                 {/* Primary Guest Contact details */}
                 <div className="space-y-4 pt-4 border-t border-gold-900/10 text-left">
                   <h3 className="text-xs uppercase tracking-widest text-gold-300 font-bold font-mono">
-                    Informasi Kontak Pemesan & Pengiriman E-Tiket
+                    {t.bookingModal.contactInfo}
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <input
                       type="text"
                       required
-                      placeholder="Nama Pemesan Utama"
+                      placeholder={t.rental.fullName}
                       value={fullName}
                       onChange={(e) => {
                         setFullName(e.target.value);
-                        // Sync first participant name by default
                         if (participants[0]) {
                           handleParticipantChange(0, 'name', e.target.value);
                         }
@@ -505,7 +530,7 @@ export default function BookingModal({
                     <input
                       type="email"
                       required
-                      placeholder="Alamat Email (E-Tiket dikirim kesini)"
+                      placeholder={t.bookingModal.emailPlaceholder}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 placeholder-gold-300/20"
@@ -516,14 +541,14 @@ export default function BookingModal({
                     <input
                       type="tel"
                       required
-                      placeholder="Nomor WhatsApp Utama (aktif)"
+                      placeholder={t.bookingModal.phonePlaceholder}
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 placeholder-gold-300/20"
                     />
                     <input
                       type="text"
-                      placeholder="Permintaan Khusus (Diet, Alergi, dll.)"
+                      placeholder={t.bookingModal.specialRequestsPlaceholder}
                       value={specialNotes}
                       onChange={(e) => setSpecialNotes(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 placeholder-gold-300/20"
@@ -533,11 +558,16 @@ export default function BookingModal({
 
                 {/* VIP Upgrades Checklist */}
                 <div className="space-y-3 text-left">
-                  <h3 className="text-xs uppercase tracking-widest text-gold-300 font-bold font-mono">
-                    Peningkatan Premium (VIP Upgrades)
-                  </h3>
+                  <div>
+                    <h3 className="text-xs uppercase tracking-widest text-gold-300 font-bold font-mono">
+                      {t.bookingModal.addonsTitle}
+                    </h3>
+                    <p className="text-[11px] text-gold-100/50 font-sans mt-0.5">
+                      {t.bookingModal.addonsDesc}
+                    </p>
+                  </div>
                   <div className="space-y-3">
-                    {BOOKING_ADDONS.map((addon) => {
+                    {addons.map((addon) => {
                       const isChecked = selectedAddons.includes(addon.id);
                       return (
                         <div
@@ -559,21 +589,15 @@ export default function BookingModal({
                             </div>
                             <div className="text-left">
                               <h4 className="font-serif text-sm text-gold-200 font-medium">
-                                {addon.name === 'Bespoke Private Photographer' ? 'Fotografer Pribadi Profesional' :
-                                 addon.name === 'Cinematic Drone Videography' ? 'Videografi Drone Sinematik 4K' :
-                                 addon.name === 'Veuve Clicquot Champagne & Caviar' ? 'Champagne Premium & Kaviar' :
-                                 'Transfer Helikopter Eksklusif (1 Arah)'}
+                                {addon.name}
                               </h4>
                               <p className="font-sans text-[11px] text-gold-100/50 leading-relaxed mt-0.5">
-                                {addon.description === 'A professional travel photographer to capture candid moments of your adventure (Includes 50+ edited high-res digital shots).' ? 'Dokumentasikan momen-momen emas perjalanan privat Anda dengan fotografer berpengalaman (Termasuk 50+ file digital diedit high-res).' :
-                                 addon.description === 'Aerial video shooting utilizing 4K cinema drones for dramatic landscape memories (Includes a 1-minute social media reel).' ? 'Video udara berkelas tinggi menggunakan drone sinematik 4K untuk klip memori lanskap spektakuler.' :
-                                 addon.description === 'A chilled bottle of premium champagne accompanied by gourmet local caviar and fresh strawberries on ice.' ? 'Sajian sebotol Champagne mewah dingin dipadukan kaviar lokal segar di atas es serut.' :
-                                 'Lewati lalu lintas jalan raya Bali. Terbang langsung dari pelabuhan heli langsung ke helipad resort Anda.'}
+                                {addon.description}
                               </p>
                             </div>
                           </div>
                           <span className="font-mono text-sm font-semibold text-gold-400 flex-shrink-0">
-                            +${addon.price}
+                            +Rp {addon.price.toLocaleString('id-ID')}
                           </span>
                         </div>
                       );
@@ -587,7 +611,7 @@ export default function BookingModal({
               <div className="lg:col-span-5 bg-neutral-900/60 border border-gold-400/15 p-6 rounded-md flex flex-col justify-between h-fit lg:sticky lg:top-4 text-left">
                 <div>
                   <h3 className="font-serif text-lg text-gold-200 border-b border-gold-900/10 pb-3 mb-4 font-medium tracking-wide">
-                    Rincian Pembayaran
+                    {t.bookingModal.pricingSummary}
                   </h3>
 
                   <div className="flex items-center space-x-3 mb-6 bg-neutral-900 p-3 border border-gold-900/10 rounded-sm">
@@ -599,7 +623,9 @@ export default function BookingModal({
                       className="w-12 h-16 object-cover rounded-sm border border-gold-400/20 flex-shrink-0"
                     />
                     <div>
-                      <p className="font-mono text-[9px] uppercase tracking-wider text-gold-400">Private Experience</p>
+                      <p className="font-mono text-[9px] uppercase tracking-wider text-gold-400">
+                        {language === 'en' ? 'Private Experience' : 'Aktivitas Privat'}
+                      </p>
                       <h4 className="font-serif text-sm text-gold-100 font-medium leading-tight">{currentExp.title}</h4>
                       <p className="font-sans text-[11px] text-gold-200/40 mt-0.5">{currentExp.location}</p>
                     </div>
@@ -607,21 +633,18 @@ export default function BookingModal({
 
                   <div className="space-y-4 text-sm">
                     <div className="flex justify-between items-center text-gold-100/60">
-                      <span>Tarif Dasar ({guests} Orang)</span>
+                      <span>{t.bookingModal.packageBase} ({guests} {language === 'en' ? 'Guests' : 'Orang'})</span>
                       <span className="font-mono text-gold-100">Rp {basePrice.toLocaleString('id-ID')}</span>
                     </div>
 
                     {selectedAddons.length > 0 && (
                       <div className="space-y-2 pt-2 border-t border-gold-900/10">
-                        <span className="text-[10px] uppercase font-mono text-gold-400 tracking-wider block">Upgrade Tambahan</span>
-                        {BOOKING_ADDONS.filter((addon) => selectedAddons.includes(addon.id)).map((addon) => (
+                        <span className="text-[10px] uppercase font-mono text-gold-400 tracking-wider block">
+                          {t.bookingModal.addonsTotal}
+                        </span>
+                        {addons.filter((addon) => selectedAddons.includes(addon.id)).map((addon) => (
                           <div key={addon.id} className="flex justify-between items-start text-xs text-gold-100/50 pl-2">
-                            <span>
-                              {addon.name === 'Bespoke Private Photographer' ? 'Fotografer Pribadi' :
-                               addon.name === 'Cinematic Drone Videography' ? 'Videografi Drone 4K' :
-                               addon.name === 'Veuve Clicquot Champagne & Caviar' ? 'Champagne & Kaviar' :
-                               'Transfer Helikopter'}
-                            </span>
+                            <span>{addon.name}</span>
                             <span className="font-mono text-gold-300">+Rp {addon.price.toLocaleString('id-ID')}</span>
                           </div>
                         ))}
@@ -629,13 +652,13 @@ export default function BookingModal({
                     )}
 
                     <div className="flex justify-between items-center text-gold-100/60 pt-4 border-t border-gold-900/10">
-                      <span>Subtotal</span>
+                      <span>{t.bookingModal.subtotal}</span>
                       <span className="font-mono text-gold-100">Rp {subtotal.toLocaleString('id-ID')}</span>
                     </div>
 
                     <div className="flex justify-between items-center text-gold-100/60">
                       <span className="flex items-center gap-1">
-                        <span>Pajak Pariwisata & Layanan VIP</span>
+                        <span>{t.bookingModal.vatTax}</span>
                         <span className="bg-gold-500/10 text-gold-300 font-mono text-[9px] px-1.5 py-0.5 rounded">10%</span>
                       </span>
                       <span className="font-mono text-gold-100">Rp {tax.toLocaleString('id-ID')}</span>
@@ -645,7 +668,7 @@ export default function BookingModal({
 
                 <div className="pt-6 mt-8 border-t border-gold-400/20">
                   <div className="flex justify-between items-baseline mb-6">
-                    <span className="font-serif text-base text-gold-200">Total Pembayaran</span>
+                    <span className="font-serif text-base text-gold-200">{t.bookingModal.grandTotal}</span>
                     <span className="font-mono text-xl md:text-2xl text-gold-400 font-bold">Rp {grandTotal.toLocaleString('id-ID')}</span>
                   </div>
 
@@ -659,13 +682,13 @@ export default function BookingModal({
                         : 'bg-gold-400 hover:bg-gold-500 text-neutral-950 shadow-md hover:shadow-gold-500/10'
                     }`}
                   >
-                    <span>Lanjutkan ke Pembayaran Aman</span>
+                    <span>{t.bookingModal.proceedToPayment}</span>
                     <ArrowRight size={14} />
                   </button>
 
                   <div className="flex items-center justify-center space-x-2 text-[9px] text-gold-300/40 font-mono mt-4">
                     <ShieldCheck size={12} className="text-gold-400" />
-                    <span>SECURE SSL 256-BIT RESERVATION DESK</span>
+                    <span>{t.bookingModal.securityNotice}</span>
                   </div>
                 </div>
               </div>
@@ -681,7 +704,7 @@ export default function BookingModal({
               <div className="lg:col-span-7 space-y-6">
                 <div className="space-y-3">
                   <label className="block text-xs uppercase tracking-widest text-gold-300/70 font-semibold font-mono">
-                    Pilih Metode Pembayaran
+                    {t.rental.selectPaymentMethod}
                   </label>
                   
                   <div className="grid grid-cols-3 gap-3">
@@ -695,7 +718,7 @@ export default function BookingModal({
                       }`}
                     >
                       <CreditCard size={16} />
-                      <span>Kartu Kredit</span>
+                      <span>{language === 'en' ? 'Credit Card' : 'Kartu Kredit'}</span>
                     </button>
 
                     <button
@@ -728,9 +751,11 @@ export default function BookingModal({
 
                 {/* 1. KARTU KREDIT BLOCK */}
                 {paymentChannel === 'card' && (
-                  <div className="space-y-4 animate-fade-in">
+                  <div className="space-y-4 animate-fade-in bg-neutral-900/20 border border-gold-900/10 p-5 rounded-md">
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">Nomor Kartu Kredit</label>
+                      <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">
+                        {language === 'en' ? 'Credit Card Number' : 'Nomor Kartu Kredit'}
+                      </label>
                       <input
                         type="text"
                         required
@@ -746,7 +771,9 @@ export default function BookingModal({
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">Nama Pemegang Kartu</label>
+                      <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">
+                        {language === 'en' ? 'Cardholder Name' : 'Nama Pemegang Kartu'}
+                      </label>
                       <input
                         type="text"
                         required
@@ -759,7 +786,9 @@ export default function BookingModal({
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">Masa Berlaku (Expiry Date)</label>
+                        <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">
+                          {language === 'en' ? 'Expiry Date (MM/YY)' : 'Masa Berlaku (MM/YY)'}
+                        </label>
                         <input
                           type="text"
                           required
@@ -778,7 +807,9 @@ export default function BookingModal({
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">Kode CVV</label>
+                        <label className="block text-[10px] uppercase tracking-widest text-gold-300/60 font-mono font-medium">
+                          CVV
+                        </label>
                         <input
                           type="password"
                           required
@@ -796,7 +827,9 @@ export default function BookingModal({
                 {/* 2. QRIS QR CODE MOCKUP */}
                 {paymentChannel === 'qris' && (
                   <div className="bg-neutral-900/60 border border-gold-400/15 rounded-lg p-6 space-y-6 text-center animate-fade-in flex flex-col items-center">
-                    <p className="font-serif text-gold-200 text-sm font-medium">Pindai Kode QRIS VIP Gateway</p>
+                    <p className="font-serif text-gold-200 text-sm font-medium">
+                      {language === 'en' ? 'Scan Official VIP QRIS Code' : 'Pindai Kode QRIS VIP Gateway'}
+                    </p>
                     
                     <div className="flex gap-2">
                       {['gopay', 'ovo', 'dana'].map((ew) => (
@@ -804,7 +837,7 @@ export default function BookingModal({
                           type="button"
                           key={ew}
                           onClick={() => setSelectedEWallet(ew as any)}
-                          className={`px-3 py-1.5 rounded text-[10px] uppercase font-mono font-bold border ${
+                          className={`px-3 py-1.5 rounded text-[10px] uppercase font-mono font-bold border cursor-pointer ${
                             selectedEWallet === ew
                               ? 'bg-gold-400 text-neutral-950 border-gold-400'
                               : 'bg-neutral-950 text-gold-100/40 border-gold-900/10'
@@ -818,7 +851,6 @@ export default function BookingModal({
                     {/* QR Code Graphic Representation */}
                     <div className="bg-white p-4 rounded-md inline-block relative border-2 border-gold-400/40">
                       <div className="w-40 h-40 bg-[radial-gradient(#000_3px,transparent_3px)] bg-[size:10px_10px] flex items-center justify-center">
-                        {/* QR Corners */}
                         <div className="absolute top-6 left-6 w-8 h-8 border-4 border-black" />
                         <div className="absolute top-6 right-6 w-8 h-8 border-4 border-black" />
                         <div className="absolute bottom-6 left-6 w-8 h-8 border-4 border-black" />
@@ -829,8 +861,8 @@ export default function BookingModal({
                     </div>
 
                     <div className="text-xs text-gold-100/60 font-sans leading-relaxed space-y-1">
-                      <p>Silakan buka aplikasi e-wallet pilihan Anda lalu scan QR code di atas.</p>
-                      <p className="font-mono text-gold-400 text-[10px] font-bold">EXPIRES IN 04:59</p>
+                      <p>{language === 'en' ? 'Open your banking or e-wallet app and scan this QR code.' : 'Silakan buka aplikasi e-wallet pilihan Anda lalu scan QR code di atas.'}</p>
+                      <p className="font-mono text-gold-400 text-[10px] font-bold">{language === 'en' ? 'EXPIRES IN 04:59' : 'WAKTU BAYAR: 04:59'}</p>
                     </div>
                   </div>
                 )}
@@ -839,7 +871,7 @@ export default function BookingModal({
                 {paymentChannel === 'va' && (
                   <div className="bg-neutral-900/60 border border-gold-400/15 rounded-lg p-6 space-y-6 text-left animate-fade-in">
                     <div className="flex justify-between items-center border-b border-gold-900/10 pb-4">
-                      <p className="font-serif text-gold-200 text-sm font-medium">Nomor Rekening Virtual Account</p>
+                      <p className="font-serif text-gold-200 text-sm font-medium">Virtual Account Transfer</p>
                       
                       <div className="flex gap-2">
                         {['bca', 'mandiri', 'bni'].map((bank) => (
@@ -847,7 +879,7 @@ export default function BookingModal({
                             type="button"
                             key={bank}
                             onClick={() => setSelectedBank(bank as any)}
-                            className={`px-3 py-1.5 rounded text-[10px] uppercase font-mono font-bold border ${
+                            className={`px-3 py-1.5 rounded text-[10px] uppercase font-mono font-bold border cursor-pointer ${
                               selectedBank === bank
                                 ? 'bg-gold-400 text-neutral-950 border-gold-400'
                                 : 'bg-neutral-950 text-gold-100/40 border-gold-900/10'
@@ -862,7 +894,9 @@ export default function BookingModal({
                     {/* VA Number display with copy */}
                     <div className="bg-neutral-950 p-4 border border-gold-400/10 rounded flex items-center justify-between font-mono">
                       <div className="text-left">
-                        <span className="text-[9px] uppercase tracking-wider text-gold-400/50 block">NOMOR VIRTUAL ACCOUNT {selectedBank.toUpperCase()}</span>
+                        <span className="text-[9px] uppercase tracking-wider text-gold-400/50 block">
+                          {language === 'en' ? `VA ACCOUNT NUMBER (${selectedBank.toUpperCase()})` : `NOMOR VIRTUAL ACCOUNT ${selectedBank.toUpperCase()}`}
+                        </span>
                         <span className="text-base md:text-lg font-bold text-gold-200 tracking-wider">
                           {selectedBank === 'bca' ? '3901 0811 3456 7890' : selectedBank === 'mandiri' ? '88012 81134 567890' : '98014 0811 3456 7890'}
                         </span>
@@ -873,15 +907,15 @@ export default function BookingModal({
                         className="bg-gold-400/10 border border-gold-400/25 hover:bg-gold-400 text-gold-400 hover:text-neutral-950 p-2 rounded-sm transition-all flex items-center gap-1 text-[10px] font-bold cursor-pointer"
                       >
                         {copied ? <Check size={12} /> : <Copy size={12} />}
-                        <span>{copied ? 'Tersalin' : 'Salin'}</span>
+                        <span>{copied ? t.common.copied : t.common.copy}</span>
                       </button>
                     </div>
 
                     <div className="text-xs text-gold-200/50 leading-relaxed font-sans space-y-2">
-                      <h5 className="font-bold text-gold-200 text-xs">Petunjuk Pembayaran singkat:</h5>
-                      <p>1. Salin nomor Virtual Account di atas.</p>
-                      <p>2. Buka mobile banking bank Anda, pilih menu transfer ke Virtual Account.</p>
-                      <p>3. Masukkan nomor VA, periksa nominal pembayaran total, dan selesaikan transaksi.</p>
+                      <h5 className="font-bold text-gold-200 text-xs">{t.rental.paymentInstructions}:</h5>
+                      <p>{language === 'en' ? '1. Copy the Virtual Account number above.' : '1. Salin nomor Virtual Account di atas.'}</p>
+                      <p>{language === 'en' ? '2. Open your mobile banking app and select transfer to Virtual Account.' : '2. Buka mobile banking bank Anda, pilih menu transfer ke Virtual Account.'}</p>
+                      <p>{language === 'en' ? '3. Paste the VA number, confirm the invoice total, and complete payment.' : '3. Masukkan nomor VA, periksa nominal pembayaran total, dan selesaikan transaksi.'}</p>
                     </div>
                   </div>
                 )}
@@ -892,32 +926,32 @@ export default function BookingModal({
               <div className="lg:col-span-5 bg-neutral-900/60 border border-gold-400/15 p-6 rounded-md flex flex-col justify-between h-fit lg:sticky lg:top-4">
                 <div className="space-y-6">
                   <h3 className="font-serif text-lg text-gold-200 border-b border-gold-900/10 pb-3 mb-4 font-medium tracking-wide">
-                    Summary Transaksi
+                    {language === 'en' ? 'Transaction Summary' : 'Summary Transaksi'}
                   </h3>
 
                   <div className="space-y-4 text-xs font-mono text-gold-200/60">
                     <div className="flex justify-between">
-                      <span>Paket Tur:</span>
+                      <span>{language === 'en' ? 'Tour Package:' : 'Paket Tur:'}</span>
                       <span className="text-gold-200 font-bold font-serif">{currentExp.title}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Tanggal:</span>
+                      <span>{language === 'en' ? 'Date:' : 'Tanggal:'}</span>
                       <span className="text-gold-200 font-bold">{date}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Peserta:</span>
-                      <span className="text-gold-200 font-bold">{guests} Orang</span>
+                      <span>{language === 'en' ? 'Guests:' : 'Peserta:'}</span>
+                      <span className="text-gold-200 font-bold">{guests} {language === 'en' ? 'Guests' : 'Orang'}</span>
                     </div>
                     <div className="flex justify-between border-t border-gold-900/10 pt-4">
-                      <span>Subtotal:</span>
+                      <span>{t.bookingModal.subtotal}:</span>
                       <span className="text-gold-200 font-bold">Rp {subtotal.toLocaleString('id-ID')}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Levy & PPN (10%):</span>
+                      <span>{t.bookingModal.vatTax}:</span>
                       <span className="text-gold-200 font-bold">Rp {tax.toLocaleString('id-ID')}</span>
                     </div>
                     <div className="flex justify-between border-t border-gold-400/20 pt-4 text-sm font-sans">
-                      <span className="font-serif text-gold-200">Grand Total:</span>
+                      <span className="font-serif text-gold-200">{t.bookingModal.grandTotal}:</span>
                       <span className="font-mono text-lg text-gold-400 font-extrabold">Rp {grandTotal.toLocaleString('id-ID')}</span>
                     </div>
                   </div>
@@ -930,14 +964,14 @@ export default function BookingModal({
                     id="btn-submit-payment"
                   >
                     <CheckCircle2 size={13} />
-                    <span>Konfirmasi Pembayaran</span>
+                    <span>{t.bookingModal.payNow}</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setStep('details')}
                     className="w-full border border-gold-400/20 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-mono text-xs uppercase tracking-widest py-3 rounded-sm transition-all mt-3 cursor-pointer"
                   >
-                    Kembali Ke Form Data
+                    {language === 'en' ? 'Back to Details Form' : 'Kembali Ke Form Data'}
                   </button>
                 </div>
               </div>
@@ -950,9 +984,13 @@ export default function BookingModal({
             <div className="py-24 text-center space-y-6 flex flex-col items-center justify-center" id="payment-processing-spinner">
               <Loader2 className="w-16 h-16 text-gold-400 animate-spin" />
               <div className="space-y-2 max-w-sm">
-                <h3 className="font-serif text-2xl text-gold-200">Memproses Transaksi Aman</h3>
+                <h3 className="font-serif text-2xl text-gold-200">
+                  {language === 'en' ? 'Processing Secure Transaction' : 'Memproses Transaksi Aman'}
+                </h3>
                 <p className="text-gold-100/50 text-xs md:text-sm font-sans leading-relaxed">
-                  Sedang berkomunikasi dengan Gerbang Pembayaran BCA / Visa Gateway untuk memverifikasi pembayaran Anda secara aman. Mohon tidak menutup halaman ini...
+                  {language === 'en'
+                    ? 'Communicating with banking gateway to verify your reservation securely. Please do not close this window...'
+                    : 'Sedang berkomunikasi dengan Gerbang Pembayaran untuk memverifikasi pembayaran Anda secara aman. Mohon tidak menutup halaman ini...'}
                 </p>
               </div>
               <div className="w-48 h-1 bg-neutral-900 border border-gold-400/10 rounded-full overflow-hidden relative">
@@ -971,9 +1009,13 @@ export default function BookingModal({
                   <Check size={24} className="stroke-[3]" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="font-serif text-2xl md:text-3xl text-gold-200 font-medium tracking-wide">Pembayaran Terverifikasi & Sukses</h3>
+                  <h3 className="font-serif text-2xl md:text-3xl text-gold-200 font-medium tracking-wide">
+                    {t.bookingModal.ticketConfirmed}
+                  </h3>
                   <p className="text-gold-200/60 text-xs md:text-sm font-sans max-w-xl mx-auto leading-relaxed">
-                    E-Tiket VIP Anda telah berhasil diterbitkan. Salinan resmi PDF & tanda terima Invoice pembayaran telah dikirimkan ke email Anda: <strong className="text-gold-300">{confirmedBooking.email}</strong>
+                    {language === 'en'
+                      ? `Your official VIP E-Voucher has been issued. A copy of your PDF voucher & invoice has been sent to ${confirmedBooking.email}`
+                      : `E-Tiket VIP Anda telah berhasil diterbitkan. Salinan resmi PDF & tanda terima Invoice pembayaran telah dikirimkan ke email Anda: ${confirmedBooking.email}`}
                   </p>
                 </div>
               </div>
@@ -990,8 +1032,10 @@ export default function BookingModal({
                   {/* Voucher Header with Branding and QR Code */}
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-gold-900/15 pb-6">
                     <div className="text-left">
-                      <span className="font-serif text-2xl text-gold-200 font-bold tracking-widest uppercase">BALI GORGEOUS</span>
-                      <span className="block text-[9px] font-mono tracking-[0.25em] text-gold-300/80 uppercase font-bold mt-0.5">EXCLUSIVE PRIVATE DAY CHARTER</span>
+                      <span className="font-serif text-2xl text-gold-200 font-bold tracking-widest uppercase">andhikabalitour</span>
+                      <span className="block text-[9px] font-mono tracking-[0.25em] text-gold-300/80 uppercase font-bold mt-0.5">
+                        {language === 'en' ? 'EXCLUSIVE PRIVATE EXPEDITIONS' : 'LAYANAN TUR PRIVAT EKSKLUSIF'}
+                      </span>
                     </div>
 
                     <div className="bg-white p-2 rounded-sm border border-gold-400 flex items-center gap-3">
@@ -1007,22 +1051,30 @@ export default function BookingModal({
                   {/* Core Tour Specs */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-left text-xs font-mono">
                     <div className="space-y-1">
-                      <span className="text-gold-400/50 block uppercase tracking-wider">PAKET PILIHAN</span>
+                      <span className="text-gold-400/50 block uppercase tracking-wider">
+                        {language === 'en' ? 'SELECTED TOUR' : 'PAKET PILIHAN'}
+                      </span>
                       <span className="text-gold-100 font-serif font-bold text-sm block">{currentExp.title}</span>
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-gold-400/50 block uppercase tracking-wider">TANGGAL TRIP</span>
+                      <span className="text-gold-400/50 block uppercase tracking-wider">
+                        {language === 'en' ? 'TRIP DATE' : 'TANGGAL TRIP'}
+                      </span>
                       <span className="text-gold-100 text-sm font-bold block">{confirmedBooking.date}</span>
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-gold-400/50 block uppercase tracking-wider">PEMESAN UTAMA</span>
+                      <span className="text-gold-400/50 block uppercase tracking-wider">
+                        {language === 'en' ? 'PRIMARY BOOKER' : 'PEMESAN UTAMA'}
+                      </span>
                       <span className="text-gold-100 text-sm font-bold block">{confirmedBooking.fullName}</span>
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-gold-400/50 block uppercase tracking-wider">CARA BAYAR</span>
+                      <span className="text-gold-400/50 block uppercase tracking-wider">
+                        {language === 'en' ? 'PAYMENT METHOD' : 'CARA BAYAR'}
+                      </span>
                       <span className="text-gold-100 text-sm font-bold block">{confirmedBooking.paymentMethod}</span>
                     </div>
                   </div>
@@ -1030,7 +1082,7 @@ export default function BookingModal({
                   {/* PARTICIPANTS TICKETS GRID */}
                   <div className="space-y-4 pt-6 border-t border-gold-900/10">
                     <h4 className="font-mono text-[10px] uppercase tracking-wider text-gold-400 font-bold">
-                      DAFTAR NAMA PESERTA TERDAFTAR (E-TICKET HOLDER)
+                      {language === 'en' ? 'REGISTERED GUESTS (E-TICKET HOLDERS)' : 'DAFTAR NAMA PESERTA TERDAFTAR (E-TICKET HOLDER)'}
                     </h4>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="success-participants-list">
@@ -1039,7 +1091,7 @@ export default function BookingModal({
                           <div className="text-left space-y-1">
                             <span className="text-[8px] font-mono text-gold-400/50 uppercase">PASS HOLDER #{i + 1}</span>
                             <p className="font-serif text-sm text-gold-200 font-bold">{part.name}</p>
-                            <p className="font-mono text-[10px] text-gold-100/50">ID/Paspor: {part.idNumber}</p>
+                            <p className="font-mono text-[10px] text-gold-100/50">ID / Passport: {part.idNumber}</p>
                           </div>
                           <span className="inline-block mt-3 px-2 py-0.5 bg-gold-400/10 border border-gold-400/25 rounded text-[8px] font-mono font-bold text-gold-400 uppercase w-fit">
                             {part.ageCategory}
@@ -1052,21 +1104,45 @@ export default function BookingModal({
                   {/* Highlights and guidelines for user */}
                   <div className="bg-neutral-950 p-5 border border-gold-900/10 rounded-sm text-left grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-sans text-gold-200/60 leading-relaxed">
                     <div className="space-y-1.5">
-                      <h5 className="font-bold text-gold-100">Informasi Penting Penjemputan:</h5>
-                      <p>• Supir VIP pribadi Anda akan menjemput di lobi hotel akomodasi pukul <strong>07:00 AM</strong> WITA (tergantung rute).</p>
-                      <p>• Pihak Concierge kami akan menghubungi Anda kembali via WhatsApp 1 hari sebelum perjalanan untuk sinkronisasi rute jemput.</p>
+                      <h5 className="font-bold text-gold-100">
+                        {language === 'en' ? 'Pickup & Logistics Details:' : 'Informasi Penting Penjemputan:'}
+                      </h5>
+                      <p>
+                        {language === 'en'
+                          ? '• Your private chauffeur & pro guide will arrive at your hotel lobby at 07:00 AM WITA (customizable on request).'
+                          : '• Supir VIP pribadi Anda akan menjemput di lobi hotel akomodasi pukul 07:00 AM WITA (tergantung rute).'}
+                      </p>
+                      <p>
+                        {language === 'en'
+                          ? '• Our concierge team will reach out via WhatsApp 1 day prior to synchronize route and pickup timing.'
+                          : '• Pihak Concierge kami akan menghubungi Anda kembali via WhatsApp 1 hari sebelum perjalanan untuk sinkronisasi rute jemput.'}
+                      </p>
                     </div>
                     <div className="space-y-1.5">
-                      <h5 className="font-bold text-gold-100">Fasilitas All-In:</h5>
-                      <p>• Handuk dingin, air mineral, asuransi penuh, tiket masuk objek wisata, serta makan siang gourmet semuanya sudah termasuk 100%.</p>
-                      <p>• Silakan siapkan pakaian santai, baju renang, kacamata hitam, atau pelindung matahari sesuai paket Anda.</p>
+                      <h5 className="font-bold text-gold-100">
+                        {language === 'en' ? 'All-Inclusive Services:' : 'Fasilitas All-In:'}
+                      </h5>
+                      <p>
+                        {language === 'en'
+                          ? '• Fresh chilled towels, mineral water, comprehensive insurance, attraction admissions, and gourmet lunch are 100% included.'
+                          : '• Handuk dingin, air mineral, asuransi penuh, tiket masuk objek wisata, serta makan siang gourmet semuanya sudah termasuk 100%.'}
+                      </p>
+                      <p>
+                        {language === 'en'
+                          ? '• Please bring comfortable casual attire, swimsuit, sunglasses, and reef-safe sunscreen.'
+                          : '• Silakan siapkan pakaian santai, baju renang, kacamata hitam, atau pelindung matahari sesuai paket Anda.'}
+                      </p>
                     </div>
                   </div>
 
                   {/* Price Summary footer on voucher */}
                   <div className="flex justify-between items-baseline pt-4 border-t border-gold-900/15">
-                    <span className="font-mono text-[9px] text-gold-400/50 uppercase">Total Invoice Lunas</span>
-                    <span className="font-mono text-xl font-bold text-gold-400">Rp {typeof confirmedBooking.totalPrice === 'number' ? confirmedBooking.totalPrice.toLocaleString('id-ID') : confirmedBooking.totalPrice}</span>
+                    <span className="font-mono text-[9px] text-gold-400/50 uppercase">
+                      {language === 'en' ? 'TOTAL INVOICE (PAID)' : 'Total Invoice Lunas'}
+                    </span>
+                    <span className="font-mono text-xl font-bold text-gold-400">
+                      Rp {typeof confirmedBooking.totalPrice === 'number' ? confirmedBooking.totalPrice.toLocaleString('id-ID') : confirmedBooking.totalPrice}
+                    </span>
                   </div>
 
                 </div>
@@ -1080,14 +1156,14 @@ export default function BookingModal({
                   className="bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-widest font-bold px-7 py-3.5 rounded-sm transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
                 >
                   <Printer size={13} />
-                  <span>Cetak E-Tiket (Print)</span>
+                  <span>{t.bookingModal.printVoucher}</span>
                 </button>
                 <button
                   type="button"
                   onClick={handleReset}
                   className="bg-neutral-900 border border-gold-400/20 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-mono text-xs uppercase tracking-widest px-7 py-3.5 rounded-sm transition-all cursor-pointer"
                 >
-                  Kembali Ke Beranda
+                  {t.common.back}
                 </button>
               </div>
 

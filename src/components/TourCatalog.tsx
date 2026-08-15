@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Star, Clock, MapPin, ArrowRight, Compass, ShieldCheck, Search, Filter } from 'lucide-react';
+import { Star, Clock, MapPin, ArrowRight, Compass, Search } from 'lucide-react';
 import { Experience } from '../types';
-import { EXPERIENCES } from '../data';
+import { getExperiences } from '../data';
+import { useLanguage } from '../context/LanguageContext';
 
 interface TourCatalogProps {
   onBookNow: (experienceId: string) => void;
@@ -14,6 +15,9 @@ type CategoryFilter = 'all' | 'adventure' | 'beach' | 'culture';
 export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogProps) {
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const { language, t } = useLanguage();
+
+  const experiences = getExperiences(language);
 
   // Helper to categorize items dynamically
   const getCategoryOfExp = (exp: Experience): CategoryFilter => {
@@ -21,13 +25,13 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
     if (id === 'atv-ride' || id === 'atv-king' || id === 'water-sport') {
       return 'adventure';
     }
-    if (id === 'horse-riding' || id === 'snorkeling' || id === 'nusa-penida-west') {
+    if (id === 'horse-riding' || id === 'snorkeling' || id.startsWith('nusa-penida')) {
       return 'beach';
     }
     return 'culture'; // rafting-bmw, rafting-ubud
   };
 
-  const filteredExperiences = EXPERIENCES.filter((exp) => {
+  const filteredExperiences = experiences.filter((exp) => {
     const matchesSearch = exp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       exp.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
       exp.shortDesc.toLowerCase().includes(searchQuery.toLowerCase());
@@ -36,6 +40,13 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
     return getCategoryOfExp(exp) === selectedCategory && matchesSearch;
   });
 
+  const categories = [
+    { id: 'all', label: t.catalog.filterAll },
+    { id: 'adventure', label: t.catalog.filterAdventure },
+    { id: 'beach', label: t.catalog.filterBeach },
+    { id: 'culture', label: t.catalog.filterCulture },
+  ];
+
   return (
     <div className="pt-28 pb-20 px-6 md:px-12 bg-neutral-950 min-h-screen">
       <div className="max-w-7xl mx-auto">
@@ -43,13 +54,13 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
         {/* Banner Section */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <span className="font-mono text-xs uppercase tracking-[0.25em] text-gold-400 font-bold bg-gold-500/5 px-4 py-2 border border-gold-400/10 rounded-full inline-block">
-            Bespoke VIP Packages
+            {t.catalog.badge}
           </span>
           <h1 className="font-serif text-4xl md:text-6xl text-gold-100 font-medium tracking-wide">
-            Katalog Paket Tour Eksklusif
+            {t.catalog.title}
           </h1>
           <p className="font-sans text-sm md:text-base text-gold-200/60 leading-relaxed font-light">
-            Jelajahi keindahan murni alam Bali dengan layanan VIP privat 100%. Mulai dari jalur off-road gunung berapi, pelayaran yacht mewah, hingga ritual suci pura kuno.
+            {t.catalog.subtitle}
           </p>
         </div>
 
@@ -57,12 +68,7 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
         <div className="flex flex-col lg:flex-row gap-6 justify-between items-center bg-neutral-900/60 p-6 rounded-lg border border-gold-400/10 mb-12" id="catalog-controls">
           {/* Category Tabs */}
           <div className="flex flex-wrap gap-2 w-full lg:w-auto" id="catalog-category-filters">
-            {[
-              { id: 'all', label: 'Semua Paket' },
-              { id: 'adventure', label: 'Petualangan & Adrenalin' },
-              { id: 'beach', label: 'Pantai & Yacht Mewah' },
-              { id: 'culture', label: 'Budaya & Wellness' },
-            ].map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id as CategoryFilter)}
@@ -84,7 +90,7 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
             </span>
             <input
               type="text"
-              placeholder="Cari destinasi atau paket..."
+              placeholder={t.catalog.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-neutral-900 border border-gold-400/20 rounded-sm pl-10 pr-4 py-2.5 text-sm text-gold-100 placeholder-gold-300/30 focus:outline-none focus:border-gold-400 font-sans transition-colors"
@@ -94,7 +100,9 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
 
         {/* Results Info */}
         <div className="text-left mb-6 text-xs text-gold-300/40 font-mono">
-          MENAMPILKAN {filteredExperiences.length} DARI {EXPERIENCES.length} PAKET AKTIVITAS BALI
+          {t.catalog.showingResults
+            .replace('{count}', filteredExperiences.length.toString())
+            .replace('{total}', experiences.length.toString())}
         </div>
 
         {/* Catalog Grid */}
@@ -124,7 +132,7 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                   {/* Floating Price Tag */}
                   <div className="absolute top-4 right-4 bg-black/85 border border-gold-400/20 rounded-sm px-3.5 py-2 backdrop-blur-sm text-right">
                     <span className="block text-[9px] font-mono text-gold-400 tracking-widest uppercase font-semibold">
-                      {exp.pricingOptions ? 'Opsi Tarif' : 'Mulai'}
+                      {exp.pricingOptions ? (language === 'en' ? 'Pricing Options' : 'Opsi Tarif') : (language === 'en' ? 'Starting' : 'Mulai')}
                     </span>
                     {exp.pricingOptions ? (
                       <div className="font-mono text-xs font-bold text-gold-200">
@@ -134,7 +142,7 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                     ) : (
                       <>
                         <span className="font-mono text-base font-bold text-gold-200">Rp {exp.pricePerPerson.toLocaleString('id-ID')}</span>
-                        <span className="text-[9px] text-gold-100/40 font-light block -mt-1">/ pax</span>
+                        <span className="text-[9px] text-gold-100/40 font-light block -mt-1">{t.common.perPerson}</span>
                       </>
                     )}
                   </div>
@@ -155,7 +163,7 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                         <Star className="w-3.5 h-3.5 fill-current" />
                         <span className="font-mono text-xs font-bold ml-1">{exp.rating}</span>
                       </div>
-                      <span className="text-gold-200/40 text-xs font-mono">({exp.reviewCount} ulasan)</span>
+                      <span className="text-gold-200/40 text-xs font-mono">({exp.reviewCount} {t.common.reviews})</span>
                     </div>
 
                     <h3 className="font-serif text-xl text-gold-100 font-medium group-hover:text-gold-300 transition-colors duration-300">
@@ -185,13 +193,13 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                       onClick={() => onViewDetails(exp.id)}
                       className="border border-gold-400/30 hover:border-gold-400 text-gold-300 hover:text-gold-100 text-xs uppercase tracking-widest font-mono py-3 rounded-sm transition-all duration-300 cursor-pointer hover:bg-gold-500/5 active:scale-95"
                     >
-                      Detail Rute
+                      {t.common.viewDetails}
                     </button>
                     <button
                       onClick={() => onBookNow(exp.id)}
                       className="bg-gold-400 hover:bg-gold-500 text-neutral-950 font-bold text-xs uppercase tracking-widest font-mono py-3 rounded-sm transition-all duration-300 shadow-md cursor-pointer hover:shadow-gold-500/10 flex items-center justify-center gap-1 active:scale-95"
                     >
-                      <span>Book Now</span>
+                      <span>{t.common.bookNow}</span>
                       <ArrowRight size={12} className="stroke-[2.5]" />
                     </button>
                   </div>
@@ -206,18 +214,20 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
         {filteredExperiences.length === 0 && (
           <div className="py-24 text-center space-y-4">
             <Compass className="w-12 h-12 text-gold-400/20 mx-auto animate-pulse" />
-            <h3 className="font-serif text-lg text-gold-200">Tidak ada paket yang cocok</h3>
+            <h3 className="font-serif text-lg text-gold-200">{t.catalog.noResults}</h3>
             <p className="text-gold-100/50 text-sm font-sans max-w-sm mx-auto">
-              Maaf, paket tour dengan kata kunci tersebut tidak tersedia. Silakan cari dengan istilah lain.
+              {language === 'en'
+                ? 'Sorry, no tour packages match your keyword. Please try another search term.'
+                : 'Maaf, paket tour dengan kata kunci tersebut tidak tersedia. Silakan cari dengan istilah lain.'}
             </p>
             <button
               onClick={() => {
                 setSearchQuery('');
                 setSelectedCategory('all');
               }}
-              className="text-xs uppercase tracking-widest font-mono bg-gold-400/10 hover:bg-gold-400/20 border border-gold-400/30 text-gold-400 px-5 py-2.5 rounded-sm transition-all"
+              className="text-xs uppercase tracking-widest font-mono bg-gold-400/10 hover:bg-gold-400/20 border border-gold-400/30 text-gold-400 px-5 py-2.5 rounded-sm transition-all cursor-pointer"
             >
-              Reset Filter
+              {t.catalog.clearFilter}
             </button>
           </div>
         )}

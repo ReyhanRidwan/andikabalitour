@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Eye, X, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
 import { GALLERY_PHOTOS } from '../data';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function GallerySection() {
+  const { language, t } = useLanguage();
   const [filter, setFilter] = useState<'all' | 'volcano' | 'ocean' | 'jungle'>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -24,6 +26,14 @@ export default function GallerySection() {
     setLightboxIndex(nextIdx);
   };
 
+  const getCategoryLabel = (cat: string) => {
+    if (cat === 'all') return t.gallery.filterAll;
+    if (cat === 'volcano') return t.gallery.filterVolcano;
+    if (cat === 'ocean') return t.gallery.filterOcean;
+    if (cat === 'jungle') return t.gallery.filterJungle;
+    return cat;
+  };
+
   return (
     <section id="gallery" className="py-24 bg-luxury-dark/95 border-t border-gold-900/10">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
@@ -32,13 +42,13 @@ export default function GallerySection() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div className="text-left space-y-4 max-w-xl">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold-400 font-semibold">
-              Visual Narrative
+              {t.gallery.badge}
             </p>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-gold-100 font-medium tracking-wide">
-              Capturing Divine Moments
+              {t.gallery.title}
             </h2>
             <p className="font-sans text-sm text-gold-100/50 leading-relaxed font-light">
-              Explore actual high-fidelity photographs of our bespoke private charters. Experience rugged volcanic textures, marine waters, and Ubud’s deep mist valleys.
+              {t.gallery.subtitle}
             </p>
           </div>
 
@@ -54,7 +64,7 @@ export default function GallerySection() {
                     : 'border-gold-900/25 text-gold-100/40 hover:text-gold-200 hover:border-gold-400/40'
                 }`}
               >
-                {cat === 'all' ? 'All Snapshots' : `${cat}s`}
+                {getCategoryLabel(cat)}
               </button>
             ))}
           </div>
@@ -63,9 +73,6 @@ export default function GallerySection() {
         {/* Photogrid layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="gallery-grid">
           {filteredPhotos.map((photo, index) => {
-            // Find global index in all photos for absolute reference
-            const globalIndex = GALLERY_PHOTOS.findIndex((p) => p.url === photo.url);
-
             return (
               <div
                 key={index}
@@ -96,7 +103,7 @@ export default function GallerySection() {
                   {/* Eye symbol */}
                   <div className="mt-3 flex items-center space-x-1 text-[10px] uppercase font-mono tracking-widest text-gold-300/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Eye size={12} className="text-gold-400" />
-                    <span>Enlarge Snapshot</span>
+                    <span>{language === 'id' ? 'Perbesar Foto' : 'Enlarge Snapshot'}</span>
                   </div>
                 </div>
               </div>
@@ -108,7 +115,7 @@ export default function GallerySection() {
         {filteredPhotos.length === 0 && (
           <div className="py-16 text-center text-gold-100/40 font-mono text-sm space-y-2">
             <ImageIcon size={32} className="mx-auto text-gold-900/30" />
-            <p>No photos matched this category yet.</p>
+            <p>{language === 'id' ? 'Tidak ada foto dalam kategori ini.' : 'No photos matched this category yet.'}</p>
           </div>
         )}
 
@@ -170,3 +177,4 @@ export default function GallerySection() {
     </section>
   );
 }
+

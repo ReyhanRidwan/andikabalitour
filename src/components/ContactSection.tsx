@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, HelpCircle, ChevronDown, ChevronUp, CheckCircle, Instagram } from 'lucide-react';
-import { FAQS, EXPERIENCES } from '../data';
+import { FAQS, getExperiences } from '../data';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ContactSection() {
+  const { language, t } = useLanguage();
+  const experiences = getExperiences(language);
+
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,7 +22,7 @@ export default function ContactSection() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName || !email || !message) {
-      alert('Mohon isi nama lengkap, alamat email, dan pesan Anda.');
+      alert(language === 'id' ? 'Mohon isi nama lengkap, alamat email, dan pesan Anda.' : 'Please enter your full name, email address, and message.');
       return;
     }
     setIsSubmitted(true);
@@ -31,13 +35,13 @@ export default function ContactSection() {
         {/* Header Title */}
         <div className="max-w-3xl space-y-4 mb-16 text-left">
           <span className="font-mono text-xs uppercase tracking-[0.25em] text-gold-400 font-bold bg-gold-500/5 px-4 py-2 border border-gold-400/10 rounded-full inline-block">
-            Bespoke Relations
+            {t.contact.badge}
           </span>
           <h1 className="font-serif text-4xl md:text-6xl text-gold-100 font-medium tracking-tight leading-tight">
-            Hubungi Konsultan VIP Kami
+            {t.contact.title}
           </h1>
           <p className="font-sans text-sm md:text-base text-gold-200/60 leading-relaxed font-light">
-            Butuh informasi rute khusus, permintaan helikopter, atau pesanan kuliner diet terarah? Pramutamu eksklusif kami siap menyambut pertanyaan Anda kapan saja.
+            {t.contact.subtitle}
           </p>
         </div>
 
@@ -48,16 +52,16 @@ export default function ContactSection() {
           <div className="lg:col-span-5 space-y-8 text-left">
             <div className="bg-neutral-900/40 border border-gold-400/10 p-8 rounded-lg space-y-6">
               <h3 className="font-serif text-2xl text-gold-200 font-medium border-b border-gold-900/10 pb-4">
-                Informasi Kantor Pusat
+                {t.contact.headOffice}
               </h3>
               
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <MapPin className="text-gold-400 mt-1 flex-shrink-0" size={18} />
                   <div>
-                    <h4 className="font-mono text-xs uppercase tracking-widest text-gold-300 font-bold">Seminyak HQ Location</h4>
+                    <h4 className="font-mono text-xs uppercase tracking-widest text-gold-300 font-bold">{language === 'id' ? 'Lokasi Kantor Denpasar' : 'Denpasar HQ Location'}</h4>
                     <p className="text-gold-200/60 text-xs md:text-sm leading-relaxed mt-1">
-                      Jl. Raya Seminyak No. 108X, Seminyak, Kuta, Kabupaten Badung, Bali 80361, Indonesia
+                      {t.contact.address}
                     </p>
                   </div>
                 </div>
@@ -72,7 +76,7 @@ export default function ContactSection() {
                       rel="noopener noreferrer"
                       className="text-gold-200 hover:text-gold-400 text-xs md:text-sm leading-relaxed mt-1 block font-mono"
                     >
-                      +62 812-2565-7382 (Tersedia 24/7)
+                      {t.contact.phone} ({language === 'id' ? 'Tersedia 24/7' : 'Available 24/7'})
                     </a>
                   </div>
                 </div>
@@ -82,10 +86,10 @@ export default function ContactSection() {
                   <div>
                     <h4 className="font-mono text-xs uppercase tracking-widest text-gold-300 font-bold">VIP Email Desk</h4>
                     <a
-                      href="mailto:Dewakanto587@gmail.com"
+                      href={`mailto:${t.contact.email}`}
                       className="text-gold-200 hover:text-gold-400 text-xs md:text-sm leading-relaxed mt-1 block font-mono"
                     >
-                      Dewakanto587@gmail.com
+                      {t.contact.email}
                     </a>
                   </div>
                 </div>
@@ -132,7 +136,7 @@ export default function ContactSection() {
                   <span className="w-2.5 h-2.5 rounded-full bg-gold-400 animate-ping absolute top-16" />
                   <span className="w-2.5 h-2.5 rounded-full bg-gold-400 absolute top-16" />
                   <p className="font-serif text-sm text-gold-100 font-medium">Bespoke Lounge Map</p>
-                  <p className="font-sans text-[11px] text-gold-200/40">Koordinat Kantor Resmi Seminyak Bali</p>
+                  <p className="font-sans text-[11px] text-gold-200/40">{language === 'id' ? 'Koordinat Kantor Resmi Denpasar Bali' : 'Official Coordinates Denpasar Bali'}</p>
                 </div>
                 {/* Abstract grid backing */}
                 <div className="w-full h-full opacity-10 bg-[linear-gradient(to_right,#dfab56_1px,transparent_1px),linear-gradient(to_bottom,#dfab56_1px,transparent_1px)] bg-[size:14px_14px]" />
@@ -143,29 +147,29 @@ export default function ContactSection() {
           {/* Right Column: Inquiry Form */}
           <div className="lg:col-span-7 bg-neutral-900/20 border border-gold-400/10 p-8 rounded-lg text-left">
             <h3 className="font-serif text-2xl text-gold-200 font-medium mb-6">
-              Formulir Pertanyaan & Permintaan Khusus
+              {t.contact.formTitle}
             </h3>
 
             {!isSubmitted ? (
               <form onSubmit={handleSubmit} className="space-y-6" id="vip-contact-form">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-1.5">
-                    <label className="text-[10px] uppercase font-mono tracking-widest text-gold-300/70 font-semibold block">Nama Lengkap</label>
+                    <label className="text-[10px] uppercase font-mono tracking-widest text-gold-300/70 font-semibold block">{t.contact.formName}</label>
                     <input
                       type="text"
                       required
-                      placeholder="Masukkan nama lengkap"
+                      placeholder={language === 'id' ? 'Masukkan nama lengkap' : 'Enter your full name'}
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 font-sans transition-colors placeholder-gold-300/20"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[10px] uppercase font-mono tracking-widest text-gold-300/70 font-semibold block">Alamat Email</label>
+                    <label className="text-[10px] uppercase font-mono tracking-widest text-gold-300/70 font-semibold block">{t.contact.formEmail}</label>
                     <input
                       type="email"
                       required
-                      placeholder="Masukkan alamat email"
+                      placeholder={language === 'id' ? 'Masukkan alamat email' : 'Enter your email address'}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 font-sans transition-colors placeholder-gold-300/20"
@@ -175,24 +179,24 @@ export default function ContactSection() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div className="space-y-1.5">
-                    <label className="text-[10px] uppercase font-mono tracking-widest text-gold-300/70 font-semibold block">Nomor Telepon / WhatsApp</label>
+                    <label className="text-[10px] uppercase font-mono tracking-widest text-gold-300/70 font-semibold block">{t.contact.formPhone}</label>
                     <input
                       type="tel"
-                      placeholder="Contoh: +62 812-3456-7890"
+                      placeholder="+62 812-3456-7890"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 font-sans transition-colors placeholder-gold-300/20"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[10px] uppercase font-mono tracking-widest text-gold-300/70 font-semibold block">Paket Tour yang Diminati</label>
+                    <label className="text-[10px] uppercase font-mono tracking-widest text-gold-300/70 font-semibold block">{language === 'id' ? 'Paket Tour yang Diminati' : 'Preferred Tour Package'}</label>
                     <select
                       value={selectedTour}
                       onChange={(e) => setSelectedTour(e.target.value)}
                       className="w-full bg-neutral-900 border border-gold-400/15 px-4 py-3 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 font-sans transition-colors cursor-pointer"
                     >
-                      <option value="">-- Silakan Pilih Paket (Opsional) --</option>
-                      {EXPERIENCES.map((exp) => (
+                      <option value="">{language === 'id' ? '-- Silakan Pilih Paket (Opsional) --' : '-- Please Select Package (Optional) --'}</option>
+                      {experiences.map((exp) => (
                         <option key={exp.id} value={exp.id}>
                           {exp.title}
                         </option>
@@ -202,11 +206,11 @@ export default function ContactSection() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase font-mono tracking-widest text-gold-300/70 font-semibold block">Pesan atau Kebutuhan Khusus Anda</label>
+                  <label className="text-[10px] uppercase font-mono tracking-widest text-gold-300/70 font-semibold block">{language === 'id' ? 'Pesan atau Kebutuhan Khusus Anda' : 'Your Message / Specific Inquiry'}</label>
                   <textarea
                     rows={5}
                     required
-                    placeholder="Tuliskan detail permintaan Anda (misal: penjemputan helikopter, vegetarian diet, bulan madu romantis, dll.)"
+                    placeholder={t.contact.formMessage}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full bg-neutral-900 border border-gold-400/15 p-4 text-sm text-gold-100 rounded-sm focus:outline-none focus:border-gold-400 font-sans transition-colors placeholder-gold-300/20"
@@ -219,7 +223,7 @@ export default function ContactSection() {
                   id="btn-submit-contact"
                 >
                   <Send size={13} />
-                  <span>Kirim Pertanyaan VIP</span>
+                  <span>{t.contact.formSubmit}</span>
                 </button>
               </form>
             ) : (
@@ -228,9 +232,9 @@ export default function ContactSection() {
                   <CheckCircle size={32} />
                 </div>
                 <div className="space-y-2">
-                  <h4 className="font-serif text-2xl text-gold-200">Pertanyaan Terkirim dengan Sukses</h4>
+                  <h4 className="font-serif text-2xl text-gold-200">{language === 'id' ? 'Pertanyaan Terkirim dengan Sukses' : 'Message Sent Successfully'}</h4>
                   <p className="text-gold-200/60 text-sm font-sans max-w-md mx-auto leading-relaxed">
-                    Terima kasih <strong>{fullName}</strong>. Konsultan Concierge VIP kami akan meninjau pesan Anda secara khusus dan menghubungi Anda kembali melalui WhatsApp atau Email dalam waktu maksimal 15 menit.
+                    {t.contact.formSuccess}
                   </p>
                 </div>
                 <button
@@ -244,7 +248,7 @@ export default function ContactSection() {
                   }}
                   className="text-xs font-mono uppercase tracking-widest bg-gold-400/10 hover:bg-gold-400/20 border border-gold-400/30 text-gold-400 px-6 py-3 rounded-sm transition-all cursor-pointer"
                 >
-                  Kirim Pesan Baru
+                  {language === 'id' ? 'Kirim Pesan Baru' : 'Send Another Message'}
                 </button>
               </div>
             )}
@@ -255,10 +259,10 @@ export default function ContactSection() {
         <div className="border-t border-gold-900/20 pt-20 max-w-4xl mx-auto">
           <div className="text-center max-w-2xl mx-auto space-y-4 mb-12">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold-400 font-semibold">
-              Pertanyaan Umum
+              {language === 'id' ? 'Pertanyaan Umum' : 'Frequently Asked Questions'}
             </p>
             <h2 className="font-serif text-3xl text-gold-100 font-medium tracking-wide">
-              FAQ Layanan Tour Eksklusif
+              {language === 'id' ? 'FAQ Layanan Tour Eksklusif' : 'Exclusive Tour FAQs'}
             </h2>
           </div>
 
@@ -280,11 +284,13 @@ export default function ContactSection() {
                     <div className="flex items-start space-x-4 pr-4">
                       <HelpCircle size={16} className="text-gold-400 mt-1 flex-shrink-0" />
                       <span className="font-serif text-base text-gold-100 font-medium tracking-wide">
-                        {faq.question === 'Are all tours completely private?' ? 'Apakah semua tur bersifat sepenuhnya privat?' :
-                         faq.question === 'What is the cancellation policy for weather conditions?' ? 'Bagaimana kebijakan pembatalan jika terjadi cuaca buruk?' :
-                         faq.question === 'Can dietary restrictions be accommodated?' ? 'Apakah bisa melayani pantangan diet khusus?' :
-                         faq.question === 'How far in advance should we secure our dates?' ? 'Berapa hari sebelumnya kami harus memesan jadwal?' :
-                         'Apa saja yang perlu kami persiapkan dan bawa?'}
+                        {language === 'id' ? (
+                          faq.question === 'Are all tours completely private?' ? 'Apakah semua tur bersifat sepenuhnya privat?' :
+                          faq.question === 'What is the cancellation policy for weather conditions?' ? 'Bagaimana kebijakan pembatalan jika terjadi cuaca buruk?' :
+                          faq.question === 'Can dietary restrictions be accommodated?' ? 'Apakah bisa melayani pantangan diet khusus?' :
+                          faq.question === 'How far in advance should we secure our dates?' ? 'Berapa hari sebelumnya kami harus memesan jadwal?' :
+                          'Apa saja yang perlu kami persiapkan dan bawa?'
+                        ) : faq.question}
                       </span>
                     </div>
                     <div className="text-gold-400 flex-shrink-0">
@@ -295,11 +301,13 @@ export default function ContactSection() {
                   {isOpen && (
                     <div className="px-6 pb-6 pl-[38px] border-t border-gold-900/5 animate-fade-in">
                       <p className="font-sans text-xs md:text-sm text-gold-100/60 leading-relaxed font-light">
-                        {faq.question === 'Are all tours completely private?' ? 'Ya. Setiap pemesanan di andhikabalitour 100% privat. Seluruh mobil, helikopter, yacht, supir pribadi, dan pemandu lokal didedikasikan khusus untuk rombongan Anda saja. Kami berkomitmen untuk menjamin kenyamanan Anda dengan tidak mencampur rombongan.' :
-                         faq.question === 'What is the cancellation policy for weather conditions?' ? 'Keselamatan Anda adalah prioritas absolut kami. Jika tur terpaksa dibatalkan karena cuaca buruk, angin kencang di laut, atau kondisi darurat gunung berapi, kami menawarkan reschedule tanggal gratis atau pengembalian dana penuh 100% tanpa potongan.' :
-                         faq.question === 'Can dietary restrictions be accommodated?' ? 'Tentu saja. Baik Anda seorang vegetarian/vegan, menjalani diet bebas gluten, keto, halal, ataupun memiliki alergi makanan tertentu, koki pribadi kami dan restoran mitra bintang 5 akan menyusun menu khusus yang sehat. Mohon cantumkan detail alergi Anda di formulir pemesanan.' :
-                         faq.question === 'How far in advance should we secure our dates?' ? 'Karena kami melayani dengan standar sangat eksklusif dan armada terbatas, jadwal kami seringkali terisi penuh. Kami sangat menyarankan Anda melakukan pemesanan minimal 2 hingga 4 minggu sebelumnya, terutama saat musim liburan.' :
-                         'Untuk Volcano Jeep Adventure: siapkan jaket tebal (suhu pagi hari di gunung berapi berkisar 12°C). Untuk Private Yacht: bawa pakaian renang, tabir surya SPF tinggi, dan kacamata hitam. Untuk Ubud Retreat: siapkan sandal berjalan santai dan pakaian ganti untuk upacara Melukat.'}
+                        {language === 'id' ? (
+                          faq.question === 'Are all tours completely private?' ? 'Ya. Setiap pemesanan di andhikabalitour 100% privat. Seluruh mobil, supir pribadi, dan pemandu lokal didedikasikan khusus untuk rombongan Anda saja. Kami berkomitmen untuk menjamin kenyamanan Anda dengan tidak mencampur rombongan.' :
+                          faq.question === 'What is the cancellation policy for weather conditions?' ? 'Keselamatan Anda adalah prioritas absolut kami. Jika tur terpaksa dibatalkan karena cuaca buruk, angin kencang di laut, atau kondisi darurat alam, kami menawarkan reschedule tanggal gratis atau pengembalian dana penuh 100% tanpa potongan.' :
+                          faq.question === 'Can dietary restrictions be accommodated?' ? 'Tentu saja. Baik Anda seorang vegetarian/vegan, menjalani diet bebas gluten, keto, halal, ataupun memiliki alergi makanan tertentu, koki dan restoran mitra kami akan menyusun menu khusus yang sehat. Mohon cantumkan detail alergi Anda di formulir pemesanan.' :
+                          faq.question === 'How far in advance should we secure our dates?' ? 'Karena kami melayani dengan standar privat eksklusif dan armada supir berkualitas tinggi, jadwal kami seringkali terisi penuh. Kami sangat menyarankan Anda melakukan pemesanan minimal 2 hingga 4 minggu sebelumnya, terutama saat musim liburan.' :
+                          'Untuk Volcano Jeep Adventure: siapkan jaket tebal (suhu pagi hari di gunung berapi berkisar 12°C). Untuk Watersport & Marine: bawa pakaian renang, tabir surya, dan kacamata hitam. Untuk Ubud & Rafting: siapkan sandal berjalan santai dan pakaian ganti.'
+                        ) : faq.answer}
                       </p>
                     </div>
                   )}
@@ -313,3 +321,4 @@ export default function ContactSection() {
     </div>
   );
 }
+
