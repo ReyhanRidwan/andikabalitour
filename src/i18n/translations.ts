@@ -19,6 +19,7 @@ export interface Translations {
     activeExperience: string;
     viewDetails: string;
     bookNow: string;
+    viewPackages: string;
     scrollToExplore: string;
   };
   // Common / Shared
@@ -395,6 +396,7 @@ export const translations: Record<Language, Translations> = {
       activeExperience: 'Pengalaman Aktif',
       viewDetails: 'Detail Paket',
       bookNow: 'Booking Sekarang',
+      viewPackages: 'Lihat Paket',
       scrollToExplore: 'Scroll untuk Menjelajah',
     },
     common: {
@@ -753,6 +755,7 @@ export const translations: Record<Language, Translations> = {
       activeExperience: 'Active Experience',
       viewDetails: 'Package Details',
       bookNow: 'Book Now',
+      viewPackages: 'View Packages',
       scrollToExplore: 'Scroll to Explore',
     },
     common: {
@@ -1111,6 +1114,7 @@ export const translations: Record<Language, Translations> = {
       activeExperience: 'تجربة نشطة',
       viewDetails: 'تفاصيل الباقة',
       bookNow: 'احجز الآن',
+      viewPackages: 'عرض الباقات',
       scrollToExplore: 'مرر للاستكشاف',
     },
     common: {

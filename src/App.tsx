@@ -93,6 +93,10 @@ export default function App() {
               onExploreClick={(exp) => handleOpenBooking(exp.id)}
               onBookNowClick={handleGeneralBookNow}
               onViewDetails={handleViewDetails}
+              onViewPackagesClick={() => {
+                setActivePage('tours');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             />
 
             {/* Bento Grid "Our Elite Expeditions" Quick Showcase */}

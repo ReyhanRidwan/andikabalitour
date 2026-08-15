@@ -11,6 +11,7 @@ interface HeroSectionProps {
   onExploreClick: (experience: Experience) => void;
   onBookNowClick: () => void;
   onViewDetails?: (experienceId: string) => void;
+  onViewPackagesClick?: () => void;
 }
 
 export default function HeroSection({
@@ -19,6 +20,7 @@ export default function HeroSection({
   onExploreClick,
   onBookNowClick,
   onViewDetails,
+  onViewPackagesClick,
 }: HeroSectionProps) {
   const { language, t } = useLanguage();
   const experiences = getExperiences(language);
@@ -242,16 +244,25 @@ export default function HeroSection({
 
                 {/* Buttons container */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-3">
+                  {/* Mobile-only View Packages button */}
+                  <button
+                    onClick={() => onViewPackagesClick?.()}
+                    className="sm:hidden bg-gold-400 hover:bg-gold-500 text-luxury-dark font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm active:scale-95 hover:shadow-lg hover:shadow-gold-500/10 text-center cursor-pointer"
+                  >
+                    {t.hero.viewPackages}
+                  </button>
+
+                  {/* Desktop-only buttons */}
                   <button
                     onClick={() => onViewDetails ? onViewDetails(currentExp.id) : onExploreClick(currentExp)}
-                    className="border border-gold-400/40 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm cursor-pointer text-center hover:bg-gold-500/10"
+                    className="hidden sm:block border border-gold-400/40 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm cursor-pointer text-center hover:bg-gold-500/10"
                   >
                     {t.hero.viewDetails}
                   </button>
                   <button
                     onClick={() => onExploreClick(currentExp)}
                     id="btn-start-adventure"
-                    className="bg-gold-400 hover:bg-gold-500 text-luxury-dark font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm active:scale-95 hover:shadow-lg hover:shadow-gold-500/10 text-center cursor-pointer"
+                    className="hidden sm:block bg-gold-400 hover:bg-gold-500 text-luxury-dark font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm active:scale-95 hover:shadow-lg hover:shadow-gold-500/10 text-center cursor-pointer"
                   >
                     {t.hero.bookNow}
                   </button>
