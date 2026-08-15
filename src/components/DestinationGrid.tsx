@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Star, ArrowUpRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { optimizeCloudinaryUrl } from '../utils/imageOptimizer';
 
 interface DestinationCard {
   id: string;

@@ -1,6 +1,7 @@
 import { Experience, BookingAddon, Review, Vehicle } from './types';
 import { Language } from './i18n/translations';
 import { EXPERIENCES_AR, VEHICLES_AR, BOOKING_ADDONS_AR, FAQS_AR } from './data_ar';
+import { optimizeExperienceImages } from './utils/imageOptimizer';
 
 // Indonesian Experiences
 export const EXPERIENCES_ID: Experience[] = [
@@ -1268,15 +1269,19 @@ export const VEHICLES_EN: Vehicle[] = [
 
 // Localized helper getters
 export function getExperiences(lang: Language = 'id'): Experience[] {
-  if (lang === 'ar') return EXPERIENCES_AR;
-  if (lang === 'en') return EXPERIENCES_EN;
-  return EXPERIENCES_ID;
+  let list: Experience[];
+  if (lang === 'ar') list = EXPERIENCES_AR;
+  else if (lang === 'en') list = EXPERIENCES_EN;
+  else list = EXPERIENCES_ID;
+  return optimizeExperienceImages(list);
 }
 
 export function getVehicles(lang: Language = 'id'): Vehicle[] {
-  if (lang === 'ar') return VEHICLES_AR;
-  if (lang === 'en') return VEHICLES_EN;
-  return VEHICLES_ID;
+  let list: Vehicle[];
+  if (lang === 'ar') list = VEHICLES_AR;
+  else if (lang === 'en') list = VEHICLES_EN;
+  else list = VEHICLES_ID;
+  return optimizeExperienceImages(list);
 }
 
 export const BOOKING_ADDONS_ID: BookingAddon[] = [
