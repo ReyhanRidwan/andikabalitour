@@ -18,6 +18,7 @@ import ContactSection from './components/ContactSection';
 import RentalSection from './components/RentalSection';
 import RentalPage from './components/RentalPage';
 import PackageDetailPage from './components/PackageDetailPage';
+import { SEOHandler } from './components/SEOHandler';
 
 import { BookingDetails } from './types';
 import { getExperiences } from './data';
@@ -74,6 +75,11 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-neutral-950 text-gold-100 font-sans selection:bg-gold-500/20 selection:text-gold-200">
+      <SEOHandler
+        activePage={activePage}
+        language={language}
+        currentDetailExperience={currentDetailExperience}
+      />
       
       {/* 1. Universal Luxury Navbar */}
       <Navbar
