@@ -146,8 +146,7 @@ export default function BookingModal({
     .reduce((total, addon) => total + addon.price, 0);
 
   const subtotal = basePrice + addonsPrice;
-  const tax = Math.round(subtotal * 0.1); // 10% Luxury tax
-  const grandTotal = subtotal + tax;
+  const grandTotal = subtotal;
 
   const handleAddonToggle = (addonId: string) => {
     if (selectedAddons.includes(addonId)) {
@@ -202,45 +201,82 @@ export default function BookingModal({
     return true;
   };
 
-  const handleDetailsSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateDetails()) {
-      setStep('payment_gateway');
+  const generateWhatsAppMessage = (booking: any) => {
+    const hasAddons = booking.addons && booking.addons.length > 0;
+    const listAddons = hasAddons
+      ? addons.filter((addon) => booking.addons.includes(addon.id))
+          .map((addon) => `• ${addon.name} (+Rp ${addon.price.toLocaleString('id-ID')})`)
+          .join('\n')
+      : null;
+
+    const listParticipants = booking.participants
+      .map((part: any, i: number) => `  ${i + 1}. ${part.name} (${part.ageCategory} - ID: ${part.idNumber})`)
+      .join('\n');
+
+    if (language === 'ar') {
+      return `⚜️ *تأكيد حجز كبار الشخصيات - أنديكا بالي تور* ⚜️\n\n` +
+        `*العميل الرئيسي:*\n` +
+        `• الاسم: ${booking.fullName}\n` +
+        `• البريد الإلكتروني: ${booking.email}\n` +
+        `• رقم الواتساب: ${booking.phone}\n\n` +
+        `*تفاصيل الرحلة:*\n` +
+        `• باقة الرحلة: ${currentExp.title}\n` +
+        `• خيار الباقة: ${selectedPricingOption ? selectedPricingOption.name : '-'}\n` +
+        `• تاريخ الرحلة: ${booking.date}\n` +
+        `• عدد الضيوف: ${booking.guests} شخص/أشخاص\n\n` +
+        `*قائمة المشاركين:*\n${listParticipants}\n\n` +
+        (listAddons ? `*الترقيات والخدمات الإضافية:*\n${listAddons}\n\n` : '') +
+        `*ملخص الأسعار:*\n` +
+        `• السعر الأساسي: Rp ${basePrice.toLocaleString('id-ID')}\n` +
+        (addonsPrice > 0 ? `• الخدمات الإضافية: Rp ${addonsPrice.toLocaleString('id-ID')}\n` : '') +
+        `• *الإجمالي الكلي:* *Rp ${booking.totalPrice.toLocaleString('id-ID')}*\n\n` +
+        `*طلبات خاصة:*\n${booking.specialNotes || '-'}\n\n` +
+        `أود إتمام عملية الدفع لهذا الحجز. يرجى تزويدي بتفاصيل الدفع وتأكيد توفر الحجز. شكرًا لك! 🙏`;
+    } else if (language === 'en') {
+      return `⚜️ *VIP RESERVATION CONFIRMATION - ANDIKA BALI TOUR* ⚜️\n\n` +
+        `*Primary Booker:*\n` +
+        `• Name: ${booking.fullName}\n` +
+        `• Email: ${booking.email}\n` +
+        `• WhatsApp No: ${booking.phone}\n\n` +
+        `*Trip Details:*\n` +
+        `• Tour Package: ${currentExp.title}\n` +
+        `• Package Option: ${selectedPricingOption ? selectedPricingOption.name : '-'}\n` +
+        `• Tour Date: ${booking.date}\n` +
+        `• Total Guests: ${booking.guests} Person(s)\n\n` +
+        `*List of Participants:*\n${listParticipants}\n\n` +
+        (listAddons ? `*VIP Upgrades / Add-ons:*\n${listAddons}\n\n` : '') +
+        `*Pricing Summary:*\n` +
+        `• Base Price: Rp ${basePrice.toLocaleString('id-ID')}\n` +
+        (addonsPrice > 0 ? `• Add-ons Price: Rp ${addonsPrice.toLocaleString('id-ID')}\n` : '') +
+        `• *Grand Total:* *Rp ${booking.totalPrice.toLocaleString('id-ID')}*\n\n` +
+        `*Special Requests:*\n${booking.specialNotes || '-'}\n\n` +
+        `I would like to complete the payment for this reservation. Please provide the payment details and confirm slot availability. Thank you! 🙏`;
+    } else {
+      return `⚜️ *KONFIRMASI RESERVASI VIP - ANDIKA BALI TOUR* ⚜️\n\n` +
+        `*Pemesan Utama:*\n` +
+        `• Nama: ${booking.fullName}\n` +
+        `• Email: ${booking.email}\n` +
+        `• No. WhatsApp: ${booking.phone}\n\n` +
+        `*Detail Perjalanan:*\n` +
+        `• Paket Wisata: ${currentExp.title}\n` +
+        `• Opsi Paket: ${selectedPricingOption ? selectedPricingOption.name : '-'}\n` +
+        `• Tanggal Tour: ${booking.date}\n` +
+        `• Jumlah Peserta: ${booking.guests} Orang\n\n` +
+        `*Daftar Peserta:*\n${listParticipants}\n\n` +
+        (listAddons ? `*Layanan Tambahan / Upgrades:*\n${listAddons}\n\n` : '') +
+        `*Rincian Biaya:*\n` +
+        `• Harga Dasar: Rp ${basePrice.toLocaleString('id-ID')}\n` +
+        (addonsPrice > 0 ? `• Biaya Tambahan: Rp ${addonsPrice.toLocaleString('id-ID')}\n` : '') +
+        `• *Total Pembayaran:* *Rp ${booking.totalPrice.toLocaleString('id-ID')}*\n\n` +
+        `*Catatan Khusus:*\n${booking.specialNotes || '-'}\n\n` +
+        `Saya ingin melakukan pembayaran untuk reservasi ini. Mohon info rekening pembayaran dan konfirmasi ketersediaan slot. Terima kasih! 🙏`;
     }
   };
 
-  const handlePaymentSubmit = (e: React.FormEvent) => {
+  const handleDetailsSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (paymentChannel === 'card') {
-      if (cardNumber.replace(/\s/g, '').length < 16) {
-        alert(language === 'en' ? 'Please enter a valid 16-digit credit card number.' : 'Mohon masukkan nomor kartu kredit 16-digit yang valid.');
-        return;
-      }
-      if (!cardExpiry || !cardExpiry.includes('/')) {
-        alert(language === 'en' ? 'Please enter a valid card expiry date MM/YY.' : 'Mohon masukkan tanggal kedaluwarsa MM/YY.');
-        return;
-      }
-      if (cardCvv.length < 3) {
-        alert(language === 'en' ? 'Please enter a valid CVV security code.' : 'Mohon masukkan kode keamanan CVV yang valid.');
-        return;
-      }
-    }
-
-    // Trigger loading spinner
-    setStep('processing');
-
-    // Simulate 2.5s secure gateway processing
-    setTimeout(() => {
+    if (validateDetails()) {
       const bookingCode = `BG-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
-      
-      let finalPaymentLabel = language === 'en' ? 'Credit Card (Visa/Mastercard)' : 'Kartu Kredit (Visa/Mastercard)';
-      if (paymentChannel === 'qris') {
-        finalPaymentLabel = `E-Wallet QRIS (${selectedEWallet.toUpperCase()})`;
-      } else if (paymentChannel === 'va') {
-        finalPaymentLabel = `Virtual Account (${selectedBank.toUpperCase()})`;
-      }
-
       const bookingObj = {
         id: `booking-${Date.now()}`,
         experienceId: selectedExpId,
@@ -254,14 +290,23 @@ export default function BookingModal({
         participants,
         totalPrice: grandTotal,
         bookingCode,
-        paymentMethod: finalPaymentLabel,
+        paymentMethod: language === 'en' ? 'WhatsApp (Manual Bank Transfer)' : language === 'ar' ? 'واتساب (تحويل بنكي يدوي)' : 'WhatsApp (Transfer Bank Manual)',
         createdAt: new Date().toISOString(),
       };
 
       setConfirmedBooking(bookingObj);
       setStep('success');
       onBookingSuccess(bookingObj as any);
-    }, 2500);
+
+      // Trigger automatic redirect to WhatsApp
+      const waMessage = generateWhatsAppMessage(bookingObj);
+      const waUrl = `https://wa.me/6281225657382?text=${encodeURIComponent(waMessage)}`;
+      window.open(waUrl, '_blank');
+    }
+  };
+
+  const handlePaymentSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
   };
 
   const copyVaNumber = () => {
@@ -556,55 +601,6 @@ export default function BookingModal({
                   </div>
                 </div>
 
-                {/* VIP Upgrades Checklist */}
-                <div className="space-y-3 text-left">
-                  <div>
-                    <h3 className="text-xs uppercase tracking-widest text-gold-300 font-bold font-mono">
-                      {t.bookingModal.addonsTitle}
-                    </h3>
-                    <p className="text-[11px] text-gold-100/50 font-sans mt-0.5">
-                      {t.bookingModal.addonsDesc}
-                    </p>
-                  </div>
-                  <div className="space-y-3">
-                    {addons.map((addon) => {
-                      const isChecked = selectedAddons.includes(addon.id);
-                      return (
-                        <div
-                          key={addon.id}
-                          onClick={() => handleAddonToggle(addon.id)}
-                          className={`flex items-start justify-between p-4 border rounded-sm transition-all duration-300 cursor-pointer ${
-                            isChecked
-                              ? 'bg-gold-500/5 border-gold-400'
-                              : 'bg-neutral-900/20 border-gold-900/10 hover:border-gold-400/30'
-                          }`}
-                        >
-                          <div className="flex items-start space-x-3 pr-4">
-                            <div
-                              className={`mt-1 w-4 h-4 rounded-sm border flex items-center justify-center transition-all ${
-                                isChecked ? 'bg-gold-400 border-gold-400 text-neutral-950' : 'border-gold-400/30'
-                              }`}
-                            >
-                              {isChecked && <Check size={12} className="stroke-[3]" />}
-                            </div>
-                            <div className="text-left">
-                              <h4 className="font-serif text-sm text-gold-200 font-medium">
-                                {addon.name}
-                              </h4>
-                              <p className="font-sans text-[11px] text-gold-100/50 leading-relaxed mt-0.5">
-                                {addon.description}
-                              </p>
-                            </div>
-                          </div>
-                          <span className="font-mono text-sm font-semibold text-gold-400 flex-shrink-0">
-                            +Rp {addon.price.toLocaleString('id-ID')}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
               </div>
 
               {/* Right Panel Summary Invoice */}
@@ -650,19 +646,6 @@ export default function BookingModal({
                         ))}
                       </div>
                     )}
-
-                    <div className="flex justify-between items-center text-gold-100/60 pt-4 border-t border-gold-900/10">
-                      <span>{t.bookingModal.subtotal}</span>
-                      <span className="font-mono text-gold-100">Rp {subtotal.toLocaleString('id-ID')}</span>
-                    </div>
-
-                    <div className="flex justify-between items-center text-gold-100/60">
-                      <span className="flex items-center gap-1">
-                        <span>{t.bookingModal.vatTax}</span>
-                        <span className="bg-gold-500/10 text-gold-300 font-mono text-[9px] px-1.5 py-0.5 rounded">10%</span>
-                      </span>
-                      <span className="font-mono text-gold-100">Rp {tax.toLocaleString('id-ID')}</span>
-                    </div>
                   </div>
                 </div>
 
@@ -682,7 +665,13 @@ export default function BookingModal({
                         : 'bg-gold-400 hover:bg-gold-500 text-neutral-950 shadow-md hover:shadow-gold-500/10'
                     }`}
                   >
-                    <span>{t.bookingModal.proceedToPayment}</span>
+                    <span>
+                      {language === 'ar'
+                        ? 'تأكيد وحجز عبر واتساب'
+                        : language === 'en'
+                        ? 'Confirm & Book via WhatsApp'
+                        : 'Pesan & Selesaikan via WhatsApp'}
+                    </span>
                     <ArrowRight size={14} />
                   </button>
 
@@ -942,14 +931,6 @@ export default function BookingModal({
                       <span>{language === 'en' ? 'Guests:' : 'Peserta:'}</span>
                       <span className="text-gold-200 font-bold">{guests} {language === 'en' ? 'Guests' : 'Orang'}</span>
                     </div>
-                    <div className="flex justify-between border-t border-gold-900/10 pt-4">
-                      <span>{t.bookingModal.subtotal}:</span>
-                      <span className="text-gold-200 font-bold">Rp {subtotal.toLocaleString('id-ID')}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>{t.bookingModal.vatTax}:</span>
-                      <span className="text-gold-200 font-bold">Rp {tax.toLocaleString('id-ID')}</span>
-                    </div>
                     <div className="flex justify-between border-t border-gold-400/20 pt-4 text-sm font-sans">
                       <span className="font-serif text-gold-200">{t.bookingModal.grandTotal}:</span>
                       <span className="font-mono text-lg text-gold-400 font-extrabold">Rp {grandTotal.toLocaleString('id-ID')}</span>
@@ -1005,17 +986,19 @@ export default function BookingModal({
               
               {/* Congratulations Header Banner */}
               <div className="bg-gold-500/5 border border-gold-400/20 rounded-lg p-6 md:p-8 text-center space-y-4 flex flex-col items-center">
-                <div className="w-12 h-12 rounded-full bg-gold-400 text-neutral-950 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center">
                   <Check size={24} className="stroke-[3]" />
                 </div>
                 <div className="space-y-1">
                   <h3 className="font-serif text-2xl md:text-3xl text-gold-200 font-medium tracking-wide">
-                    {t.bookingModal.ticketConfirmed}
+                    {language === 'en' ? 'Reservation Submitted!' : language === 'ar' ? 'تم إرسال الطلب بنجاح!' : 'Pemesanan Berhasil Dikirim!'}
                   </h3>
                   <p className="text-gold-200/60 text-xs md:text-sm font-sans max-w-xl mx-auto leading-relaxed">
                     {language === 'en'
-                      ? `Your official VIP E-Voucher has been issued. A copy of your PDF voucher & invoice has been sent to ${confirmedBooking.email}`
-                      : `E-Tiket VIP Anda telah berhasil diterbitkan. Salinan resmi PDF & tanda terima Invoice pembayaran telah dikirimkan ke email Anda: ${confirmedBooking.email}`}
+                      ? `We are redirecting you to WhatsApp to complete your payment and confirm your slot. If the page doesn't open automatically, please click the "Chat WhatsApp" button below.`
+                      : language === 'ar'
+                      ? `نقوم بتوجيهك الآن إلى واتساب لإتمام عملية الدفع وتأكيد حجزك. إذا لم تفتح الصفحة تلقائياً، يرجى الضغط على زر "دردشة واتساب" أدناه.`
+                      : `Kami sedang mengarahkan Anda ke WhatsApp untuk menyelesaikan pembayaran dan konfirmasi jadwal. Jika halaman tidak terbuka otomatis, silakan klik tombol "Hubungi WhatsApp" di bawah ini.`}
                   </p>
                 </div>
               </div>
@@ -1150,6 +1133,19 @@ export default function BookingModal({
 
               {/* PDF Action buttons */}
               <div className="flex flex-wrap gap-4 justify-center">
+                <a
+                  href={`https://wa.me/6281225657382?text=${encodeURIComponent(generateWhatsAppMessage(confirmedBooking))}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs uppercase tracking-widest font-bold px-7 py-3.5 rounded-sm transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.852.002-2.63-1.013-5.101-2.861-6.951C16.63 1.951 14.162.947 11.53.947c-5.437 0-9.86 4.419-9.864 9.852a9.782 9.782 0 0 0 1.502 5.125l-1.015 3.703 3.792-.994zm13.716-6.19c-.31-.155-1.838-.907-2.122-1.01-.285-.102-.492-.155-.7.155-.207.31-.802 1.01-.984 1.217-.181.206-.362.232-.672.077-.31-.155-1.306-.48-2.487-1.534-.919-.82-1.539-1.834-1.72-2.143-.181-.31-.02-.477.136-.63.14-.139.31-.361.464-.542.155-.181.206-.31.31-.516.103-.207.052-.387-.026-.542-.078-.155-.7-1.688-.958-2.31-.252-.61-.51-.527-.7-.527-.181 0-.388-.026-.596-.026-.206 0-.542.077-.827.387-.284.31-1.086 1.058-1.086 2.58 0 1.524 1.112 2.994 1.267 3.201.155.207 2.188 3.342 5.3 4.685.74.32 1.318.51 1.77.653.743.236 1.419.203 1.953.123.595-.088 1.838-.75 2.1-1.474.26-.724.26-1.344.181-1.474-.077-.13-.284-.207-.595-.362z" />
+                  </svg>
+                  <span>
+                    {language === 'en' ? 'Chat WhatsApp' : language === 'ar' ? 'دردشة واتساب' : 'Hubungi WhatsApp'}
+                  </span>
+                </a>
                 <button
                   type="button"
                   onClick={() => window.print()}

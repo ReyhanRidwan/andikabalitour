@@ -75,8 +75,7 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
   const pricePerDay = selectedVehicle ? selectedVehicle.priceWithDriverPerDay : 0;
   const basePriceTotal = pricePerDay * durationDays;
   const deliveryFee = 0; // VIP complimentary service
-  const tax = Math.round(basePriceTotal * 0.1); // 10% VAT
-  const grandTotal = basePriceTotal + deliveryFee + tax;
+  const grandTotal = basePriceTotal + deliveryFee;
 
   const filteredVehicles = vehicles.filter(vehicle => {
     const matchesSearch = vehicle.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -91,6 +90,64 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const generateWhatsAppRentalMessage = (booking: any) => {
+    if (language === 'ar') {
+      return `⚜️ *تأكيد حجز تأجير المركبة - أنديكا بالي تور* ⚜️\n\n` +
+        `*المستأجر الرئيسي:*\n` +
+        `• الاسم: ${booking.fullName}\n` +
+        `• البريد الإلكتروني: ${booking.email}\n` +
+        `• رقم الواتساب: ${booking.phone}\n\n` +
+        `*تفاصيل الإيجار:*\n` +
+        `• المركبة: ${booking.vehicle.name}\n` +
+        `• تاريخ البدء: ${booking.startDate}\n` +
+        `• المدة: ${booking.durationDays} أيام\n` +
+        `• خيار السائق: خدمة ممتازة (شامل السائق والوقود)\n` +
+        `• موقع الاستلام: ${booking.deliveryLocation}\n\n` +
+        `*ملخص الأسعار:*\n` +
+        `• السعر اليومي: Rp ${pricePerDay.toLocaleString('id-ID')}/يوم\n` +
+        `• إجمالي السعر الأساسي: Rp ${basePriceTotal.toLocaleString('id-ID')}\n` +
+        `• *الإجمالي الكلي:* *Rp ${booking.totalPrice.toLocaleString('id-ID')}*\n\n` +
+        `*طلبات خاصة:*\n${booking.specialNotes || '-'}\n\n` +
+        `أود إتمام عملية الدفع لإيجار هذه المركبة. يرجى تزويدي بتفاصيل الدفع وتأكيد توفر المركبة. شكرًا لك! 🙏`;
+    } else if (language === 'en') {
+      return `⚜️ *VEHICLE RENTAL RESERVATION - ANDIKA BALI TOUR* ⚜️\n\n` +
+        `*Primary Renter:*\n` +
+        `• Name: ${booking.fullName}\n` +
+        `• Email: ${booking.email}\n` +
+        `• WhatsApp No: ${booking.phone}\n\n` +
+        `*Rental Details:*\n` +
+        `• Vehicle: ${booking.vehicle.name}\n` +
+        `• Start Date: ${booking.startDate}\n` +
+        `• Duration: ${booking.durationDays} Days\n` +
+        `• Driver Option: Premium (Driver + Fuel Included)\n` +
+        `• Delivery Location: ${booking.deliveryLocation}\n\n` +
+        `*Pricing Summary:*\n` +
+        `• Daily Rate: Rp ${pricePerDay.toLocaleString('id-ID')}/Day\n` +
+        `• Total Base Price: Rp ${basePriceTotal.toLocaleString('id-ID')}\n` +
+        `• *Grand Total:* *Rp ${booking.totalPrice.toLocaleString('id-ID')}*\n\n` +
+        `*Special Requests:*\n${booking.specialNotes || '-'}\n\n` +
+        `I would like to complete the payment for this rental. Please provide payment details and confirm vehicle availability. Thank you! 🙏`;
+    } else {
+      return `⚜️ *KONFIRMASI SEWA KENDARAAN - ANDIKA BALI TOUR* ⚜️\n\n` +
+        `*Penyewa Utama:*\n` +
+        `• Nama: ${booking.fullName}\n` +
+        `• Email: ${booking.email}\n` +
+        `• No. WhatsApp: ${booking.phone}\n\n` +
+        `*Detail Sewa:*\n` +
+        `• Kendaraan: ${booking.vehicle.name}\n` +
+        `• Tanggal Mulai: ${booking.startDate}\n` +
+        `• Durasi: ${booking.durationDays} Hari\n` +
+        `• Opsi Supir: Layanan Premium (Supir + BBM)\n` +
+        `• Lokasi Penyerahan: ${booking.deliveryLocation}\n\n` +
+        `*Rincian Biaya:*\n` +
+        `• Harga Harian: Rp ${pricePerDay.toLocaleString('id-ID')}/Hari\n` +
+        `• Total Harga Dasar: Rp ${basePriceTotal.toLocaleString('id-ID')}\n` +
+        `• *Total Pembayaran:* *Rp ${booking.totalPrice.toLocaleString('id-ID')}*\n\n` +
+        `*Catatan Khusus:*\n${booking.specialNotes || '-'}\n\n` +
+        `Saya ingin melakukan pembayaran untuk sewa kendaraan ini. Mohon info rekening pembayaran dan konfirmasi ketersediaan armada. Terima kasih! 🙏`;
+    }
+  };
+
   const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!startDate) {
@@ -101,60 +158,36 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
       alert(language === 'ar' ? 'يرجى ملء جميع بيانات المستأجر وموقع الاستلام.' : language === 'en' ? 'Please fill in all renter details and pickup location.' : 'Mohon lengkapi seluruh formulir data diri & lokasi penyerahan.');
       return;
     }
-    setStep('payment');
+
+    const bookingCode = `BG-RENT-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
+    const bookingObj = {
+      bookingCode,
+      vehicle: selectedVehicle,
+      startDate,
+      durationDays,
+      driverOption,
+      fullName,
+      email,
+      phone,
+      deliveryLocation,
+      specialNotes,
+      totalPrice: grandTotal,
+      paymentMethod: language === 'en' ? 'WhatsApp (Manual Bank Transfer)' : language === 'ar' ? 'واتساب (تحويل بنكي يدوي)' : 'WhatsApp (Transfer Bank Manual)',
+      createdAt: new Date().toISOString()
+    };
+
+    setConfirmedBooking(bookingObj);
+    setStep('success');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Open WhatsApp
+    const waMessage = generateWhatsAppRentalMessage(bookingObj);
+    const waUrl = `https://wa.me/6281225657382?text=${encodeURIComponent(waMessage)}`;
+    window.open(waUrl, '_blank');
   };
 
   const handlePaymentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (paymentChannel === 'card') {
-      if (cardNumber.replace(/\s/g, '').length < 16) {
-        alert(language === 'ar' ? 'يرجى إدخال رقم بطاقة ائتمان صحيح مكون من 16 رقماً.' : language === 'en' ? 'Please enter a valid 16-digit credit card number.' : 'Mohon masukkan nomor kartu kredit 16-digit yang valid.');
-        return;
-      }
-      if (!cardExpiry || !cardExpiry.includes('/')) {
-        alert(language === 'ar' ? 'يرجى إدخال تاريخ انتهاء صلاحية صالح (MM/YY).' : language === 'en' ? 'Please enter a valid expiry date (MM/YY).' : 'Mohon masukkan masa berlaku kartu MM/YY.');
-        return;
-      }
-      if (cardCvv.length < 3) {
-        alert(language === 'ar' ? 'يرجى إدخال رمز CVV صالح.' : language === 'en' ? 'Please enter a valid CVV.' : 'Mohon masukkan CVV yang valid.');
-        return;
-      }
-    }
-
-    setIsProcessing(true);
-    // Simulate 2 seconds of high-end secure payment loading
-    setTimeout(() => {
-      setIsProcessing(false);
-      const bookingCode = `BG-RENT-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
-      
-      let finalPaymentLabel = language === 'ar' ? 'بطاقة ائتمان (فيزا / ماستركارد)' : language === 'en' ? 'Credit Card (Visa/Mastercard)' : 'Kartu Kredit (Visa/Mastercard)';
-      if (paymentChannel === 'qris') {
-        finalPaymentLabel = language === 'ar' ? `دفع QRIS (${selectedEWallet.toUpperCase()})` : `E-Wallet QRIS (${selectedEWallet.toUpperCase()})`;
-      } else if (paymentChannel === 'va') {
-        finalPaymentLabel = language === 'ar' ? `حساب افتراضي (${selectedBank.toUpperCase()})` : `Virtual Account (${selectedBank.toUpperCase()})`;
-      }
-
-      const bookingObj = {
-        bookingCode,
-        vehicle: selectedVehicle,
-        startDate,
-        durationDays,
-        driverOption,
-        fullName,
-        email,
-        phone,
-        deliveryLocation,
-        specialNotes,
-        totalPrice: grandTotal,
-        paymentMethod: finalPaymentLabel,
-        createdAt: new Date().toISOString()
-      };
-
-      setConfirmedBooking(bookingObj);
-      setStep('success');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 2000);
   };
 
   const copyVaNumber = () => {
@@ -601,10 +634,6 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                       <span>{t.rental.deliveryFee}:</span>
                       <span className="text-gold-400 font-sans text-xs font-semibold">{t.rental.freeDelivery}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>{t.rental.taxVAT}:</span>
-                      <span className="text-gold-100 font-bold">Rp {tax.toLocaleString('id-ID')}</span>
-                    </div>
                   </div>
                 </div>
 
@@ -618,7 +647,13 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                     type="submit"
                     className="w-full bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-[0.2em] font-bold py-4 rounded-sm transition-all duration-300 flex items-center justify-center space-x-2 cursor-pointer shadow-md hover:shadow-gold-500/10 active:scale-95"
                   >
-                    <span>{t.bookingModal.proceedToPayment}</span>
+                    <span>
+                      {language === 'ar'
+                        ? 'تأكيد وحجز عبر واتساب'
+                        : language === 'en'
+                        ? 'Confirm & Book via WhatsApp'
+                        : 'Pesan & Selesaikan via WhatsApp'}
+                    </span>
                     <ArrowRight size={14} />
                   </button>
 
@@ -896,14 +931,6 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
                       <span>{t.rental.specsService}:</span>
                       <span className="text-gold-200 font-bold">{t.rental.specsDriverFuel}</span>
                     </div>
-                    <div className="flex justify-between border-t border-gold-900/10 pt-4">
-                      <span>{t.rental.subtotal}:</span>
-                      <span className="text-gold-200 font-bold">Rp {basePriceTotal.toLocaleString('id-ID')}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>{t.rental.taxVAT}:</span>
-                      <span className="text-gold-200 font-bold">Rp {tax.toLocaleString('id-ID')}</span>
-                    </div>
                     <div className="flex justify-between border-t border-gold-400/20 pt-4 text-sm font-sans">
                       <span className="font-serif text-gold-200">{t.rental.totalPayment}:</span>
                       <span className="font-mono text-lg text-gold-400 font-extrabold">Rp {grandTotal.toLocaleString('id-ID')}</span>
@@ -951,10 +978,10 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
             </h1>
             <p className="font-sans text-xs md:text-sm text-gold-100/50 mt-3 max-w-lg mx-auto">
               {language === 'ar'
-                ? `تم إرسال التذكرة الإلكترونية وتفاصيل السائق وإيصال الدفع الرسمي إلى ${confirmedBooking.email}.`
+                ? 'نقوم بتوجيهك الآن إلى واتساب لإتمام عملية الدفع وتأكيد حجز السيارة. إذا لم تفتح الصفحة تلقائياً، يرجى الضغط على الزر أدناه.'
                 : language === 'en'
-                ? `E-Ticket, chauffeur pickup details, and official proof of payment have been dispatched to ${confirmedBooking.email}.`
-                : `E-Tiket, rincian serah terima, serta bukti bayar resmi telah berhasil diterbitkan dan dikirimkan ke email Anda (${confirmedBooking.email}).`}
+                ? 'We are redirecting you to WhatsApp to complete your payment and confirm your vehicle reservation. If the page doesn\'t open automatically, please click the button below.'
+                : 'Kami sedang mengarahkan Anda ke WhatsApp untuk menyelesaikan pembayaran dan konfirmasi pemesanan armada. Jika halaman tidak terbuka otomatis, silakan klik tombol di bawah ini.'}
             </p>
 
             {/* Premium Paper Receipt Block */}
@@ -1051,13 +1078,28 @@ export default function RentalPage({ initialVehicleId }: RentalPageProps) {
 
             </div>
 
-            {/* Back home action button */}
-            <button
-              onClick={handleReset}
-              className="mt-10 bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-[0.2em] font-bold py-4 px-10 rounded-sm transition-all duration-300 shadow-md cursor-pointer inline-block active:scale-95"
-            >
-              {t.rental.backToCatalogBtn}
-            </button>
+            {/* Back home and WhatsApp action buttons */}
+            <div className="mt-10 flex flex-wrap gap-4 justify-center">
+              <a
+                href={`https://wa.me/6281225657382?text=${encodeURIComponent(generateWhatsAppRentalMessage(confirmedBooking))}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs uppercase tracking-widest font-bold px-7 py-4 rounded-sm transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+              >
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.852.002-2.63-1.013-5.101-2.861-6.951C16.63 1.951 14.162.947 11.53.947c-5.437 0-9.86 4.419-9.864 9.852a9.782 9.782 0 0 0 1.502 5.125l-1.015 3.703 3.792-.994zm13.716-6.19c-.31-.155-1.838-.907-2.122-1.01-.285-.102-.492-.155-.7.155-.207.31-.802 1.01-.984 1.217-.181.206-.362.232-.672.077-.31-.155-1.306-.48-2.487-1.534-.919-.82-1.539-1.834-1.72-2.143-.181-.31-.02-.477.136-.63.14-.139.31-.361.464-.542.155-.181.206-.31.31-.516.103-.207.052-.387-.026-.542-.078-.155-.7-1.688-.958-2.31-.252-.61-.51-.527-.7-.527-.181 0-.388-.026-.596-.026-.206 0-.542.077-.827.387-.284.31-1.086 1.058-1.086 2.58 0 1.524 1.112 2.994 1.267 3.201.155.207 2.188 3.342 5.3 4.685.74.32 1.318.51 1.77.653.743.236 1.419.203 1.953.123.595-.088 1.838-.75 2.1-1.474.26-.724.26-1.344.181-1.474-.077-.13-.284-.207-.595-.362z" />
+                </svg>
+                <span>
+                  {language === 'en' ? 'Chat WhatsApp' : language === 'ar' ? 'دردشة واتساب' : 'Hubungi WhatsApp'}
+                </span>
+              </a>
+              <button
+                onClick={handleReset}
+                className="bg-gold-400 hover:bg-gold-500 text-neutral-950 font-mono text-xs uppercase tracking-[0.2em] font-bold py-4 px-10 rounded-sm transition-all duration-300 shadow-md cursor-pointer active:scale-95"
+              >
+                {t.rental.backToCatalogBtn}
+              </button>
+            </div>
           </div>
         )}
 
