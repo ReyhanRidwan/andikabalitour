@@ -201,7 +201,16 @@ export default function HeroSection({
                 key={exp.id}
                 src={exp.bgImage}
                 alt=""
-                loading="eager"
+                loading={
+                  exp.bgImage.includes('activity_atv_jungle') || exp.bgImage.includes('water_sport_banner')
+                    ? "lazy"
+                    : "eager"
+                }
+                decoding={
+                  exp.bgImage.includes('activity_atv_jungle') || exp.bgImage.includes('water_sport_banner')
+                    ? "async"
+                    : "auto"
+                }
                 referrerPolicy="no-referrer"
               />
             )

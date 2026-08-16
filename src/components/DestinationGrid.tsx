@@ -295,6 +295,7 @@ export default function DestinationGrid({ onBookNow, onViewDetails }: Destinatio
                 src={optimizeCloudinaryUrl(dest.image)}
                 alt={dest.title}
                 loading="lazy"
+                decoding="async"
                 referrerPolicy="no-referrer"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
               />

@@ -124,6 +124,7 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                     src={exp.cardImage}
                     alt={exp.title}
                     loading="lazy"
+                    decoding="async"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />

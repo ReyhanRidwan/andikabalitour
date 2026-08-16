@@ -101,6 +101,7 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                     src={activity.cardImage}
                     alt={activity.title}
                     loading="lazy"
+                    decoding="async"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
@@ -228,6 +229,7 @@ export default function ActivitySection({ onBookNow, onViewDetails }: ActivitySe
                     src={activity.cardImage}
                     alt={activity.title}
                     loading="lazy"
+                    decoding="async"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
