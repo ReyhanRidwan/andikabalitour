@@ -206,6 +206,7 @@ export default function Footer() {
             <Globe size={12} />
             <span>Bali, Indonesia</span>
           </span>
+          <a href="#articles" className="hover:text-gold-400 transition-colors">{language === 'id' ? 'Artikel Wisata' : language === 'ar' ? 'مقالات السفر' : 'Travel Articles'}</a>
           <a href="#faq" className="hover:text-gold-400 transition-colors">{language === 'id' ? 'Protokol Keamanan' : 'Safety Protocols'}</a>
           <a href="#faq" className="hover:text-gold-400 transition-colors">{language === 'id' ? 'Ketentuan Layanan' : 'Terms of Service'}</a>
         </div>

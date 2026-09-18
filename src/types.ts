@@ -87,3 +87,23 @@ export interface Vehicle {
   features: string[];
 }
 
+export interface ArticleSection {
+  heading: string;
+  body: string;
+}
+
+export interface Article {
+  id: string;
+  title: string;
+  slug: string;
+  tag: string;
+  readTime: string;
+  date: string;
+  author: string;
+  summary: string;
+  coverImage: string;
+  sections: ArticleSection[];
+  keyTakeaways: string[];
+  relatedTourId?: string;
+}
+

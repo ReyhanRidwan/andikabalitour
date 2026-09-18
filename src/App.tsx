@@ -7,6 +7,7 @@ import ExperienceDetails from './components/ExperienceDetails';
 import GallerySection from './components/GallerySection';
 import ReviewsSection from './components/ReviewsSection';
 import FaqSection from './components/FaqSection';
+import ArticlesSection from './components/ArticlesSection';
 import Footer from './components/Footer';
 import BookingModal from './components/BookingModal';
 
@@ -129,6 +130,9 @@ export default function App() {
 
             {/* Testimonials Review section */}
             <ReviewsSection />
+
+            {/* Curated Tour & Travel Articles for Andika Bali Tour */}
+            <ArticlesSection onBookNow={handleOpenBooking} />
           </div>
         )}
 
