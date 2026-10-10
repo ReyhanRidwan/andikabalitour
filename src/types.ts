@@ -36,6 +36,13 @@ export interface Experience {
   highlights: string[];
   rating: number;
   reviewCount: number;
+  priceType?: 'person' | 'car';
+  priceUnitLabel?: string;
+  capacity?: string;
+  suitability?: string;
+  isHorizontal?: boolean;
+  isVertical?: boolean;
+  routeHighlights?: { step: number; place: string; desc: string }[];
 }
 
 export interface BookingAddon {

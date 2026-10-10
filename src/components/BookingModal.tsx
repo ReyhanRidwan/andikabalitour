@@ -135,10 +135,13 @@ export default function BookingModal({
     : null;
 
   // Price calculations
+  const carsCount = Math.max(1, Math.ceil(guests / 2));
   const basePrice = selectedPricingOption
     ? (selectedPricingOption.name.toLowerCase().includes('tandem')
         ? selectedPricingOption.price * Math.max(1, Math.ceil(guests / 2))
         : selectedPricingOption.price * guests)
+    : currentExp.priceType === 'car'
+    ? currentExp.pricePerPerson * carsCount
     : currentExp.pricePerPerson * guests;
 
   const addonsPrice = addons
@@ -392,7 +395,7 @@ export default function BookingModal({
                   >
                     {experiences.map((exp) => (
                       <option key={exp.id} value={exp.id}>
-                        {exp.title} — {exp.pricingOptions ? `Single Rp ${exp.pricingOptions[0].price.toLocaleString('id-ID')} / Tandem Rp ${exp.pricingOptions[1]?.price.toLocaleString('id-ID')}` : `Rp ${exp.pricePerPerson.toLocaleString('id-ID')} ${t.common.perPerson}`}
+                        {exp.title} — {exp.pricingOptions ? `Single Rp ${exp.pricingOptions[0].price.toLocaleString('id-ID')} / Tandem Rp ${exp.pricingOptions[1]?.price.toLocaleString('id-ID')}` : exp.priceType === 'car' ? `Rp ${exp.pricePerPerson.toLocaleString('id-ID')} / Mobil (Maks. 2 Orang)` : `Rp ${exp.pricePerPerson.toLocaleString('id-ID')} ${t.common.perPerson}`}
                       </option>
                     ))}
                   </select>
@@ -471,6 +474,11 @@ export default function BookingModal({
                         +
                       </button>
                     </div>
+                    {currentExp.priceType === 'car' && (
+                      <p className="text-[10px] text-gold-300/80 font-mono mt-1">
+                        🚗 {carsCount} Mobil VW ({currentExp.capacity || 'Maks. 2 orang / mobil'})
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -629,7 +637,10 @@ export default function BookingModal({
 
                   <div className="space-y-4 text-sm">
                     <div className="flex justify-between items-center text-gold-100/60">
-                      <span>{t.bookingModal.packageBase} ({guests} {language === 'en' ? 'Guests' : 'Orang'})</span>
+                      <span>
+                        {t.bookingModal.packageBase} ({guests} {language === 'en' ? 'Guests' : 'Orang'}
+                        {currentExp.priceType === 'car' ? ` • ${carsCount} ${language === 'en' ? 'Car(s)' : 'Mobil'}` : ''})
+                      </span>
                       <span className="font-mono text-gold-100">Rp {basePrice.toLocaleString('id-ID')}</span>
                     </div>
 

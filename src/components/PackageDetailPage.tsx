@@ -44,7 +44,7 @@ export default function PackageDetailPage({
         </button>
         <div className="flex items-center space-x-3">
           <span className="text-xs font-mono text-gold-200/60 hidden sm:inline">
-            Rp {experience.pricePerPerson.toLocaleString('id-ID')} {t.common.perPerson}
+            Rp {experience.pricePerPerson.toLocaleString('id-ID')} {experience.priceType === 'car' ? (experience.priceUnitLabel || '/ Car') : t.common.perPerson}
           </span>
           <button
             onClick={() => onBookNow(experience.id)}
@@ -109,6 +109,16 @@ export default function PackageDetailPage({
                       <span>Rp {opt.price.toLocaleString('id-ID')}</span>
                     </div>
                   ))}
+                </div>
+              ) : experience.priceType === 'car' ? (
+                <div>
+                  <p className="font-mono text-xl sm:text-2xl md:text-3xl font-extrabold text-gold-300 mt-1">
+                    Rp {experience.pricePerPerson.toLocaleString('id-ID')}
+                    <span className="text-xs font-normal text-gold-100/60 font-mono"> / Car</span>
+                  </p>
+                  {experience.capacity && (
+                    <p className="text-[10px] text-gold-300/80 font-mono mt-0.5">{experience.capacity}</p>
+                  )}
                 </div>
               ) : (
                 <p className="font-mono text-xl sm:text-2xl md:text-3xl font-extrabold text-gold-300 mt-1">
@@ -229,6 +239,31 @@ export default function PackageDetailPage({
               </div>
             </div>
 
+            {/* Route Highlights (Rute Perjalanan) */}
+            {experience.routeHighlights && experience.routeHighlights.length > 0 && (
+              <div className="bg-neutral-900/40 border border-gold-400/10 p-6 md:p-8 rounded-xl space-y-6">
+                <h2 className="font-serif text-2xl text-gold-100 font-medium flex items-center gap-2">
+                  <MapPin className="text-gold-400" size={20} />
+                  <span>
+                    {language === 'ar' ? 'أبرز معالم خط سير الرحلة (Route Highlights)' : language === 'en' ? 'Route Highlights' : 'Rute Perjalanan (Route Highlights)'}
+                  </span>
+                </h2>
+                <div className="space-y-3">
+                  {experience.routeHighlights.map((rh) => (
+                    <div key={rh.step} className="bg-neutral-950/70 border border-gold-400/20 p-4 rounded-lg flex items-start gap-3.5">
+                      <span className="w-7 h-7 rounded-full bg-gold-400/20 border border-gold-400/40 text-gold-300 font-mono text-xs font-bold flex items-center justify-center flex-shrink-0">
+                        {rh.step}
+                      </span>
+                      <div>
+                        <h4 className="font-serif text-base text-gold-100 font-medium">{rh.place}</h4>
+                        <p className="text-xs text-gold-200/70 font-sans mt-0.5 leading-relaxed">{rh.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Itinerary Timeline */}
             <div className="bg-neutral-900/40 border border-gold-400/10 p-6 md:p-8 rounded-xl space-y-6">
               <h2 className="font-serif text-2xl text-gold-100 font-medium flex items-center gap-2">
@@ -273,6 +308,16 @@ export default function PackageDetailPage({
                       </div>
                     ))}
                   </div>
+                ) : experience.priceType === 'car' ? (
+                  <div className="pt-2">
+                    <p className="font-mono text-2xl font-bold text-gold-300">
+                      Rp {experience.pricePerPerson.toLocaleString('id-ID')}
+                      <span className="text-xs font-normal text-gold-100/60 font-mono"> / Car</span>
+                    </p>
+                    {experience.capacity && (
+                      <p className="text-[10px] text-gold-300/80 font-mono mt-0.5">{experience.capacity}</p>
+                    )}
+                  </div>
                 ) : (
                   <p className="font-mono text-2xl font-bold text-gold-300 pt-2">
                     Rp {experience.pricePerPerson.toLocaleString('id-ID')}
@@ -294,6 +339,12 @@ export default function PackageDetailPage({
                   <span className="text-gold-100/50">{t.common.difficulty}:</span>
                   <span className="font-bold text-gold-200">{experience.difficulty}</span>
                 </div>
+                {experience.suitability && (
+                  <div className="flex items-start justify-between gap-2 pt-1 border-t border-gold-900/10">
+                    <span className="text-gold-100/50 text-[10px]">{language === 'en' ? 'Suitable For:' : 'Cocok Untuk:'}</span>
+                    <span className="font-bold text-gold-300 text-right text-[11px] font-sans">{experience.suitability}</span>
+                  </div>
+                )}
               </div>
 
               <button

@@ -550,6 +550,74 @@ export const EXPERIENCES_ID: Experience[] = [
       { time: '11:30 AM', title: 'Shower & Handuk', desc: 'Membersihkan diri di fasilitas shower air bersih.' },
       { time: '12:00 PM', title: 'Makan Siang', desc: 'Menikmati sajian makan siang lezat di restoran lembah Ubud.' }
     ]
+  },
+  {
+    id: 'vw-classic-tour',
+    title: 'TRIP C: VW CLASSIC TOUR',
+    tagline: 'Explore the Natural Beauty of Bongkasa',
+    shortDesc: 'Jelajahi keasrian pedesaan Bongkasa dengan mobil klasik VW Safari antik beratap terbuka melintasi persawahan, hutan tropis, peternakan lebah madu, dan danau ikan.',
+    longDesc: 'Nikmati pengalaman wisata yang tak terlupakan bersama Trip C: VW Classic Tour keliling Desa Bongkasa. Mengendarai mobil klasik Volkswagen Safari antik beratap terbuka, Anda akan merasakan hembusan angin segar pedesaan Bali sembari menikmati panorama sawah hijau berundak, suasana hutan alami, edukasi budidaya lebah madu lokal, serta ketenangan danau ikan. Paket all-inclusive ini sangat ideal bagi pasangan, teman, maupun keluarga kecil yang menginginkan momen liburan klasik yang otentik dan fotogenik.',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1791621606/ed050bd0-2308-42e1-8db0-bc848bc5503b.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1791621606/ed050bd0-2308-42e1-8db0-bc848bc5503b.png',
+    pricePerPerson: 1800000,
+    priceType: 'car',
+    priceUnitLabel: '/ Car',
+    capacity: 'MAX. 2 PEOPLE per car (Additional charge for extra passenger)',
+    suitability: 'Perfect for couple, friends or small family',
+    isVertical: true,
+    duration: '30 - 45 MINUTES',
+    location: 'Bongkasa Village, Badung, Bali',
+    difficulty: 'Easy & Leisurely',
+    rating: 4.9,
+    reviewCount: 165,
+    highlights: [
+      'Bongkasa Village: Discover the charm of Bali\'s authentic village and warm local culture.',
+      'Rice Fields: Enjoy the beautiful scenery of lush Balinese rice fields.',
+      'Forest: Enjoy the fresh air and natural beauty of Bali\'s tropical forest.',
+      'Honey Farm: Visit a local honey farm and learn about natural honey production.',
+      'Fish Lake: Relax by a peaceful fish lake and enjoy feeding the fish.'
+    ],
+    routeHighlights: [
+      { step: 1, place: 'Bongkasa Village', desc: 'Discover the charm of Bali\'s authentic village and warm local culture.' },
+      { step: 2, place: 'Rice Fields', desc: 'Enjoy the beautiful scenery of lush Balinese rice fields.' },
+      { step: 3, place: 'Forest', desc: 'Enjoy the fresh air and natural beauty of Bali\'s tropical forest.' },
+      { step: 4, place: 'Honey Farm', desc: 'Visit a local honey farm and learn about natural honey production.' },
+      { step: 5, place: 'Fish Lake', desc: 'Relax by a peaceful fish lake and enjoy feeding the fish.' }
+    ],
+    inclusions: [
+      'Classic VW Car',
+      'Driver',
+      'Fuel',
+      'Entrance tickets to tourist destinations'
+    ],
+    exclusions: [
+      'Pengeluaran pribadi & belanja cenderamata',
+      'Biaya tambahan untuk penumpang ekstra (lebih dari 2 orang)',
+      'Tip sukarela untuk supir'
+    ],
+    itinerary: [
+      { time: '00:00', title: 'Start & Briefing', desc: 'Penyambutan dengan mobil klasik VW Safari antik dan supir profesional.' },
+      { time: '00:10', title: 'Bongkasa Village & Rice Fields', desc: 'Menikmati keramahan desa otentik Bali dan hamparan sawah hijau menawan.' },
+      { time: '00:20', title: 'Forest & Honey Farm', desc: 'Menghirup udara segar hutan tropis dan belajar produksi madu alami di peternakan lebah.' },
+      { time: '00:35', title: 'Fish Lake & Relaxing', desc: 'Bersantai di tepi danau ikan yang damai, memberi makan ikan, dan foto kenangan.' }
+    ],
+    galleryImages: [
+      {
+        name: 'Classic VW Safari',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1791621606/ed050bd0-2308-42e1-8db0-bc848bc5503b.png',
+        description: 'Mobil klasik VW Safari antik untuk eksplorasi Desa Bongkasa'
+      },
+      {
+        name: 'Bongkasa Rice Fields',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        description: 'Pemandangan persawahan hijau asri khas pedesaan Bali'
+      },
+      {
+        name: 'Peaceful Fish Lake',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        description: 'Danau ikan yang damai dan asri di Bongkasa'
+      }
+    ]
   }
 ];
 
@@ -1099,6 +1167,74 @@ export const EXPERIENCES_EN: Experience[] = [
       { time: '09:30 AM', title: 'Begin Ubud Ayung Rafting', desc: 'Navigate 10-12 km of the Ayung River past cliff stone reliefs and waterfalls.' },
       { time: '11:30 AM', title: 'Showers & Fresh Towels', desc: 'Freshen up in clean private shower facilities.' },
       { time: '12:00 PM', title: 'Valley Lunch Feast', desc: 'Enjoy a delicious lunch at the Ubud valley restaurant.' }
+    ]
+  },
+  {
+    id: 'vw-classic-tour',
+    title: 'TRIP C: VW CLASSIC TOUR',
+    tagline: 'Explore the Natural Beauty of Bongkasa',
+    shortDesc: 'Experience the authentic rural charm of Bongkasa Village in an open-top vintage VW Safari car through emerald rice terraces, tropical forest, a local honey farm, and a peaceful fish lake.',
+    longDesc: 'Immerse yourself in timeless island nostalgia with Trip C: VW Classic Tour through Bongkasa Village. Cruising in an open-roof vintage Volkswagen Safari convertible, breathe in the fresh island breeze as you journey across lush Balinese rice paddies, serene tropical woodlands, an authentic local honey farm, and a tranquil fish lake. This excursion is perfectly designed for couples, close friends, or small families seeking unforgettable, scenic, and photogenic memories.',
+    bgImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1791621606/ed050bd0-2308-42e1-8db0-bc848bc5503b.png',
+    cardImage: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1791621606/ed050bd0-2308-42e1-8db0-bc848bc5503b.png',
+    pricePerPerson: 1800000,
+    priceType: 'car',
+    priceUnitLabel: '/ Car',
+    capacity: 'MAX. 2 PEOPLE per car (Additional charge for extra passenger)',
+    suitability: 'Perfect for couple, friends or small family',
+    isVertical: true,
+    duration: '30 - 45 MINUTES',
+    location: 'Bongkasa Village, Badung, Bali',
+    difficulty: 'Easy & Leisurely',
+    rating: 4.9,
+    reviewCount: 165,
+    highlights: [
+      'Bongkasa Village: Discover the charm of Bali\'s authentic village and warm local culture.',
+      'Rice Fields: Enjoy the beautiful scenery of lush Balinese rice fields.',
+      'Forest: Enjoy the fresh air and natural beauty of Bali\'s tropical forest.',
+      'Honey Farm: Visit a local honey farm and learn about natural honey production.',
+      'Fish Lake: Relax by a peaceful fish lake and enjoy feeding the fish.'
+    ],
+    routeHighlights: [
+      { step: 1, place: 'Bongkasa Village', desc: 'Discover the charm of Bali\'s authentic village and warm local culture.' },
+      { step: 2, place: 'Rice Fields', desc: 'Enjoy the beautiful scenery of lush Balinese rice fields.' },
+      { step: 3, place: 'Forest', desc: 'Enjoy the fresh air and natural beauty of Bali\'s tropical forest.' },
+      { step: 4, place: 'Honey Farm', desc: 'Visit a local honey farm and learn about natural honey production.' },
+      { step: 5, place: 'Fish Lake', desc: 'Relax by a peaceful fish lake and enjoy feeding the fish.' }
+    ],
+    inclusions: [
+      'Classic VW Car',
+      'Driver',
+      'Fuel',
+      'Entrance tickets to tourist destinations'
+    ],
+    exclusions: [
+      'Personal expenses & souvenirs',
+      'Additional charge for extra passenger (more than 2 persons)',
+      'Voluntary gratuities'
+    ],
+    itinerary: [
+      { time: '00:00', title: 'Start & Briefing', desc: 'Meet your private driver and board the vintage open-roof VW Safari car.' },
+      { time: '00:10', title: 'Bongkasa Village & Rice Fields', desc: 'Cruise through picturesque villages and admire sweeping panoramic rice terraces.' },
+      { time: '00:20', title: 'Forest & Honey Farm', desc: 'Breathe in pure mountain forest air and witness natural honey production at a local apiary.' },
+      { time: '00:35', title: 'Fish Lake & Relaxing', desc: 'Unwind by the tranquil fish lake, feed the fish, and capture timeless vintage photos.' }
+    ],
+    galleryImages: [
+      {
+        name: 'Classic VW Safari',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1791621606/ed050bd0-2308-42e1-8db0-bc848bc5503b.png',
+        description: 'Vintage open-top VW Safari car cruising Bongkasa Village'
+      },
+      {
+        name: 'Bongkasa Rice Fields',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+        description: 'Emerald green rice terraces along the countryside route'
+      },
+      {
+        name: 'Peaceful Fish Lake',
+        image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_800/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+        description: 'Serene freshwater lake ideal for relaxing and feeding fish'
+      }
     ]
   }
 ];

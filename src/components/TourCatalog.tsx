@@ -108,7 +108,8 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
         {/* Catalog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="catalog-tours-grid">
           <AnimatePresence mode="popLayout">
-            {filteredExperiences.map((exp, idx) => (
+            {filteredExperiences.map((exp, idx) => {
+              return (
               <motion.div
                 layout
                 key={exp.id}
@@ -118,21 +119,24 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                 transition={{ duration: 0.5, delay: idx * 0.05 }}
                 className="bg-neutral-900/40 border border-gold-400/10 rounded-lg overflow-hidden flex flex-col justify-between group shadow-lg hover:border-gold-400/30 transition-all duration-500 hover:shadow-2xl hover:shadow-black/50"
               >
-                {/* Image Section */}
-                <div className="relative h-64 overflow-hidden">
+                {/* Image Section - Vertical Portrait for VW Classic Tour, Horizontal for others */}
+                <div className={`relative w-full overflow-hidden ${
+                  exp.id === 'vw-classic-tour' || exp.isVertical
+                    ? 'aspect-[2/3] bg-neutral-950'
+                    : 'aspect-[16/9] sm:aspect-[16/10] bg-neutral-900'
+                }`}>
                   <img
                     src={exp.cardImage}
                     alt={exp.title}
                     loading="lazy"
                     decoding="async"
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/20 to-transparent" />
                   
                   {/* Floating Price Tag */}
-                  <div className="absolute top-4 right-4 bg-black/85 border border-gold-400/20 rounded-sm px-3.5 py-2 backdrop-blur-sm text-right">
-                    <span className="block text-[9px] font-mono text-gold-400 tracking-widest uppercase font-semibold">
+                  <div className="absolute top-2.5 right-2.5 bg-black/85 border border-gold-400/20 rounded-sm px-3 py-1.5 backdrop-blur-sm text-right z-10 shadow-md">
+                    <span className="block text-[8px] font-mono text-gold-400 tracking-widest uppercase font-semibold">
                       {exp.pricingOptions ? (language === 'en' ? 'Pricing Options' : 'Opsi Tarif') : (language === 'en' ? 'Starting' : 'Mulai')}
                     </span>
                     {exp.pricingOptions ? (
@@ -142,15 +146,15 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                       </div>
                     ) : (
                       <>
-                        <span className="font-mono text-base font-bold text-gold-200">Rp {exp.pricePerPerson.toLocaleString('id-ID')}</span>
-                        <span className="text-[9px] text-gold-100/40 font-light block -mt-1">{t.common.perPerson}</span>
+                        <span className="font-mono text-sm sm:text-base font-bold text-gold-200">Rp {exp.pricePerPerson.toLocaleString('id-ID')}</span>
+                        <span className="text-[8px] sm:text-[9px] text-gold-100/40 font-light block -mt-0.5 font-mono">{exp.priceType === 'car' ? (exp.priceUnitLabel || '/ CAR') : t.common.perPerson}</span>
                       </>
                     )}
                   </div>
 
                   {/* Tagline / Category */}
-                  <div className="absolute bottom-4 left-4">
-                    <span className="inline-flex items-center bg-gold-400 text-neutral-950 text-[9px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-sm">
+                  <div className="absolute bottom-2.5 left-2.5 z-10">
+                    <span className="inline-flex items-center bg-gold-400 text-neutral-950 text-[8px] sm:text-[9px] font-mono font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-sm shadow-md">
                       {exp.tagline}
                     </span>
                   </div>
@@ -159,12 +163,17 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                 {/* Content Section */}
                 <div className="p-6 flex-grow flex flex-col justify-between text-left">
                   <div className="space-y-3">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between">
                       <div className="flex items-center text-gold-400">
                         <Star className="w-3.5 h-3.5 fill-current" />
                         <span className="font-mono text-xs font-bold ml-1">{exp.rating}</span>
+                        <span className="text-gold-200/40 text-xs font-mono ml-1.5">({exp.reviewCount} {t.common.reviews})</span>
                       </div>
-                      <span className="text-gold-200/40 text-xs font-mono">({exp.reviewCount} {t.common.reviews})</span>
+                      {exp.priceType === 'car' && (
+                        <span className="text-[10px] font-mono text-gold-400 border border-gold-400/25 px-2 py-0.5 rounded-xs bg-gold-500/5">
+                          🚗 Classic VW
+                        </span>
+                      )}
                     </div>
 
                     <h3 className="font-serif text-xl text-gold-100 font-medium group-hover:text-gold-300 transition-colors duration-300">
@@ -186,19 +195,26 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                         <span className="truncate">{exp.location}</span>
                       </div>
                     </div>
+
+                    {exp.capacity && (
+                      <div className="text-[10px] font-mono text-gold-300/80 bg-neutral-950/60 p-2 rounded-xs border border-gold-400/15">
+                        <span className="text-gold-400 font-semibold">{language === 'ar' ? 'السعة: ' : language === 'en' ? 'Capacity: ' : 'Kapasitas: '}</span>
+                        {exp.capacity}
+                      </div>
+                    )}
                   </div>
 
                   {/* Buttons Section */}
                   <div className="grid grid-cols-2 gap-3 pt-6 mt-6 border-t border-gold-900/15">
                     <button
                       onClick={() => onViewDetails(exp.id)}
-                      className="border border-gold-400/30 hover:border-gold-400 text-gold-300 hover:text-gold-100 text-xs uppercase tracking-widest font-mono py-3 rounded-sm transition-all duration-300 cursor-pointer hover:bg-gold-500/5 active:scale-95"
+                      className="border border-gold-400/30 hover:border-gold-400 text-gold-300 hover:text-gold-100 text-xs uppercase tracking-widest font-mono py-3 rounded-sm transition-all duration-300 cursor-pointer hover:bg-gold-500/5 active:scale-95 text-center"
                     >
                       {t.common.viewDetails}
                     </button>
                     <button
                       onClick={() => onBookNow(exp.id)}
-                      className="bg-gold-400 hover:bg-gold-500 text-neutral-950 font-bold text-xs uppercase tracking-widest font-mono py-3 rounded-sm transition-all duration-300 shadow-md cursor-pointer hover:shadow-gold-500/10 flex items-center justify-center gap-1 active:scale-95"
+                      className="bg-gold-400 hover:bg-gold-500 text-neutral-950 font-bold text-xs uppercase tracking-widest font-mono py-3 rounded-sm transition-all duration-300 shadow-md cursor-pointer hover:shadow-gold-500/10 flex items-center justify-center gap-1 active:scale-95 text-center"
                     >
                       <span>{t.common.bookNow}</span>
                       <ArrowRight size={12} className="stroke-[2.5]" />
@@ -207,7 +223,8 @@ export default function TourCatalog({ onBookNow, onViewDetails }: TourCatalogPro
                 </div>
 
               </motion.div>
-            ))}
+            );
+            })}
           </AnimatePresence>
         </div>
 
