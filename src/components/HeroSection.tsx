@@ -1,50 +1,94 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUp } from 'lucide-react';
 import { Experience } from '../types';
 import { getExperiences } from '../data';
 import { useLanguage } from '../context/LanguageContext';
 
 interface HeroSectionProps {
-  activeIndex: number;
-  setActiveIndex: (index: number) => void;
+  activeIndex?: number;
+  setActiveIndex?: (index: number) => void;
   onExploreClick: (experience: Experience) => void;
   onBookNowClick: () => void;
   onViewDetails?: (experienceId: string) => void;
   onViewPackagesClick?: () => void;
 }
 
+// Curated Nusa Penida Slides using official high-resolution Cloudinary assets
+const NUSA_PENIDA_SLIDES = [
+  {
+    id: 'nusa-penida-main',
+    name: 'Nusa Penida',
+    tagline: 'Nusa Penida & Bali Trip',
+    scriptText: 'Natural beauty',
+    title: 'Discover the most engaging places',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1790768104/antonia-nicoletta-irawan-V0cOEHVx1cE-unsplash_cfm3nz.webp',
+  },
+  {
+    id: 'bali-lempuyang-temple',
+    name: 'Lempuyang Temple Gates',
+    tagline: 'Bali Heritage & Highlands Trip',
+    scriptText: 'Natural beauty',
+    title: 'Discover the most engaging places',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/v1790767054/young-woman-standing-temple-gates-lempuyang-luhur-temple-bali-indonesia-vintage-tone-scaled_n7cmrt.webp',
+  },
+  {
+    id: 'nusa-penida-kelingking',
+    name: 'Kelingking Beach',
+    tagline: 'Nusa Penida West Trip',
+    scriptText: 'Natural beauty',
+    title: 'Discover the most engaging places',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_1920/v1783323538/52232f7d-759e-40de-a9ce-a8aa0fcde84d.png',
+  },
+  {
+    id: 'nusa-penida-broken',
+    name: 'Broken Beach',
+    tagline: 'Nusa Penida West Trip',
+    scriptText: 'Natural beauty',
+    title: 'Discover the most engaging places',
+    image: 'https://res.cloudinary.com/di6ziqvtp/image/upload/f_auto,q_auto,w_1920/v1786187369/3d0b750a-87f1-4374-a71b-d3f58a6e31b7.png',
+  },
+];
+
 export default function HeroSection({
-  activeIndex,
+  activeIndex = 0,
   setActiveIndex,
   onExploreClick,
   onBookNowClick,
   onViewDetails,
   onViewPackagesClick,
 }: HeroSectionProps) {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const experiences = getExperiences(language);
-  const HERO_EXPERIENCES = experiences.filter((e) => e.id !== 'rafting-bmw');
-  const currentExp = HERO_EXPERIENCES[activeIndex] || HERO_EXPERIENCES[0];
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [containerWidth, setContainerWidth] = useState(0);
-  const startXRef = useRef(0);
-  const hasDraggedRef = useRef(false);
-
-  const [isInitialDelayPassed, setIsInitialDelayPassed] = useState(false);
+  
+  // Local slide index synced with parent if provided
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync index
+  const activeSlide = NUSA_PENIDA_SLIDES[currentSlideIndex] || NUSA_PENIDA_SLIDES[0];
+
+  const handlePrev = () => {
+    stopAutoplay();
+    const newIdx = currentSlideIndex === 0 ? NUSA_PENIDA_SLIDES.length - 1 : currentSlideIndex - 1;
+    setCurrentSlideIndex(newIdx);
+    if (setActiveIndex) setActiveIndex(newIdx % experiences.length);
+    startAutoplay();
+  };
+
+  const handleNext = () => {
+    stopAutoplay();
+    const newIdx = (currentSlideIndex + 1) % NUSA_PENIDA_SLIDES.length;
+    setCurrentSlideIndex(newIdx);
+    if (setActiveIndex) setActiveIndex(newIdx % experiences.length);
+    startAutoplay();
+  };
 
   const startAutoplay = () => {
     stopAutoplay();
-    const delay = isInitialDelayPassed ? 4000 : 8000;
     autoplayTimerRef.current = setInterval(() => {
-      setIsInitialDelayPassed(true);
-      setActiveIndex((activeIndex + 1) % HERO_EXPERIENCES.length);
-    }, delay);
+      setCurrentSlideIndex((prev) => (prev + 1) % NUSA_PENIDA_SLIDES.length);
+    }, 7000);
   };
 
   const stopAutoplay = () => {
@@ -57,351 +101,205 @@ export default function HeroSection({
   useEffect(() => {
     startAutoplay();
     return () => stopAutoplay();
-  }, [activeIndex, isInitialDelayPassed, setActiveIndex, HERO_EXPERIENCES.length]);
+  }, [currentSlideIndex]);
 
-  const getCardTag = (exp: Experience) => {
-    return exp.tagline;
-  };
-
-  const getCardTitle = (exp: Experience) => {
-    return exp.title;
-  };
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const updateWidth = () => {
-      setContainerWidth(containerRef.current?.parentElement?.getBoundingClientRect().width || 0);
-    };
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
-    const timer = setTimeout(updateWidth, 100);
-    return () => {
-      window.removeEventListener('resize', updateWidth);
-      clearTimeout(timer);
-    };
-  }, []);
-
-  const cardWidth = isMobile ? 144 : 192;
-  const gap = 16;
-
-  const targetTranslate = containerWidth > 0
-    ? (containerWidth / 2) - (activeIndex * (cardWidth + gap) + cardWidth / 2)
-    : 0;
-
-  const totalTranslate = targetTranslate + dragOffset;
-
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0) return;
-    stopAutoplay();
-    setIsDragging(true);
-    startXRef.current = e.clientX;
-    hasDraggedRef.current = false;
-    e.currentTarget.setPointerCapture(e.pointerId);
-  };
-
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDragging) return;
-    const deltaX = e.clientX - startXRef.current;
-    
-    if (Math.abs(deltaX) > 10) {
-      hasDraggedRef.current = true;
+  const handleCtaClick = () => {
+    if (onViewPackagesClick) {
+      onViewPackagesClick();
+      return;
     }
-    
-    let finalDelta = deltaX;
-    if (activeIndex === 0 && deltaX > 0) {
-      finalDelta = deltaX * 0.4;
-    } else if (activeIndex === HERO_EXPERIENCES.length - 1 && deltaX < 0) {
-      finalDelta = deltaX * 0.4;
+    const matchingExp = experiences.find((e) => e.id === activeSlide.id) || experiences[0];
+    if (matchingExp) {
+      onExploreClick(matchingExp);
     }
-    
-    setDragOffset(finalDelta);
   };
 
-  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    e.currentTarget.releasePointerCapture(e.pointerId);
-
-    const swipeThreshold = 50;
-    if (dragOffset < -swipeThreshold) {
-      if (activeIndex < HERO_EXPERIENCES.length - 1) {
-        setIsInitialDelayPassed(true);
-        setActiveIndex(activeIndex + 1);
-      }
-    } else if (dragOffset > swipeThreshold) {
-      if (activeIndex > 0) {
-        setIsInitialDelayPassed(true);
-        setActiveIndex(activeIndex - 1);
-      }
-    }
-    setDragOffset(0);
-    startAutoplay();
-  };
-
-  const handlePointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
-    setIsDragging(false);
-    setDragOffset(0);
-    e.currentTarget.releasePointerCapture(e.pointerId);
-    startAutoplay();
-  };
-
-  const handleScrollDown = () => {
-    const nextSection = document.getElementById('experiences');
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <section
       id="hero-top"
-      className="relative min-h-screen w-full flex flex-col justify-between overflow-hidden bg-luxury-dark"
+      className="relative w-full min-h-screen flex flex-col justify-between overflow-hidden bg-black select-none"
     >
-      {/* Background Images with Cross-fade Animation */}
+      {/* 1. Fullscreen Background Image Carousel */}
       <div className="absolute inset-0 z-0">
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentExp.id}
+            key={activeSlide.id + currentSlideIndex}
             initial={{ opacity: 0, scale: 1.05 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease: 'easeOut' }}
+            transition={{ duration: 1.1, ease: 'easeOut' }}
             className="absolute inset-0"
           >
             <img
-              src={currentExp.bgImage}
-              alt={currentExp.tagline}
+              src={activeSlide.image}
+              alt={activeSlide.name}
               loading="eager"
               // @ts-ignore
               fetchPriority="high"
-              className="absolute inset-0 w-full h-full object-cover"
               referrerPolicy="no-referrer"
+              className="absolute inset-0 w-full h-full object-cover object-center"
             />
-            {/* Ambient Dark Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-r from-luxury-dark/95 via-luxury-dark/40 to-luxury-dark/15 rtl:bg-gradient-to-l" />
-            <div className="absolute inset-0 bg-gradient-to-t from-luxury-dark via-transparent to-luxury-dark/30" />
-            <div className="absolute inset-0 bg-black/20" />
           </motion.div>
         </AnimatePresence>
 
-        {/* Eager preloading for other slides */}
-        <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
-          {HERO_EXPERIENCES.map((exp, idx) => (
-            idx !== activeIndex && (
-              <img
-                key={exp.id}
-                src={exp.bgImage}
-                alt=""
-                loading={
-                  exp.bgImage.includes('activity_atv_jungle') || exp.bgImage.includes('water_sport_banner')
-                    ? "lazy"
-                    : "eager"
-                }
-                decoding={
-                  exp.bgImage.includes('activity_atv_jungle') || exp.bgImage.includes('water_sport_banner')
-                    ? "async"
-                    : "auto"
-                }
-                referrerPolicy="no-referrer"
-              />
-            )
-          ))}
-        </div>
+        {/* 2. Seamless Top Vignette (Allows transparent navbar to float invisibly while ensuring readable links) */}
+        <div
+          className="absolute inset-x-0 top-0 h-36 pointer-events-none z-1"
+          style={{
+            background:
+              'linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.25) 50%, rgba(0, 0, 0, 0) 100%)',
+          }}
+        />
+
+        {/* 3. Efek Shadow Background Hitam Tinggi: Sangat pekat dan tinggi di bawah, makin ke atas makin tipis */}
+        <div
+          className="absolute inset-x-0 bottom-0 pointer-events-none z-1"
+          style={{
+            height: '75%',
+            background:
+              'linear-gradient(to top, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.88) 32%, rgba(0, 0, 0, 0.52) 65%, rgba(0, 0, 0, 0.18) 88%, rgba(0, 0, 0, 0) 100%)',
+          }}
+        />
+
+        {/* Subtle ambient tint across whole screen to soften glare */}
+        <div className="absolute inset-0 bg-black/15 pointer-events-none z-1" />
       </div>
 
-      {/* Main Content Arena */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full flex-grow flex flex-col justify-center pt-28 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Text Block */}
-          <div className="lg:col-span-5 flex flex-col items-start text-left rtl:items-start rtl:text-right" id="hero-text-block">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentExp.id + language}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}
-                className="space-y-6 w-full"
-              >
-                {/* Dynamic Category/Tagline */}
-                <div className="flex items-center gap-3">
-                  <span className="h-[1px] w-5 bg-gold-400 shrink-0" />
-                  <span className="font-mono text-xs uppercase tracking-[0.3em] text-gold-400 font-semibold">
-                    {currentExp.tagline}
-                  </span>
-                </div>
+      {/* 4. Left and Right Navigation Ghost Arrows */}
+      <button
+        onClick={handlePrev}
+        aria-label="Previous slide"
+        className="absolute left-4 sm:left-8 md:left-12 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full border border-white/20 hover:border-white/70 bg-black/25 hover:bg-black/55 text-white/80 hover:text-white flex items-center justify-center transition-all duration-200 backdrop-blur-sm cursor-pointer shadow-lg active:scale-90"
+      >
+        <ChevronLeft size={22} strokeWidth={1.75} />
+      </button>
 
-                {/* Hero Title */}
-                <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.15] text-gold-100 font-medium tracking-wide">
-                  {currentExp.title}
-                </h1>
+      <button
+        onClick={handleNext}
+        aria-label="Next slide"
+        className="absolute right-4 sm:right-8 md:right-12 top-1/2 -translate-y-1/2 z-20 w-11 h-11 md:w-12 md:h-12 rounded-full border border-white/20 hover:border-white/70 bg-black/25 hover:bg-black/55 text-white/80 hover:text-white flex items-center justify-center transition-all duration-200 backdrop-blur-sm cursor-pointer shadow-lg active:scale-90"
+      >
+        <ChevronRight size={22} strokeWidth={1.75} />
+      </button>
 
-                {/* Hero Description */}
-                <p className="font-sans text-xs md:text-sm text-gold-100/75 leading-relaxed max-w-sm font-light">
-                  {currentExp.shortDesc}
-                </p>
+      {/* 5. Center Hero Content Block */}
+      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center flex-grow flex flex-col justify-center items-center pt-32 pb-16">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentSlideIndex}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="flex flex-col items-center"
+          >
+            {/* Cursive yellow script accent */}
+            <p
+              className="text-[#f6b738] text-2xl sm:text-3xl md:text-4xl italic font-normal tracking-wide drop-shadow-md mb-2 sm:mb-3"
+              style={{ fontFamily: '"Dancing Script", cursive, Georgia, serif' }}
+            >
+              Natural beauty
+            </p>
 
-                {/* Buttons container */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-3">
-                  {/* Mobile-only View Packages button */}
-                  <button
-                    onClick={() => onViewPackagesClick?.()}
-                    className="sm:hidden bg-gold-400 hover:bg-gold-500 text-luxury-dark font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm active:scale-95 hover:shadow-lg hover:shadow-gold-500/10 text-center cursor-pointer"
-                  >
-                    {t.hero.viewPackages}
-                  </button>
+            {/* Bold central headline */}
+            <h1 className="font-sans text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.12] drop-shadow-lg max-w-4xl mx-auto">
+              Discover the most engaging places
+            </h1>
 
-                  {/* Desktop-only buttons */}
-                  <button
-                    onClick={() => onViewDetails ? onViewDetails(currentExp.id) : onExploreClick(currentExp)}
-                    className="hidden sm:block border border-gold-400/40 hover:border-gold-400 text-gold-300 hover:text-gold-100 font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm cursor-pointer text-center hover:bg-gold-500/10"
-                  >
-                    {t.hero.viewDetails}
-                  </button>
-                  <button
-                    onClick={() => onExploreClick(currentExp)}
-                    id="btn-start-adventure"
-                    className="hidden sm:block bg-gold-400 hover:bg-gold-500 text-luxury-dark font-sans text-xs uppercase tracking-[0.2em] font-bold py-3.5 px-6 transition-all duration-300 rounded-sm active:scale-95 hover:shadow-lg hover:shadow-gold-500/10 text-center cursor-pointer"
-                  >
-                    {t.hero.bookNow}
-                  </button>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+            {/* Golden CTA button with black text */}
+            <button
+              onClick={handleCtaClick}
+              id="hero-explore-destinations-btn"
+              className="mt-7 sm:mt-9 inline-flex items-center justify-center bg-[#e5a93c] hover:bg-[#f3ba52] text-black font-bold text-sm sm:text-base px-8 py-3.5 sm:px-9 sm:py-4 rounded-lg shadow-xl shadow-amber-500/20 hover:shadow-amber-400/35 transition-all duration-300 active:scale-95 cursor-pointer"
+            >
+              Explore Destinations
+            </button>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* 6. Bottom Statistics Counter & Indicators Row */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-8 pb-10 sm:pb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center sm:text-left">
+          {/* Stat 1: 100+ Happy Traveler */}
+          <div className="flex flex-col items-center sm:items-start">
+            <span className="font-sans text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-none mb-2">
+              100+
+            </span>
+            <span className="font-sans text-xs sm:text-sm text-neutral-300/80 font-normal tracking-wide">
+              Happy Traveler
+            </span>
           </div>
 
-          {/* Interactive Slider Cards */}
-          <div className="lg:col-span-7 flex flex-col space-y-4" id="hero-slider-block">
-            {/* Visual Header for Cards Block */}
-            <div className="flex items-center justify-between pb-2 border-b border-gold-900/10 max-w-md w-full ltr:lg:ml-auto rtl:lg:mr-auto">
-              <span className="font-mono text-[10px] text-gold-300/40 uppercase tracking-widest">
-                {t.hero.curatedDestinations}
-              </span>
-              <span className="font-mono text-[10px] text-gold-400 font-semibold tracking-widest font-sans">
-                {String(activeIndex + 1).padStart(2, '0')} / {String(HERO_EXPERIENCES.length).padStart(2, '0')}
-              </span>
-            </div>
+          {/* Stat 2: 10+ Total Available Tour */}
+          <div className="flex flex-col items-center sm:items-start">
+            <span className="font-sans text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-none mb-2">
+              10+
+            </span>
+            <span className="font-sans text-xs sm:text-sm text-neutral-300/80 font-normal tracking-wide">
+              Total Available Tour
+            </span>
+          </div>
 
-            {/* Floating Row of portrait cards stacked beautifully */}
-            <div
-              dir="ltr"
-              className="w-full max-w-md md:max-w-lg xl:max-w-xl ltr:lg:ml-auto rtl:lg:mr-auto overflow-hidden relative pb-4 pt-6"
-              id="hero-slider-container"
-            >
+          {/* Stat 3: 37K Social Follow Likes */}
+          <div className="flex flex-col items-center sm:items-start">
+            <span className="font-sans text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-none mb-2">
+              37K
+            </span>
+            <span className="font-sans text-xs sm:text-sm text-neutral-300/80 font-normal tracking-wide">
+              Social Follow Likes
+            </span>
+          </div>
 
-              <div
-                ref={containerRef}
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerUp}
-                onPointerCancel={handlePointerCancel}
-                style={{
-                  transform: `translateX(${totalTranslate}px)`,
-                  transition: isDragging ? 'none' : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-                  touchAction: 'none',
+          {/* Stat 4: 32+ 5 Star Clients Ratings */}
+          <div className="flex flex-col items-center sm:items-start">
+            <span className="font-sans text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-none mb-2">
+              32+
+            </span>
+            <span className="font-sans text-xs sm:text-sm text-neutral-300/80 font-normal tracking-wide">
+              5 Star Clients Ratings
+            </span>
+          </div>
+        </div>
+
+        {/* Bottom Pagination Dot Indicator & Scroll to top arrow */}
+        <div className="mt-8 flex items-center justify-between">
+          <div className="w-8" /> {/* spacer */}
+
+          {/* Carousel dots indicator */}
+          <div className="flex items-center gap-2">
+            {NUSA_PENIDA_SLIDES.map((slide, idx) => (
+              <button
+                key={slide.id}
+                onClick={() => {
+                  stopAutoplay();
+                  setCurrentSlideIndex(idx);
+                  startAutoplay();
                 }}
-                className={`flex items-end justify-start gap-4 select-none ${
-                  isDragging ? 'cursor-grabbing' : 'cursor-grab'
+                className={`transition-all duration-300 cursor-pointer rounded-full ${
+                  idx === currentSlideIndex
+                    ? 'w-6 h-2 bg-[#e5a93c]'
+                    : 'w-2 h-2 bg-white/30 hover:bg-white/60'
                 }`}
-              >
-                {HERO_EXPERIENCES.map((exp, index) => {
-                  const isActive = index === activeIndex;
-
-                  return (
-                    <button
-                      key={exp.id}
-                      onClick={(e) => {
-                        if (hasDraggedRef.current) {
-                          e.preventDefault();
-                          return;
-                        }
-                        setIsInitialDelayPassed(true);
-                        setActiveIndex(index);
-                      }}
-                      id={`hero-card-${exp.id}`}
-                      className={`relative flex-shrink-0 w-36 md:w-48 h-[210px] md:h-[270px] rounded-sm overflow-hidden text-left transition-all duration-500 transform select-none cursor-pointer group ${
-                        isActive
-                          ? 'ring-2 ring-gold-400/80 scale-102 -translate-y-2 z-20 shadow-2xl shadow-black/80'
-                          : 'opacity-50 hover:opacity-85 hover:-translate-y-1 z-10 scale-95 shadow-lg shadow-black/50'
-                      }`}
-                    >
-                      {/* Card Image */}
-                      <img
-                        src={exp.cardImage}
-                        alt={exp.tagline}
-                        loading="eager"
-                        referrerPolicy="no-referrer"
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-
-                      {/* Dark gradient vignette overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-                      
-                      {/* Hover gold shimmer overlay */}
-                      <div className="absolute inset-0 bg-gold-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                      {/* Card Content focused at bottom */}
-                      <div
-                        className="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end text-left rtl:text-right"
-                        dir={language === 'ar' ? 'rtl' : 'ltr'}
-                      >
-                        <p className="font-mono text-[9px] uppercase tracking-widest text-gold-300/80 font-bold mb-1">
-                          {getCardTag(exp)}
-                        </p>
-                        <h3 className="font-serif text-base md:text-lg text-gold-100 font-medium tracking-wide leading-snug">
-                          {getCardTitle(exp)}
-                        </h3>
-                        {isActive && (
-                          <span className="font-mono text-[8px] text-gold-400 uppercase tracking-wider mt-1 flex items-center gap-1.5">
-                            <span>{t.hero.activeExperience}</span>
-                          </span>
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
           </div>
 
+          {/* Scroll to Top floating arrow */}
+          <button
+            onClick={handleScrollToTop}
+            aria-label="Scroll to top"
+            className="w-8 h-8 rounded-full border border-white/20 bg-black/40 hover:border-[#e5a93c] text-[#e5a93c] flex items-center justify-center transition-colors cursor-pointer shadow-md"
+          >
+            <ArrowUp size={14} strokeWidth={2.2} />
+          </button>
         </div>
-      </div>
-
-      {/* Bottom Scroll/Chevron Pill */}
-      <div className="relative z-10 w-full flex justify-center pb-8">
-        <button
-          onClick={handleScrollDown}
-          id="btn-scroll-down"
-          className="flex flex-col items-center group cursor-pointer"
-          aria-label="Scroll to experiences"
-        >
-          <div className="w-6 h-10 border border-gold-300/40 rounded-full flex justify-center items-start p-1 hover:border-gold-400 transition-colors duration-300">
-            <motion.div
-              animate={{
-                y: [0, 12, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            >
-              <ChevronDown size={12} className="text-gold-300 group-hover:text-gold-400 transition-colors" />
-            </motion.div>
-          </div>
-        </button>
       </div>
     </section>
   );
 }
-
