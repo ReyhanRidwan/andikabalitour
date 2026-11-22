@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { Clock, Calendar, ArrowRight, User, X, BookOpen, MessageCircle, Sparkles, CheckCircle2, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Clock, Calendar, ArrowRight, User, X, BookOpen, MessageCircle, Sparkles, CheckCircle2, ChevronRight, Car, Tag } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { getArticles } from '../data/articlesData';
 import { Article } from '../types';
 
 interface ArticlesSectionProps {
   onBookNow?: (experienceId: string) => void;
+  onBookRental?: () => void;
 }
 
-export default function ArticlesSection({ onBookNow }: ArticlesSectionProps) {
+export default function ArticlesSection({ onBookNow, onBookRental }: ArticlesSectionProps) {
   const { language } = useLanguage();
   const articles = getArticles(language);
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
@@ -38,21 +40,148 @@ export default function ArticlesSection({ onBookNow }: ArticlesSectionProps) {
   const readMoreText = isId ? 'Baca Selengkapnya' : isEn ? 'Read Article' : 'اقرأ المقال';
   const closeText = isId ? 'Tutup' : isEn ? 'Close' : 'إغلاق';
   const relatedCtaText = isId ? 'Pesan Tur Terkait' : isEn ? 'Book Related Tour' : 'احجز هذه الجولة';
+  const rentalCtaText = isId ? 'Lihat Armada Sewa Mobil' : isEn ? 'View Car Rental Fleet' : 'عرض أسطول السيارات';
   const consultWaText = isId ? 'Tanya di WhatsApp' : isEn ? 'Inquire on WhatsApp' : 'استفسر عبر واتساب';
+
+  // Deep-link support for ?article=<slug> organic URLs
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('article');
+    if (slug) {
+      const matched = articles.find((a) => a.slug === slug);
+      if (matched) {
+        setSelectedArticle(matched);
+      }
+    }
+  }, [language]);
 
   const handleOpenArticle = (article: Article) => {
     setSelectedArticle(article);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('article', article.slug);
+      window.history.replaceState({}, '', url.toString());
+    }
   };
 
   const handleCloseArticle = () => {
     setSelectedArticle(null);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('article');
+      window.history.replaceState({}, '', url.toString());
+    }
   };
+
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://andikabalitour.com';
+
+  // Schema.org Blog & ItemList JSON-LD for organic search visibility
+  const blogSchema = useMemo(
+    () => ({
+      '@context': 'https://schema.org',
+      '@type': 'Blog',
+      name: sectionTitle,
+      description: sectionDesc,
+      url: `${origin}/#articles`,
+      publisher: {
+        '@type': 'TravelAgency',
+        name: 'Andika Bali Tour',
+        url: origin,
+      },
+      blogPost: articles.map((art) => ({
+        '@type': 'BlogPosting',
+        headline: art.title,
+        description: art.metaDescription || art.summary,
+        image: art.coverImage.startsWith('http') ? art.coverImage : `${origin}${art.coverImage}`,
+        datePublished: art.isoDate || '2026-09-01',
+        author: {
+          '@type': 'Organization',
+          name: art.author,
+        },
+        url: `${origin}/?article=${art.slug}`,
+        keywords: art.seoKeywords?.join(', ') || art.tag,
+      })),
+    }),
+    [articles, origin, sectionTitle, sectionDesc]
+  );
+
+  // Dynamic BlogPosting JSON-LD when an individual article is open
+  const activeArticleSchema = useMemo(() => {
+    if (!selectedArticle) return null;
+    const imgUrl = selectedArticle.coverImage.startsWith('http')
+      ? selectedArticle.coverImage
+      : `${origin}${selectedArticle.coverImage}`;
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: selectedArticle.title,
+      description: selectedArticle.metaDescription || selectedArticle.summary,
+      image: imgUrl,
+      datePublished: selectedArticle.isoDate || '2026-11-18',
+      author: {
+        '@type': 'Organization',
+        name: selectedArticle.author,
+      },
+      publisher: {
+        '@type': 'TravelAgency',
+        name: 'Andika Bali Tour',
+        url: origin,
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': `${origin}/?article=${selectedArticle.slug}`,
+      },
+      keywords: selectedArticle.seoKeywords?.join(', ') || selectedArticle.tag,
+    };
+  }, [selectedArticle, origin]);
 
   return (
     <section
       id="articles"
+      dir={isAr ? 'rtl' : 'ltr'}
       className="py-20 md:py-28 bg-neutral-950/80 border-t border-gold-400/15 relative overflow-hidden"
     >
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(blogSchema)}</script>
+        {selectedArticle && (
+          <title>{`${selectedArticle.title} | Andika Bali Tour`}</title>
+        )}
+        {selectedArticle && (
+          <meta
+            name="description"
+            content={selectedArticle.metaDescription || selectedArticle.summary}
+          />
+        )}
+        {selectedArticle && selectedArticle.seoKeywords && (
+          <meta name="keywords" content={selectedArticle.seoKeywords.join(', ')} />
+        )}
+        {selectedArticle && (
+          <meta property="og:type" content="article" />
+        )}
+        {selectedArticle && (
+          <meta property="og:title" content={selectedArticle.title} />
+        )}
+        {selectedArticle && (
+          <meta
+            property="og:description"
+            content={selectedArticle.metaDescription || selectedArticle.summary}
+          />
+        )}
+        {selectedArticle && (
+          <meta
+            property="og:image"
+            content={
+              selectedArticle.coverImage.startsWith('http')
+                ? selectedArticle.coverImage
+                : `${origin}${selectedArticle.coverImage}`
+            }
+          />
+        )}
+        {activeArticleSchema && (
+          <script type="application/ld+json">{JSON.stringify(activeArticleSchema)}</script>
+        )}
+      </Helmet>
       {/* Subtle ambient lighting */}
       <div className="absolute top-1/4 left-10 w-96 h-96 bg-gold-500/[0.02] rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-gold-400/[0.02] rounded-full blur-3xl pointer-events-none" />
@@ -74,7 +203,7 @@ export default function ArticlesSection({ onBookNow }: ArticlesSectionProps) {
           </p>
         </div>
 
-        {/* 3 Articles Grid */}
+        {/* 6 Articles Grid (3x2 on desktop) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles.map((article, index) => (
             <article
@@ -154,7 +283,10 @@ export default function ArticlesSection({ onBookNow }: ArticlesSectionProps) {
           onClick={handleCloseArticle}
         >
           <div
-            className="relative w-full max-w-3xl my-8 bg-neutral-900 border border-gold-400/40 rounded-2xl shadow-2xl overflow-hidden flex flex-col text-left max-h-[90vh]"
+            dir={isAr ? 'rtl' : 'ltr'}
+            className={`relative w-full max-w-3xl my-8 bg-neutral-900 border border-gold-400/40 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] ${
+              isAr ? 'text-right' : 'text-left'
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header Bar with Close Button */}
@@ -242,8 +374,26 @@ export default function ArticlesSection({ onBookNow }: ArticlesSectionProps) {
                 ))}
               </div>
 
+              {/* Organic SEO Topic Tags */}
+              {selectedArticle.seoKeywords && selectedArticle.seoKeywords.length > 0 && (
+                <div className="pt-4 border-t border-gold-400/10 flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-mono text-gold-400/80 uppercase tracking-wider mr-1">
+                    <Tag className="w-3 h-3" />
+                    {isId ? 'Topik Terkait:' : isEn ? 'Related Topics:' : 'مواضيع ذات صلة:'}
+                  </span>
+                  {selectedArticle.seoKeywords.map((kw) => (
+                    <span
+                      key={kw}
+                      className="text-[11px] font-sans text-gold-200/70 bg-neutral-950/70 border border-gold-400/20 px-2.5 py-0.5 rounded"
+                    >
+                      #{kw}
+                    </span>
+                  ))}
+                </div>
+              )}
+
               {/* Interactive Booking / Inquire CTA Box */}
-              <div className="mt-8 pt-6 border-t border-gold-400/20 flex flex-col sm:flex-row items-center justify-between gap-4 bg-neutral-950/60 p-5 rounded-xl border">
+              <div className="mt-6 pt-6 border-t border-gold-400/20 flex flex-col sm:flex-row items-center justify-between gap-4 bg-neutral-950/60 p-5 rounded-xl border">
                 <div>
                   <h4 className="font-serif text-base text-gold-100 font-semibold mb-1">
                     {isId ? 'Siap Merencanakan Liburan Anda?' : isEn ? 'Ready to Plan Your Bali Trip?' : 'جاهز للتخطيط لرحلتك في بالي؟'}
@@ -254,21 +404,37 @@ export default function ArticlesSection({ onBookNow }: ArticlesSectionProps) {
                 </div>
 
                 <div className="flex items-center gap-3 w-full sm:w-auto">
-                  {selectedArticle.relatedTourId && onBookNow && (
+                  {selectedArticle.relatedActionType === 'rental' && onBookRental ? (
                     <button
                       onClick={() => {
                         handleCloseArticle();
-                        onBookNow(selectedArticle.relatedTourId || 'water-sport');
+                        onBookRental();
                       }}
-                      className="flex-1 sm:flex-initial px-4 py-2.5 rounded-lg bg-gold-500 hover:bg-gold-400 text-neutral-950 text-xs font-semibold tracking-wider transition-colors inline-flex items-center justify-center gap-1.5"
+                      className="flex-1 sm:flex-initial px-4 py-2.5 rounded-lg bg-gold-500 hover:bg-gold-400 text-neutral-950 text-xs font-semibold tracking-wider transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer"
                     >
-                      <span>{relatedCtaText}</span>
+                      <Car className="w-3.5 h-3.5" />
+                      <span>{rentalCtaText}</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </button>
+                  ) : (
+                    selectedArticle.relatedTourId && onBookNow && (
+                      <button
+                        onClick={() => {
+                          handleCloseArticle();
+                          onBookNow(selectedArticle.relatedTourId || 'water-sport');
+                        }}
+                        className="flex-1 sm:flex-initial px-4 py-2.5 rounded-lg bg-gold-500 hover:bg-gold-400 text-neutral-950 text-xs font-semibold tracking-wider transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <span>{relatedCtaText}</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    )
                   )}
 
                   <a
-                    href="https://wa.me/6281225657382?text=Halo%20Andika%20Bali%20Tour,%20saya%20tertarik%20dengan%20artikel%20wisata%20di%20website%20dan%20ingin%20konsultasi%20paket%20tour"
+                    href={`https://wa.me/6281225657382?text=${encodeURIComponent(
+                      `Halo Andika Bali Tour, saya baru membaca artikel "${selectedArticle.title}" dan ingin konsultasi / reservasi.`
+                    )}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 sm:flex-initial px-4 py-2.5 rounded-lg border border-gold-400/40 hover:bg-gold-500/10 text-gold-300 text-xs font-semibold tracking-wider transition-colors inline-flex items-center justify-center gap-1.5"

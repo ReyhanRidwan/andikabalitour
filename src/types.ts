@@ -106,11 +106,15 @@ export interface Article {
   tag: string;
   readTime: string;
   date: string;
+  isoDate?: string;
   author: string;
   summary: string;
+  metaDescription?: string;
+  seoKeywords?: string[];
   coverImage: string;
   sections: ArticleSection[];
   keyTakeaways: string[];
   relatedTourId?: string;
+  relatedActionType?: 'tour' | 'rental';
 }
 

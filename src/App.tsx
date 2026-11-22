@@ -132,7 +132,14 @@ export default function App() {
             <ReviewsSection />
 
             {/* Curated Tour & Travel Articles for Andika Bali Tour */}
-            <ArticlesSection onBookNow={handleOpenBooking} />
+            <ArticlesSection
+              onBookNow={handleOpenBooking}
+              onBookRental={() => {
+                setPreSelectedVehicleId('toyota-innova');
+                setActivePage('rental');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
           </div>
         )}
 

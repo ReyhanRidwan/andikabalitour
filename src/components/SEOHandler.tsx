@@ -140,9 +140,9 @@ export const SEOHandler: React.FC<SEOHandlerProps> = ({ activePage, language, cu
   let ogImage = '';
 
   if (activePage === 'package-detail' && currentDetailExperience) {
-    title = `${currentDetailExperience.name} - Andika Bali Tour`;
-    description = currentDetailExperience.description || `Nikmati keindahan ${currentDetailExperience.name} bersama Andika Bali Tour. Paket liburan Bali terlengkap dengan pelayanan profesional.`;
-    ogImage = currentDetailExperience.image || '/bali_ocean_bg_1783528769356.jpg';
+    title = `${currentDetailExperience.title} - Andika Bali Tour`;
+    description = currentDetailExperience.shortDesc || `Nikmati keindahan ${currentDetailExperience.title} bersama Andika Bali Tour. Paket liburan Bali terlengkap dengan pelayanan profesional.`;
+    ogImage = currentDetailExperience.cardImage || '/bali_ocean_bg_1783528769356.jpg';
   } else {
     const pageData = SEO_DATA[activePage === 'package-detail' ? 'tours' : activePage] || SEO_DATA.home;
     const langData = pageData[language] || pageData.id;
@@ -151,16 +151,35 @@ export const SEOHandler: React.FC<SEOHandlerProps> = ({ activePage, language, cu
     ogImage = langData.ogImage;
   }
 
+  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://andikabalitour.com';
   const currentUrl = typeof window !== 'undefined' ? window.location.href : 'https://andikabalitour.com';
+  const canonicalUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.origin}${window.location.pathname}`
+      : 'https://andikabalitour.com/';
+
+  const travelAgencySchema = {
+    '@context': 'https://schema.org',
+    '@type': 'TravelAgency',
+    name: 'Andika Bali Tour',
+    description,
+    url: origin,
+    telephone: '+62-812-2565-7382',
+    areaServed: 'Bali, Nusa Penida, Nusa Lembongan, Indonesia',
+    priceRange: 'IDR 250.000 - IDR 1.500.000',
+    image: ogImage.startsWith('http') ? ogImage : `${origin}${ogImage}`,
+  };
 
   return (
     <Helmet>
       {/* Basic Meta Tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
+      <link rel="canonical" href={canonicalUrl} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="Andika Bali Tour" />
       <meta property="og:url" content={currentUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
@@ -172,6 +191,9 @@ export const SEOHandler: React.FC<SEOHandlerProps> = ({ activePage, language, cu
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
+
+      {/* TravelAgency Structured Data */}
+      <script type="application/ld+json">{JSON.stringify(travelAgencySchema)}</script>
     </Helmet>
   );
 };
